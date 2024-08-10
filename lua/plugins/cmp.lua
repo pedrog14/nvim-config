@@ -5,7 +5,8 @@ return {
             "onsails/lspkind.nvim",
             "lukas-reineke/cmp-under-comparator",
         },
-        event = { "InsertEnter", "CmdlineEnter" },
+        -- event = { "InsertEnter", "CmdlineEnter" },
+        lazy = true,
         opts = function()
             local cmp = require("cmp")
             local luasnip = require("luasnip")
