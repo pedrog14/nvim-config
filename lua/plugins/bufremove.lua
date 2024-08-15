@@ -7,8 +7,10 @@ return {
             function()
                 local bufremove = require("mini.bufremove")
                 if vim.bo.modified then
-                    local choice =
-                        vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+                    local choice = vim.fn.confirm(
+                        ("Save changes to %q?"):format(vim.fn.bufname()),
+                        "&Yes\n&No\n&Cancel"
+                    )
                     if choice == 1 then -- Yes
                         vim.cmd.write()
                         bufremove.delete(0)

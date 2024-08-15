@@ -41,38 +41,36 @@ return {
             desc = "Telescope Oldfiles",
         },
     },
-    opts = function()
-        return {
-            defaults = {
-                layout_strategy = "vertical",
-                layout_config = {
-                    anchor = "S",
-                    height = 0.9,
-                    preview_cutoff = 1,
-                },
-                prompt_prefix = "󱞩 ",
-                selection_caret = "󰁔 ",
+    opts = {
+        defaults = {
+            layout_strategy = "vertical",
+            layout_config = {
+                anchor = "S",
+                height = 0.9,
+                preview_cutoff = 1,
             },
-            pickers = {
-                find_files = {
-                    follow = true,
-                    hidden = true,
-                },
-                fd = {
-                    follow = true,
-                    hidden = true,
-                },
+            prompt_prefix = "󱞩 ",
+            selection_caret = "󰁔 ",
+        },
+        pickers = {
+            find_files = {
+                follow = true,
+                hidden = true,
             },
-            extensions = {
-                fzf = {
-                    fuzzy = true, -- false will only do exact matching
-                    override_generic_sorter = true, -- override the generic sorter
-                    override_file_sorter = true, -- override the file sorter
-                    case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-                },
+            fd = {
+                follow = true,
+                hidden = true,
             },
-        }
-    end,
+        },
+        extensions = {
+            fzf = {
+                fuzzy = true,                   -- false will only do exact matching
+                override_generic_sorter = true, -- override the generic sorter
+                override_file_sorter = true,    -- override the file sorter
+                case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            },
+        },
+    },
     config = function(_, opts)
         require("telescope").setup(opts)
         require("telescope").load_extension("fzf")
