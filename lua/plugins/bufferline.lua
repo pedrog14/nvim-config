@@ -35,12 +35,21 @@ return {
                 end,
                 always_show_bufferline = false,
                 diagnostics = "nvim_lsp",
-                diagnostics_indicator = function(_, _, diag)
-                    local icons = require("config").icons.diagnostics
-                    local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-                        .. (diag.warning and icons.Warn .. diag.warning or "")
-                    return vim.trim(ret)
+                diagnostics_indicator = function(_, _, diagnostics_dict)
+                    local icon = require("config").icons.diagnostics
+                    local s = " "
+                    for e, n in pairs(diagnostics_dict) do
+                        local sym = e == "error" and icon.Error or (e == "warning" and icon.Warn or icon.Info)
+                        s = s .. n .. sym
+                    end
+                    return s
                 end,
+                -- diagnostics_indicator = function(_, _, diag)
+                --     local icons = require("config").icons.diagnostics
+                --     local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+                --         .. (diag.warning and icons.Warn .. diag.warning or "")
+                --     return vim.trim(ret)
+                -- end,
                 offsets = {
                     {
                         filetype = "neo-tree",

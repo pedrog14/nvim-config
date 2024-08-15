@@ -4,8 +4,8 @@ return {
         dependencies = {
             "onsails/lspkind.nvim",
             "lukas-reineke/cmp-under-comparator",
+            "windwp/nvim-autopairs",
         },
-        -- event = { "InsertEnter", "CmdlineEnter" },
         lazy = true,
         opts = function()
             local cmp = require("cmp")
@@ -72,8 +72,6 @@ return {
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
                     { name = "path" },
-                    -- Lazydev plugin
-                    { name = "lazydev", group_index = 0 },
                 }, {
                     { name = "buffer" },
                 }),
@@ -124,16 +122,19 @@ return {
         end,
         config = function(_, opts)
             local cmp = require("cmp")
+            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
             cmp.setup(opts.config)
             cmp.setup.cmdline(opts.config_cmd())
             cmp.setup.cmdline(opts.config_search())
+
+            cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         end,
     },
 
     {
         "hrsh7th/cmp-nvim-lsp",
-        event = "InsertEnter",
+        lazy = true,
     },
 
     {
@@ -155,15 +156,5 @@ return {
     {
         "hrsh7th/cmp-cmdline",
         event = "CmdlineEnter",
-    },
-
-    {
-        "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp",
-        dependencies = "rafamadriz/friendly-snippets",
-        lazy = true,
-        config = function()
-            require("luasnip.loaders.from_vscode").lazy_load()
-        end,
     },
 }

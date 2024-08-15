@@ -30,13 +30,6 @@ return {
         cmd = { "NoneLsInstall", "NoneLsUninstall" },
         opts = {
             handlers = {},
-            ensure_installed = {
-                "clang-format",
-                "stylua",
-                "prettierd",
-                "black",
-                "shfmt",
-            },
         },
     },
 }

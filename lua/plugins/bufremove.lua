@@ -1,6 +1,6 @@
 return {
     "echasnovski/mini.bufremove",
-    lazy = true,
+    event = "VeryLazy",
     keys = {
         {
             "<a-x>",

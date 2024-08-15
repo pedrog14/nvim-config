@@ -54,19 +54,6 @@ return {
             }
 
             return {
-                ensure_installed = {
-                    "lua_ls",
-                    "bashls",
-                    "cssls",
-                    "clangd",
-                    "emmet_ls",
-                    "html",
-                    "tsserver",
-                    "pylsp",
-                    "gopls",
-                    "rust_analyzer",
-                    "vimls",
-                },
                 handlers = handlers,
             }
         end,
