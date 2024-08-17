@@ -62,7 +62,6 @@ return {
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
-                    { name = "path" },
                 }, {
                     { name = "buffer" },
                 }),
@@ -123,6 +122,10 @@ return {
             local cmp = require("cmp")
             local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
+            vim.api.nvim_set_hl(0, "CmpGhostText", {
+                link = "Comment",
+                default = true,
+            })
             cmp.setup(opts.config)
             cmp.setup.cmdline(opts.config_cmd())
             cmp.setup.cmdline(opts.config_search())

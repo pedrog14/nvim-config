@@ -58,10 +58,7 @@ return {
                 "󱁻",
                 " 󰁔 Config Files",
                 "c",
-                "Neotree " .. os.getenv("HOME") .. "/.config/nvim"
-            -- "NvimTreeOpen "
-            --     .. os.getenv("HOME")
-            --     .. "/.config/nvim"
+                "Neotree ~/.config/nvim"
             ),
             shortcut("󰒲", " 󰁔 Lazy", "l", "Lazy"),
             shortcut("󰏓", " 󰁔 Mason", "m", "Mason"),

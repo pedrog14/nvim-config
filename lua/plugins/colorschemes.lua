@@ -22,8 +22,6 @@ return {
                 -- Plugin highlights
                 BufferLineOffset = { fg = c.bright_blue, bold = true },
 
-                CmpGhostText = { fg = c.dark4 },
-
                 DashboardHeader = { fg = c.bright_blue },
                 DashboardCenter = { fg = c.light4 },
                 DashboardShortCut = { fg = c.bright_blue },
