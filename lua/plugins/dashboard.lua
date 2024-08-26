@@ -7,16 +7,16 @@ return {
     },
     opts = function(_, opts)
         local header = os.getenv("TERM") == "xterm-kitty"
-            and {
-                "██████████████████████████████████████████████████\n",
-                "█████ ████████████████████████████████████████\n",
-                "████   ███  ████████████████  █ ███████████\n",
-                "███     █     █     ██  ████ █ ███\n",
-                "██  █       ██ ██    █        ██\n",
-                "██  ███   █   ██ ██ █   █  █ █  ██\n",
-                "███████ ██    █    ███ █  █████ ██\n",
-                "██████████████████████████████████████████████████",
-            }
+                and {
+                    "██████████████████████████████████████████████████\n",
+                    "█████ ████████████████████████████████████████\n",
+                    "████   ███  ████████████████  █ ███████████\n",
+                    "███     █     █     ██  ████ █ ███\n",
+                    "██  █       ██ ██    █        ██\n",
+                    "██  ███   █   ██ ██ █   █  █ █  ██\n",
+                    "███████ ██    █    ███ █  █████ ██\n",
+                    "██████████████████████████████████████████████████",
+                }
             or {
                 "███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗\n",
                 "████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║\n",
@@ -70,19 +70,21 @@ return {
             "For science. You monster. - GLaDOS",
         }
 
-        local adjust_header = function(winheight)
-            return string.rep(
+        local adjust_header = function(win_height)
+            local db_height = #header + (#center * 2) + #footer + 3
+            local header_space = string.rep(
                 "\n",
-                math.floor(
-                    (winheight - (#header + (2 * #center) + #footer + 2)) / 2
-                )
-            ) .. table.concat(header) .. "\n"
+                win_height - db_height >= 1
+                        and math.ceil((win_height - db_height) / 2)
+                    or 0
+            )
+            return header_space .. table.concat(header) .. "\n\n"
         end
 
         opts.theme = "doom"
         opts.config = {
             header = vim.split(
-                adjust_header(vim.api.nvim_win_get_height(0)) .. "\n",
+                adjust_header(vim.api.nvim_win_get_height(0)),
                 "\n"
             ),
             center = center,
