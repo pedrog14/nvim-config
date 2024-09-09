@@ -22,7 +22,7 @@ return {
                 "clangd",
                 "emmet_ls",
                 "html",
-                "tsserver",
+                "ts_ls",
                 "pylsp",
                 "gopls",
                 "rust_analyzer",
