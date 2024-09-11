@@ -14,6 +14,7 @@ return {
 
     {
         "williamboman/mason-lspconfig.nvim",
+        dependencies = "williamboman/mason.nvim",
         opts = function(_, opts)
             opts.ensure_installed = {
                 "lua_ls",
@@ -33,6 +34,7 @@ return {
 
     {
         "jay-babu/mason-null-ls.nvim",
+        dependencies = "williamboman/mason.nvim",
         opts = function(_, opts)
             opts.ensure_installed = {
                 "clang-format",

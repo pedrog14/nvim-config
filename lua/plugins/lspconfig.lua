@@ -26,8 +26,6 @@ return {
 
     {
         "williamboman/mason-lspconfig.nvim",
-        dependencies = "williamboman/mason.nvim",
-        lazy = true,
         opts = function(_, opts)
             local lspconfig = require("lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()

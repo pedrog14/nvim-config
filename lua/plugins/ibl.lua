@@ -1,10 +1,10 @@
 return {
     "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
     event = {
         "BufNewFile",
         "BufReadPre",
     },
+    main = "ibl",
     opts = {
         exclude = {
             filetypes = { "dashboard", "help" },

@@ -4,7 +4,7 @@ return {
     dependencies = {
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
-    cmd = "Telescope",
+    event = "VeryLazy",
     keys = {
         {
             "<leader>ff",
@@ -44,7 +44,7 @@ return {
     },
     opts = {
         defaults = {
-            -- layout_strategy = "vertical",
+            layout_strategy = "vertical",
             -- layout_config = {
             --     anchor = "C",
             --     height = 0.9,
@@ -65,10 +65,10 @@ return {
         },
         extensions = {
             fzf = {
-                fuzzy = true,                   -- false will only do exact matching
+                fuzzy = true, -- false will only do exact matching
                 override_generic_sorter = true, -- override the generic sorter
-                override_file_sorter = true,    -- override the file sorter
-                case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+                override_file_sorter = true, -- override the file sorter
+                case_mode = "smart_case", -- or "ignore_case" or "respect_case"
             },
         },
     },

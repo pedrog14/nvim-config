@@ -2,22 +2,43 @@ return {
     "akinsho/bufferline.nvim",
     dependencies = "nvim-tree/nvim-web-devicons",
     event = "VeryLazy",
-    keys = {
-        {
-            "<a-h>",
-            function()
-                require("bufferline").cycle(-1)
-            end,
-            desc = "Go to previous buffer (BufferLine)",
-        },
-        {
-            "<a-l>",
-            function()
-                require("bufferline").cycle(1)
-            end,
-            desc = "Go to next buffer (BufferLine)",
-        },
-    },
+    keys = function()
+        local keymap = {
+            {
+                "<a-h>",
+                function()
+                    require("bufferline").cycle(-1)
+                end,
+                desc = "Go to previous buffer (Bufferline)",
+            },
+            {
+                "<a-l>",
+                function()
+                    require("bufferline").cycle(1)
+                end,
+                desc = "Go to next buffer (Bufferline)",
+            },
+            {
+                "<a-0>",
+                function()
+                    require("bufferline").go_to(0)
+                end,
+                desc = "Go to last buffer (Bufferline)",
+            },
+        }
+
+        for i = 1, 9, 1 do
+            table.insert(keymap, {
+                "<a-" .. i .. ">",
+                function()
+                    require("bufferline").go_to(i)
+                end,
+                desc = "Go to buffer #" .. i .. " (Bufferline)",
+            })
+        end
+
+        return keymap
+    end,
     opts = function(_, opts)
         local bufremove = require("mini.bufremove")
 
