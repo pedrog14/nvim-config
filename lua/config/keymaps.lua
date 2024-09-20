@@ -12,13 +12,15 @@ local opts = { noremap = true, silent = true }
 keymap.set("n", "<c-d>", "<c-d>zz", opts)
 keymap.set("n", "<c-u>", "<c-u>zz", opts)
 
-keymap.set({ "n", "t" }, "<c-h>", "<c-w>h", opts)
-keymap.set({ "n", "t" }, "<c-j>", "<c-w>j", opts)
-keymap.set({ "n", "t" }, "<c-k>", "<c-w>k", opts)
-keymap.set({ "n", "t" }, "<c-l>", "<c-w>l", opts)
+keymap.set("n", "<c-h>", "<c-w>h", opts)
+keymap.set("n", "<c-j>", "<c-w>j", opts)
+keymap.set("n", "<c-k>", "<c-w>k", opts)
+keymap.set("n", "<c-l>", "<c-w>l", opts)
 
 keymap.set("v", ">", ">gv", opts)
 keymap.set("v", "<", "<gv", opts)
+
+keymap.set("t", "<esc>", "<c-\\><c-n>", opts)
 
 -- LSP related keymaps
 local diagnostic = vim.diagnostic
@@ -59,7 +61,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
             "gd",
             builtin.lsp_definitions,
             vim.tbl_extend("keep", buf_opts, {
-                desc = "Go to the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope",
+                desc =
+                "Go to the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope",
             })
         )
         keymap.set(
@@ -67,7 +70,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
             "gI",
             builtin.lsp_implementations,
             vim.tbl_extend("keep", buf_opts, {
-                desc = "Go to the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope",
+                desc =
+                "Go to the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope",
             })
         )
         keymap.set(
@@ -83,7 +87,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
             "gy",
             builtin.lsp_type_definitions,
             vim.tbl_extend("keep", buf_opts, {
-                desc = "Go to the definition of the type of the word under the cursor, if there's only one, otherwise show all options in Telescope",
+                desc =
+                "Go to the definition of the type of the word under the cursor, if there's only one, otherwise show all options in Telescope",
             })
         )
         keymap.set(

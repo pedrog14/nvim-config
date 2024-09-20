@@ -56,8 +56,8 @@ return {
                         }),
                     }),
                     ["<c-e>"] = cmp.mapping.abort(),
-                    ["<c-k>"] = cmp.mapping.scroll_docs(-4),
-                    ["<c-j>"] = cmp.mapping.scroll_docs(4),
+                    ["<c-u>"] = cmp.mapping.scroll_docs(-4),
+                    ["<c-d>"] = cmp.mapping.scroll_docs(4),
                 },
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },

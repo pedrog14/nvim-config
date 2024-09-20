@@ -41,6 +41,7 @@ return {
             "mason",
             "neo-tree",
             "trouble",
+            "toggleterm",
         }
     end,
 }

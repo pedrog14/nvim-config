@@ -6,7 +6,7 @@ return {
         lazy = false,
         keys = {
             { "<c-space>", desc = "Increment selection" },
-            { "<bs>",      desc = "Decrement selection", mode = "x" },
+            { "<bs>", desc = "Decrement selection", mode = "x" },
         },
         opts = {
             -- Base
@@ -99,5 +99,11 @@ return {
             "BufReadPre",
         },
         opts = {},
+    },
+
+    {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        lazy = true,
     },
 }
