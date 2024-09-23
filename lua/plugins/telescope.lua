@@ -1,8 +1,10 @@
 return {
     "nvim-telescope/telescope.nvim",
-    branch = "0.1.x",
     dependencies = {
-        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+        {
+            "nvim-telescope/telescope-fzf-native.nvim",
+            build = "make",
+        },
     },
     event = "VeryLazy",
     keys = {
@@ -45,11 +47,6 @@ return {
     opts = {
         defaults = {
             layout_strategy = "vertical",
-            -- layout_config = {
-            --     anchor = "C",
-            --     height = 0.9,
-            --     preview_cutoff = 1,
-            -- },
             prompt_prefix = "󱞩 ",
             selection_caret = "󰁔 ",
         },
