@@ -4,7 +4,9 @@ return {
     keys = {
         {
             "<leader>tt",
-            "<cmd>ToggleTerm<cr>",
+            function()
+                require("toggleterm").toggle()
+            end,
             desc = "Terminal Toggle",
         },
     },

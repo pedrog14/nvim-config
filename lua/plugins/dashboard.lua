@@ -3,15 +3,21 @@ return {
     dependencies = "nvim-tree/nvim-web-devicons",
     lazy = false,
     keys = {
-        { "<leader>ds", "<cmd>Dashboard<cr>", desc = "Open Dashboard" },
+        {
+            "<leader>ds",
+            function()
+                require("dashboard"):instance()
+            end,
+            desc = "Open Dashboard",
+        },
     },
     opts = function(_, opts)
         local adjust_header = function(header, win_height, db_height)
             local header_space = string.rep(
                 "\n",
                 win_height - db_height >= 1
-                        and math.ceil((win_height - db_height) / 2)
-                    or 0
+                and math.ceil((win_height - db_height) / 2)
+                or 0
             )
             return header_space .. table.concat(header) .. "\n\n"
         end
@@ -36,16 +42,16 @@ return {
         end
 
         local header = os.getenv("TERM") == "xterm-kitty"
-                and {
-                    "██████████████████████████████████████████████████\n",
-                    "█████ ████████████████████████████████████████\n",
-                    "████   ███  ████████████████  █ ███████████\n",
-                    "███     █     █     ██  ████ █ ███\n",
-                    "██  █       ██ ██    █        ██\n",
-                    "██  ███   █   ██ ██ █   █  █ █  ██\n",
-                    "███████ ██    █    ███ █  █████ ██\n",
-                    "██████████████████████████████████████████████████",
-                }
+            and {
+                "██████████████████████████████████████████████████\n",
+                "█████ ████████████████████████████████████████\n",
+                "████   ███  ████████████████  █ ███████████\n",
+                "███     █     █     ██  ████ █ ███\n",
+                "██  █       ██ ██    █        ██\n",
+                "██  ███   █   ██ ██ █   █  █ █  ██\n",
+                "███████ ██    █    ███ █  █████ ██\n",
+                "██████████████████████████████████████████████████",
+            }
             or {
                 "███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗\n",
                 "████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║\n",
@@ -96,4 +102,5 @@ return {
         opts.hide = { statusline = false }
         opts.config = config
     end,
+    config = function() end,
 }
