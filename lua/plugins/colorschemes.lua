@@ -15,7 +15,6 @@ return {
 
                 NormalFloat = { bg = c.dark0, fg = c.light1 },
                 FloatBorder = { bg = c.dark0, fg = c.dark4 },
-                -- FloatTitle = { bg = c.bright_blue, fg = c.dark0 },
 
                 SignColumn = { bg = c.dark0 },
 
