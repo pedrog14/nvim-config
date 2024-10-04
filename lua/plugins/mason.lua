@@ -33,8 +33,8 @@ return {
     },
 
     {
-        "jay-babu/mason-null-ls.nvim",
-        dependencies = "williamboman/mason.nvim",
+        "pedrog14/mason-conform.nvim",
+        dependencies = "stevearc/conform.nvim",
         opts = function(_, opts)
             opts.ensure_installed = {
                 "clang-format",
