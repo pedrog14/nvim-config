@@ -13,8 +13,7 @@ return {
     {
         "pedrog14/mason-conform.nvim",
         opts = function(_, opts)
-            opts.handlers =
-                require("mason-conform").default_handlers(opts.ensure_installed)
+            opts.handlers = require("mason-conform").default_handlers()
         end,
     },
 }
