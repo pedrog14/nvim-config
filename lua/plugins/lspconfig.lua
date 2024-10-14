@@ -42,7 +42,7 @@ return {
                 },
             }
 
-            local handlers = {
+            opts.handlers = {
                 function(server_name)
                     lspconfig[server_name].setup({
                         capabilities = capabilities,
@@ -50,8 +50,6 @@ return {
                     })
                 end,
             }
-
-            opts.handlers = handlers
         end,
     },
 }
