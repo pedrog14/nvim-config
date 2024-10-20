@@ -33,15 +33,15 @@ return {
     },
 
     {
-        "pedrog14/mason-conform.nvim",
+        "jay-babu/mason-null-ls.nvim",
         dependencies = "williamboman/mason.nvim",
         opts = function(_, opts)
             opts.ensure_installed = {
-                "clang-format",
-                "stylua",
-                "prettierd",
                 "black",
+                "clang-format",
+                "prettier",
                 "shfmt",
+                "stylua",
             }
         end,
     },
