@@ -39,6 +39,7 @@ return {
             opts.ensure_installed = {
                 "black",
                 "clang-format",
+                "gofumpt",
                 "prettier",
                 "shfmt",
                 "stylua",

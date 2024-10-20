@@ -1,7 +1,7 @@
 return {
     {
         "nvimtools/none-ls.nvim",
-        dependencies = "williamboman/mason-lspconfig.nvim",
+        dependencies = "jay-babu/mason-null-ls.nvim",
         opts = function(_, opts)
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
             opts.on_attach = function(client, bufnr)
