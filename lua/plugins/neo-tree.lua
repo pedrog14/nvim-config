@@ -21,6 +21,7 @@ return {
                     if package.loaded["neo-tree"] then
                         return
                     else
+                        ---@diagnostic disable-next-line: undefined-field
                         local stats = vim.uv.fs_stat(vim.fn.argv(0))
                         if stats and stats.type == "directory" then
                             require("neo-tree")

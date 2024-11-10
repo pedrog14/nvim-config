@@ -8,8 +8,7 @@
 ---@field key_format string
 ---@field action string
 
----@class DashboardCenter
----@field [integer] { [1]: string|false, [2]: string|false, [3]: string, [4]: string }
+---@class DashboardCenter:{ [1]: string, [2]: string, [3]: string, [4]: string|fun() }
 
 ---@class Lspconfig.Opts
 ---@field diagnostic_config? vim.diagnostic.Opts

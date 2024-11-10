@@ -1,15 +1,6 @@
 return {
     "nvimdev/dashboard-nvim",
     lazy = false,
-    keys = {
-        {
-            "<leader>ds",
-            function()
-                require("dashboard"):instance()
-            end,
-            desc = "Open Dashboard",
-        },
-    },
     main = "utils.plugins.dashboard",
     opts = function(_, opts)
         local header = {
@@ -23,16 +14,32 @@ return {
             "██████████████████████████████████████████████████\n",
         }
 
-        ---@type DashboardCenter
+        ---@type DashboardCenter[]
         local center = {
             { "󰈔", " 󰁔 New File", "n", "ene | startinsert" },
-            { "󰈞", " 󰁔 Find File", "f", "lua require('telescope.builtin').find_files()" },
-            { "󱋡", " 󰁔 Recent Files", "o", "lua require('telescope.builtin').oldfiles()" },
+            {
+                "󰈞",
+                " 󰁔 Find File",
+                "f",
+                function()
+                    require("telescope.builtin").find_files()
+                end,
+            },
+            {
+                "󱋡",
+                " 󰁔 Recent Files",
+                "o",
+                function()
+                    require("telescope.builtin").oldfiles()
+                end,
+            },
             {
                 "󱁻",
                 " 󰁔 Config Files",
                 "c",
-                ("lua require('neo-tree.command').execute({ dir = '%s' })"):format(vim.fn.stdpath("config")),
+                function()
+                    require("neo-tree.command").execute({ dir = vim.fn.stdpath("config") })
+                end,
             },
             { "󰒲", " 󰁔 Lazy", "l", "Lazy" },
             { "󰏓", " 󰁔 Mason", "m", "Mason" },

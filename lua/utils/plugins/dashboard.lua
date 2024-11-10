@@ -1,5 +1,9 @@
 local M = {}
 
+---@param header string[]
+---@param db_height integer
+---
+---@return string
 M.adjust_header = function(header, db_height)
     local win_height = vim.o.lines
 
@@ -9,11 +13,12 @@ M.adjust_header = function(header, db_height)
     return header_space .. table.concat(header) .. "\n"
 end
 
----@param icon string|false
----@param desc string|false
+---@param icon string
+---@param desc string
 ---@param key string
----@param action string
+---@param action string|fun()
 ---@param width integer
+---
 ---@return DashboardShortcut
 M.gen_shortcut = function(icon, desc, key, action, width)
     local hl = {
@@ -22,10 +27,14 @@ M.gen_shortcut = function(icon, desc, key, action, width)
         key = "DashboardShortCut",
     }
     local key_format = "[%s]"
+
+    local space_rep = width - vim.api.nvim_strwidth(icon .. desc .. key .. key_format)
+    desc = desc .. string.rep(" ", space_rep - 4)
+
     return {
-        icon = icon or "",
+        icon = icon,
         icon_hl = hl.icon,
-        desc = (desc and #desc > 0) and desc .. string.rep(" ", width - (#desc + #key + 2)) or "",
+        desc = desc,
         desc_hl = hl.desc,
         key = key,
         key_hl = hl.key,
@@ -34,13 +43,14 @@ M.gen_shortcut = function(icon, desc, key, action, width)
     }
 end
 
----@param shortcuts table[]
+---@param shortcuts DashboardCenter[]
 ---@param width integer
+---
 ---@return DashboardShortcut[]
 M.gen_center = function(shortcuts, width)
     local center = {}
     for _, shortcut in ipairs(shortcuts) do
-        local icon, desc, key, action = unpack(shortcut)
+        local icon, desc, key, action = shortcut[1], shortcut[2], shortcut[3], shortcut[4]
         center[#center + 1] = M.gen_shortcut(icon, desc, key, action, width)
     end
     return center
@@ -51,7 +61,7 @@ M.setup = function(opts)
     local db_height = #config.header + (#config.center * 2) + #config.footer + 3
 
     local header = M.adjust_header(config.header, db_height)
-    local center = M.gen_center(config.center, (vim.api.nvim_strwidth(config.header[1]) - 1) - 4)
+    local center = M.gen_center(config.center, vim.api.nvim_strwidth(config.header[1]) - 1)
     local footer = config.footer
 
     require("dashboard").setup(vim.tbl_deep_extend("force", opts, {

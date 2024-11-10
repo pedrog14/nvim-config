@@ -57,11 +57,6 @@ return {
         "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
-        opts = {
-            on_highlights = function(hl, c)
-                hl.WinBar = { fg = c.fg_dark }
-                hl.WinBarNC = { fg = c.fg_dark }
-            end,
-        },
+        opts = {},
     },
 }

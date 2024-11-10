@@ -7,7 +7,7 @@ return {
             function()
                 require("toggleterm").toggle()
             end,
-            desc = "Terminal Toggle",
+            desc = "Toggle Terminal",
         },
     },
     opts = {
