@@ -4,13 +4,20 @@ return {
         dependencies = "onsails/lspkind.nvim",
         lazy = true,
         main = "utils.plugins.cmp",
-        ---@param opts cmp.Opts
+        ---@param opts { global: cmp.ConfigSchema, cmdline: cmp.ConfigSchema, search: cmp.ConfigSchema }
         opts = function(_, opts)
             local defaults = require("cmp.config.default")()
 
             local cmp = require("cmp")
             local lspkind = require("lspkind")
             local snippet = vim.snippet
+
+            local has_words_before = function()
+                unpack = unpack or table.unpack
+                local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+                return col ~= 0
+                    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+            end
 
             opts.global = {
                 sources = cmp.config.sources(
@@ -23,6 +30,8 @@ return {
                             cmp.select_next_item()
                         elseif snippet.active({ direction = 1 }) then
                             snippet.jump(1)
+                        elseif has_words_before() then
+                            cmp.complete()
                         else
                             fallback()
                         end
@@ -56,6 +65,7 @@ return {
                         return require("utils.plugins.cmp").expand(args.body)
                     end,
                 },
+                ---@diagnostic disable-next-line: missing-fields
                 formatting = {
                     format = lspkind.cmp_format(),
                 },
@@ -66,13 +76,12 @@ return {
                     },
                 },
             }
-
             opts.cmdline = {
                 sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
                 mapping = cmp.mapping.preset.cmdline(),
+                ---@diagnostic disable-next-line: missing-fields
                 matching = { disallow_symbol_nonprefix_matching = false },
             }
-
             opts.search = {
                 sources = { { name = "buffer" } },
                 mapping = cmp.mapping.preset.cmdline(),
