@@ -1,5 +1,6 @@
 return {
     "akinsho/bufferline.nvim",
+    dependencies = "folke/snacks.nvim",
     event = { "BufNewFile", "BufReadPre" },
     keys = function()
         local keys = {
@@ -28,7 +29,7 @@ return {
     end,
     ---@param opts bufferline.Config
     opts = function(_, opts)
-        local bufremove = require("mini.bufremove")
+        local bufdelete = require("snacks").bufdelete
 
         vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", {
             link = "Title",
@@ -41,10 +42,10 @@ return {
                 return string.format("%s·%s", num.raise(num.id), num.lower(num.ordinal))
             end,
             close_command = function(n)
-                bufremove.delete(n, false)
+                bufdelete(n)
             end,
             right_mouse_command = function(n)
-                bufremove.delete(n, true)
+                bufdelete(n)
             end,
             always_show_bufferline = false,
             diagnostics = "nvim_lsp",

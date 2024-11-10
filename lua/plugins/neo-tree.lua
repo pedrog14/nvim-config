@@ -29,28 +29,37 @@ return {
                 end,
             })
         end,
-        opts = {
-            popup_border_style = "rounded",
-            default_component_configs = {
+        opts = function(_, opts)
+            local function on_move(data)
+                require("snacks").rename.on_rename_file(data.source, data.destination)
+            end
+            local events = require("neo-tree.events")
+            opts.event_handlers = opts.event_handlers or {}
+            vim.list_extend(opts.event_handlers, {
+                { event = events.FILE_MOVED, handler = on_move },
+                { event = events.FILE_RENAMED, handler = on_move },
+            })
+            opts.popup_border_style = "rounded"
+            opts.default_component_configs = {
                 indent = {
                     with_expanders = true,
                 },
-            },
-            window = {
+            }
+            opts.window = {
                 mappings = {
                     ["s"] = "vsplit_with_window_picker",
                     ["S"] = "split_with_window_picker",
                 },
-            },
-            filesystem = {
+            }
+            opts.filesystem = {
                 follow_current_file = { enabled = true },
                 use_libuv_file_watcher = true,
                 filtered_items = {
                     hide_dotfiles = false,
                     hide_gitignored = false,
                 },
-            },
-        },
+            }
+        end,
     },
 
     {
