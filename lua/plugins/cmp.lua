@@ -1,7 +1,6 @@
 return {
     {
         "hrsh7th/nvim-cmp",
-        dependencies = "onsails/lspkind.nvim",
         lazy = true,
         main = "utils.plugins.cmp",
         ---@param opts { global: cmp.ConfigSchema, cmdline: cmp.ConfigSchema, search: cmp.ConfigSchema }
@@ -9,7 +8,6 @@ return {
             local defaults = require("cmp.config.default")()
 
             local cmp = require("cmp")
-            local lspkind = require("lspkind")
             local snippet = vim.snippet
 
             local has_words_before = function()
@@ -67,7 +65,7 @@ return {
                 },
                 ---@diagnostic disable-next-line: missing-fields
                 formatting = {
-                    format = lspkind.cmp_format(),
+                    format = require("utils.plugins.cmp").format_cmp,
                 },
                 sorting = defaults.sorting,
                 experimental = {
