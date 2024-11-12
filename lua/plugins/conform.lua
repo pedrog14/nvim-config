@@ -1,6 +1,7 @@
 return {
     "stevearc/conform.nvim",
     dependencies = "pedrog14/mason-conform.nvim",
+    cmd = "ConformInfo",
     event = { "BufNewFile", "BufReadPre" },
     main = "utils.plugins.conform",
     opts = function(_, opts)

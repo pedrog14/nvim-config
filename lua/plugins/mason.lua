@@ -37,7 +37,6 @@ return {
 
     {
         "pedrog14/mason-conform.nvim",
-        branch = "testing",
         dependencies = "williamboman/mason.nvim",
         lazy = false,
         opts = function(_, opts)
