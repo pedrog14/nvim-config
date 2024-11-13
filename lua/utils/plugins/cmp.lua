@@ -8,7 +8,7 @@ M.format_cmp = function(entry, item)
     local kind = item.kind:lower()
 
     if icons[kind] then
-        item.kind = icons[kind] .. item.kind
+        item.kind = icons[kind] .. " " .. item.kind
     end
 
     local widths = {
