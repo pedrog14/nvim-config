@@ -50,7 +50,7 @@ M.setup = function(opts)
     local snacks = require("snacks")
     snacks.setup(opts)
 
-    vim.api.nvim_create_user_command("Lazygit", function(args)
+    vim.api.nvim_create_user_command("LazyGit", function(args)
         if args.args == "" then
             snacks.lazygit()
         elseif args.args == "log" then

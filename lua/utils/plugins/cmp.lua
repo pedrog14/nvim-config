@@ -4,11 +4,11 @@ local M = {}
 ---@param item vim.CompletedItem
 ---@return vim.CompletedItem
 M.format_cmp = function(entry, item)
-    local icons = require("utils").icons.mini("lsp")
+    local icons = require("utils.icons").mini("lsp")
     local kind = item.kind:lower()
 
     if icons[kind] then
-        item.kind = icons[kind] .. " " .. item.kind
+        item.kind = icons[kind] .. item.kind
     end
 
     local widths = {

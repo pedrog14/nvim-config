@@ -12,10 +12,15 @@ return {
         },
     },
     main = "utils.plugins.snacks",
+    ---@param opts snacks.Config
     opts = function(_, opts)
-        local icons = require("utils").icons.diagnostics
+        local icons = require("utils.icons").diagnostics
 
-        ---@type snacks.notifier.Notif.opts
+        opts.bigfile = { enabled = true }
+        opts.quickfile = { enabled = true }
+        opts.statuscolumn = { enabled = true }
+        opts.words = { enabled = true }
+
         opts.notifier = {
             icons = {
                 error = icons.error,
@@ -24,7 +29,7 @@ return {
             },
             notify_lsp_progress = true,
         }
-        ---@type snacks.lazygit.Config
+
         opts.lazygit = {
             win = {
                 backdrop = 100,

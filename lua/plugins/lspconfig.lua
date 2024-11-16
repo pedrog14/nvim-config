@@ -5,7 +5,7 @@ return {
     main = "utils.plugins.lspconfig",
     ---@param opts Lspconfig.Opts
     opts = function(_, opts)
-        local icons = require("utils").icons.diagnostics
+        local icons = require("utils.icons").diagnostics
         local severity = vim.diagnostic.severity
         local capabilities = require("utils.plugins.lspconfig").default_capabilities
         local settings = {

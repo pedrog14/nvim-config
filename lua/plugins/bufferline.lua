@@ -50,7 +50,7 @@ return {
             always_show_bufferline = false,
             diagnostics = "nvim_lsp",
             diagnostics_indicator = function(_, _, diagnostics_dict)
-                local icons = require("utils").icons.diagnostics
+                local icons = require("utils.icons").diagnostics
                 local s = " "
                 for e, n in pairs(diagnostics_dict) do
                     local sym = e == "error" and icons.error or (e == "warning" and icons.warn or icons.info)
