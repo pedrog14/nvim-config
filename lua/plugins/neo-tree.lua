@@ -31,6 +31,15 @@ return {
             })
         end,
         opts = function(_, opts)
+            vim.api.nvim_create_autocmd("TermClose", {
+                pattern = "*lazygit",
+                callback = function()
+                    if package.loaded["neo-tree.sources.git_status"] then
+                        require("neo-tree.sources.git_status").refresh()
+                    end
+                end,
+            })
+
             local on_move = function(data)
                 require("snacks").rename.on_rename_file(data.source, data.destination)
             end
@@ -72,11 +81,7 @@ return {
                 include_current_win = false,
                 autoselect_one = true,
                 bo = {
-                    filetype = {
-                        "neo-tree",
-                        "neo-tree-popup",
-                        "notify",
-                    },
+                    filetype = { "neo-tree", "neo-tree-popup", "notify" },
                     buftype = { "terminal", "quickfix" },
                 },
             },
