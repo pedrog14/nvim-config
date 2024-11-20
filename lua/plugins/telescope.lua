@@ -6,6 +6,7 @@ return {
             build = "make",
         },
     },
+    cmd = "Telescope",
     keys = {
         {
             "<leader>ff",

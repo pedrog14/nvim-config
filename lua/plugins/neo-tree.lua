@@ -1,7 +1,7 @@
 return {
     {
         "nvim-neo-tree/neo-tree.nvim",
-        requires = "s1n7ax/nvim-window-picker",
+        dependencies = "s1n7ax/nvim-window-picker",
         cmd = "Neotree",
         keys = {
             {
@@ -21,7 +21,7 @@ return {
                     if package.loaded["neo-tree"] then
                         return
                     else
-                        ---@diagnostic disable-next-line: undefined-field
+                        ---@diagnostic disable-next-line: param-type-mismatch
                         local stats = vim.uv.fs_stat(vim.fn.argv(0))
                         if stats and stats.type == "directory" then
                             require("neo-tree")
@@ -31,7 +31,7 @@ return {
             })
         end,
         opts = function(_, opts)
-            local function on_move(data)
+            local on_move = function(data)
                 require("snacks").rename.on_rename_file(data.source, data.destination)
             end
             local events = require("neo-tree.events")

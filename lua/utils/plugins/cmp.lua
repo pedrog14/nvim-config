@@ -104,7 +104,6 @@ M.expand = function(snippet)
     end
 end
 
----@param opts cmp.Opts
 M.setup = function(opts)
     local global = opts.global or {}
 

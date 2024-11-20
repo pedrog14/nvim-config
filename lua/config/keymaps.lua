@@ -17,4 +17,6 @@ keymap_set("n", "<c-j>", "<c-w>j", keymap_opts)
 keymap_set("n", "<c-k>", "<c-w>k", keymap_opts)
 keymap_set("n", "<c-l>", "<c-w>l", keymap_opts)
 
+keymap_set("n", "<a-X>", "<cmd>bdelete!<cr>", keymap_opts)
+
 keymap_set("t", "<esc>", "<c-\\><c-n>", keymap_opts)

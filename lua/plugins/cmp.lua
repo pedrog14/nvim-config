@@ -27,7 +27,9 @@ return {
                         if cmp.visible() then
                             cmp.select_next_item()
                         elseif snippet.active({ direction = 1 }) then
-                            snippet.jump(1)
+                            vim.schedule(function()
+                                vim.snippet.jump(1)
+                            end)
                         elseif has_words_before() then
                             cmp.complete()
                         else
@@ -38,7 +40,9 @@ return {
                         if cmp.visible() then
                             cmp.select_prev_item()
                         elseif snippet.active({ direction = -1 }) then
-                            snippet.jump(-1)
+                            vim.schedule(function()
+                                vim.snippet.jump(-1)
+                            end)
                         else
                             fallback()
                         end

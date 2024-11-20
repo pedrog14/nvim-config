@@ -7,11 +7,17 @@ M.default_capabilities = vim.tbl_deep_extend(
     require("cmp_nvim_lsp").default_capabilities()
 )
 
----@param opts Lspconfig.Opts
 M.setup = function(opts)
-    vim.diagnostic.config(opts.diagnostic_config)
-    vim.api.nvim_create_autocmd("LspAttach", { callback = opts.on_attach })
-    require("mason-lspconfig").setup_handlers(opts.handlers)
+    vim.diagnostic.config(opts.diagnostics)
+    require("mason-lspconfig").setup_handlers({
+        function(server_name)
+            require("lspconfig")[server_name].setup({
+                settings = opts.settings[server_name],
+                capabilities = opts.capabilities,
+                on_attach = opts.on_attach,
+            })
+        end,
+    })
 end
 
 return M

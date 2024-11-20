@@ -3,7 +3,7 @@ return {
     cmd = "ToggleTerm",
     keys = {
         {
-            "<leader>t",
+            "<c-/>",
             function()
                 require("toggleterm").toggle()
             end,

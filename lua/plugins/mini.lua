@@ -13,14 +13,30 @@ return {
 
     {
         "echasnovski/mini.pairs",
-        event = { "InsertEnter", "CmdlineEnter" },
+        event = "InsertEnter",
         main = "utils.plugins.mini.pairs",
         opts = {
-            modes = { insert = true, command = true, terminal = false },
             skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
             skip_ts = { "string" },
             skip_unbalanced = true,
             markdown = true,
+        },
+    },
+
+    {
+        "echasnovski/mini.surround",
+        event = { "BufNewFile", "BufReadPre" },
+        opts = {
+            mappings = {
+                add = "gs", -- Add surrounding in Normal and Visual modes
+                delete = "ds", -- Delete surrounding
+                replace = "cs", -- Replace surrounding
+
+                find = "", -- Find surrounding (to the right)
+                find_left = "", -- Find surrounding (to the left)
+                highlight = "", -- Highlight surrounding
+                update_n_lines = "", -- Update `n_lines`
+            },
         },
     },
 }

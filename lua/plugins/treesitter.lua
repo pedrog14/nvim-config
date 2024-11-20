@@ -90,17 +90,14 @@ return {
     },
 
     {
-        "JoosepAlviste/nvim-ts-context-commentstring",
+        "folke/ts-comments.nvim",
         event = { "BufNewFile", "BufReadPre" },
-        main = "utils.plugins.ts-commentstring",
-        opts = {
-            enable_autocmd = false,
-        },
+        opts = {},
     },
 
     {
         "windwp/nvim-ts-autotag",
-        event = { "BufNewFile", "BufReadPre" },
+        event = "InsertEnter",
         opts = {},
     },
 }

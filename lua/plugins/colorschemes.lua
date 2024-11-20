@@ -1,6 +1,7 @@
 return {
     {
         "pedrog14/gruvbox.nvim",
+        branch = "testing",
         lazy = false,
         priority = 1000,
         opts = function(_, opts)
@@ -13,26 +14,27 @@ return {
                 GruvboxAquaSign = { link = "GruvboxAqua" },
                 GruvboxGreenSign = { link = "GruvboxGreen" },
 
-                CursorLineNr = { bg = "NONE", fg = c.bright_yellow, bold = true },
+                CursorLineNr = { bg = c.dark0, fg = c.bright_yellow, bold = true },
 
                 NormalFloat = { bg = c.dark0, fg = c.light1 },
                 FloatBorder = { bg = c.dark0, fg = c.dark3 },
 
-                SignColumn = { bg = "NONE" },
+                SignColumn = { link = "Normal" },
 
                 -- Plugin highlights
-                BufferLineOffsetTitle = { link = "GruvboxBlueBold" },
-                BufferLineIndicatorSelected = { bg = "NONE", fg = c.bright_blue },
-
-                DashboardHeader = { fg = c.bright_blue },
-                DashboardCenter = { fg = c.light4 },
-                DashboardShortCut = { fg = c.bright_blue },
-                DashboardFooter = { fg = c.bright_orange },
+                BufferLineOffsetTitle = { bg = c.dark0, fg = c.bright_blue, bold = true },
+                BufferLineIndicatorSelected = { bg = c.dark0, fg = c.bright_blue },
 
                 LazyNormal = { bg = c.dark1, fg = c.light1 },
                 LazyButton = { bg = c.dark2 },
 
                 MasonNormal = { bg = c.dark1, fg = c.light1 },
+
+                SnacksDashboardHeader = { fg = c.bright_blue },
+                SnacksDashboardIcon = { fg = c.light4 },
+                SnacksDashboardDesc = { fg = c.light4 },
+                SnacksDashboardKey = { fg = c.bright_blue },
+                SnacksDashboardFooter = { fg = c.bright_orange },
 
                 TelescopeTitle = { link = "FloatTitle" },
                 TelescopePromptBorder = { fg = c.dark3 },

@@ -4,7 +4,7 @@ return {
     main = "ibl",
     opts = {
         exclude = {
-            filetypes = { "dashboard", "help" },
+            filetypes = { "help" },
         },
     },
 }
