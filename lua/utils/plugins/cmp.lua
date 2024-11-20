@@ -1,25 +1,13 @@
 local M = {}
 
----@param entry cmp.Entry
 ---@param item vim.CompletedItem
 ---@return vim.CompletedItem
-M.format_cmp = function(entry, item)
+M.format_cmp = function(_, item)
     local icons = require("utils.icons").mini("lsp")
     local kind = item.kind:lower()
 
     if icons[kind] then
         item.kind = icons[kind] .. item.kind
-    end
-
-    local widths = {
-        abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr,
-        menu = vim.g.cmp_widths and vim.g.cmp_widths.menu,
-    }
-
-    for key, width in pairs(widths) do
-        if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
-            item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
-        end
     end
 
     return item
