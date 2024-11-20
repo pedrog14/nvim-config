@@ -37,6 +37,12 @@ return {
         opts.capabilities = require("utils.plugins.lspconfig").default_capabilities
 
         opts.on_attach = function(client, bufnr)
+            local protocol_method = vim.lsp.protocol.Methods
+
+            if client.supports_method(protocol_method.textDocument_inlayHint) then
+                vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+            end
+
             local keymap_set = vim.keymap.set
 
             local lsp_opts = { buffer = bufnr, silent = true }
