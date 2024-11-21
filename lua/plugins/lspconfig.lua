@@ -3,26 +3,25 @@ return {
     dependencies = { "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp" },
     lazy = false,
     main = "utils.plugins.lspconfig",
-    opts = function(_, opts)
-        local diagnostics_icons = require("utils.icons").diagnostics
-
-        ---@type vim.diagnostic.Opts
-        opts.diagnostics = {
-            signs = {
-                text = {
-                    [vim.diagnostic.severity.E] = diagnostics_icons.error,
-                    [vim.diagnostic.severity.W] = diagnostics_icons.warn,
-                    [vim.diagnostic.severity.I] = diagnostics_icons.info,
-                    [vim.diagnostic.severity.N] = diagnostics_icons.hint,
+    opts = {
+        diagnostics = function()
+            local diagnostics_icons = require("utils.icons").diagnostics
+            return {
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.E] = diagnostics_icons.error,
+                        [vim.diagnostic.severity.W] = diagnostics_icons.warn,
+                        [vim.diagnostic.severity.I] = diagnostics_icons.info,
+                        [vim.diagnostic.severity.N] = diagnostics_icons.hint,
+                    },
                 },
-            },
-            virtual_text = {
-                prefix = "●",
-            },
-            severity_sort = true,
-        }
-
-        opts.settings = {
+                virtual_text = {
+                    prefix = "●",
+                },
+                severity_sort = true,
+            }
+        end,
+        settings = {
             ["pylsp"] = {
                 pylsp = {
                     plugins = {
@@ -32,15 +31,21 @@ return {
                     },
                 },
             },
-        }
+        },
+        capabilities = require("utils.plugins.lspconfig").default_capabilities(),
+        on_attach = function(client, bufnr)
+            local method = vim.lsp.protocol.Methods
 
-        opts.capabilities = require("utils.plugins.lspconfig").default_capabilities
-
-        opts.on_attach = function(client, bufnr)
-            local protocol_method = vim.lsp.protocol.Methods
-
-            if client.supports_method(protocol_method.textDocument_inlayHint) then
+            if client.supports_method(method.textDocument_inlayHint) then
                 vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+            end
+
+            if client.supports_method(method.textDocument_codeLens) then
+                vim.lsp.codelens.refresh()
+                vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+                    buffer = bufnr,
+                    callback = vim.lsp.codelens.refresh,
+                })
             end
 
             local keymap_set = vim.keymap.set
@@ -87,6 +92,6 @@ return {
             lsp_opts.desc =
                 "Go to the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope"
             keymap_set("n", "gri", builtin.lsp_implementations, lsp_opts)
-        end
-    end,
+        end,
+    },
 }
