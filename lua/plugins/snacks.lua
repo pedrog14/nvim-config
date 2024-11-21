@@ -11,7 +11,7 @@ return {
             desc = "Delete Buffer",
         },
         {
-            "grf",
+            "gR",
             function()
                 require("snacks").rename.rename_file()
             end,

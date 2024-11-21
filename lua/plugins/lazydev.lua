@@ -7,18 +7,9 @@ return {
             library = {
                 { path = "luvit-meta/library", words = { "vim%.uv" } },
             },
+            integrations = { cmp = false },
         },
     },
 
     { "Bilal2453/luvit-meta", lazy = true },
-
-    {
-        "hrsh7th/nvim-cmp",
-        optional = true,
-        opts = function(_, opts)
-            local global = opts.global
-            global.sources = global.sources or {}
-            table.insert(global.sources, { name = "lazydev", group_index = 0 })
-        end,
-    },
 }
