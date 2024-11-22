@@ -11,11 +11,8 @@ local opt = vim.opt
 
 opt.autoindent = true
 opt.bg = "dark"
-opt.completeopt = vim.tbl_extend(
-    "keep",
-    { "menu", "menuone", "noselect" },
-    vim.fn.has("nvim-0.11.0") == 1 and { "fuzzy", "popup" } or {}
-)
+opt.completeopt = vim.fn.has("nvim-0.11.0") == 1 and { "menu", "menuone", "noselect", "fuzzy", "popup" }
+    or { "menu", "menuone", "noselect" }
 opt.cursorline = true
 opt.expandtab = true
 opt.formatexpr = "v:lua.require('conform').formatexpr()"

@@ -20,3 +20,9 @@ keymap_set("n", "<c-l>", "<c-w>l", keymap_opts)
 keymap_set("n", "<a-X>", "<cmd>bdelete!<cr>", keymap_opts)
 
 keymap_set("t", "<esc>", "<c-\\><c-n>", keymap_opts)
+
+if vim.fn.has("nvim-0.11.0") == 1 then
+    keymap_set("c", "<cr>", function()
+        return vim.fn.pumvisible() ~= 0 and "<c-y>" or "<cr>"
+    end, { expr = true, silent = true })
+end

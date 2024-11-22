@@ -18,7 +18,9 @@ M.exec_keys = function(keys)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "n", true)
 end
 
-M.format_completion = function()
+---@param client? vim.lsp.Client
+---@param bufnr? integer
+M.format_completion = function(client, bufnr)
     local protocol = vim.lsp.protocol
     local kind_icons = require("utils.icons").mini("lsp")
 
