@@ -45,21 +45,6 @@ M.snippet_fix = function(snippet)
     end)
 end
 
----@param entry cmp.Entry
-M.auto_brackets = function(entry)
-    local _cmp = require("cmp")
-    local Kind = _cmp.lsp.CompletionItemKind
-    local item = entry.completion_item
-    if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) then
-        local cursor = vim.api.nvim_win_get_cursor(0)
-        local prev_char = vim.api.nvim_buf_get_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] + 1, {})[1]
-        if prev_char ~= "(" and prev_char ~= ")" then
-            local keys = vim.api.nvim_replace_termcodes("()<left>", false, false, true)
-            vim.api.nvim_feedkeys(keys, "i", true)
-        end
-    end
-end
-
 M.expand = function(snippet)
     -- Native sessions don't support nested snippet sessions.
     -- Always use the top-level session.
