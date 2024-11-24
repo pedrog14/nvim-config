@@ -4,52 +4,54 @@ return {
         branch = "testing",
         lazy = false,
         priority = 1000,
-        opts = function(_, opts)
+        opts = function()
             local c = require("gruvbox").palette
-            opts.overrides = {
-                -- Base highlights
-                GruvboxRedSign = { link = "GruvboxRed" },
-                GruvboxYellowSign = { link = "GruvboxYellow" },
-                GruvboxBlueSign = { link = "GruvboxBlue" },
-                GruvboxAquaSign = { link = "GruvboxAqua" },
-                GruvboxGreenSign = { link = "GruvboxGreen" },
+            return {
+                overrides = {
+                    -- Base highlights
+                    GruvboxRedSign = { link = "GruvboxRed" },
+                    GruvboxYellowSign = { link = "GruvboxYellow" },
+                    GruvboxBlueSign = { link = "GruvboxBlue" },
+                    GruvboxAquaSign = { link = "GruvboxAqua" },
+                    GruvboxGreenSign = { link = "GruvboxGreen" },
 
-                CursorLineNr = { bg = c.dark0, fg = c.bright_yellow, bold = true },
+                    CursorLineNr = { bg = c.dark0, fg = c.bright_yellow, bold = true },
 
-                NormalFloat = { bg = c.dark0, fg = c.light1 },
-                FloatBorder = { bg = c.dark0, fg = c.dark3 },
+                    NormalFloat = { bg = c.dark0, fg = c.light1 },
+                    FloatBorder = { bg = c.dark0, fg = c.dark3 },
 
-                SignColumn = { link = "Normal" },
+                    SignColumn = { link = "Normal" },
 
-                -- Plugin highlights
-                BufferLineOffsetTitle = { bg = c.dark0, fg = c.bright_blue, bold = true },
-                BufferLineIndicatorSelected = { bg = c.dark0, fg = c.bright_blue },
+                    -- Plugin highlights
+                    BufferLineOffsetTitle = { bg = c.dark0, fg = c.bright_blue, bold = true },
+                    BufferLineIndicatorSelected = { bg = c.dark0, fg = c.bright_blue },
 
-                LazyNormal = { bg = c.dark1, fg = c.light1 },
-                LazyButton = { bg = c.dark2 },
+                    LazyNormal = { bg = c.dark1, fg = c.light1 },
+                    LazyButton = { bg = c.dark2 },
 
-                MasonNormal = { bg = c.dark1, fg = c.light1 },
+                    MasonNormal = { bg = c.dark1, fg = c.light1 },
 
-                SnacksDashboardHeader = { fg = c.bright_blue },
-                SnacksDashboardIcon = { fg = c.light4 },
-                SnacksDashboardDesc = { fg = c.light4 },
-                SnacksDashboardKey = { fg = c.bright_blue },
-                SnacksDashboardFooter = { fg = c.bright_orange },
+                    SnacksDashboardHeader = { fg = c.bright_blue },
+                    SnacksDashboardIcon = { fg = c.light4 },
+                    SnacksDashboardDesc = { fg = c.light4 },
+                    SnacksDashboardKey = { fg = c.bright_blue },
+                    SnacksDashboardFooter = { fg = c.bright_orange },
 
-                TelescopeTitle = { link = "FloatTitle" },
-                TelescopePromptBorder = { fg = c.dark3 },
-                TelescopePreviewBorder = { fg = c.dark3 },
-                TelescopeResultsBorder = { fg = c.dark3 },
+                    TelescopeTitle = { link = "FloatTitle" },
+                    TelescopePromptBorder = { fg = c.dark3 },
+                    TelescopePreviewBorder = { fg = c.dark3 },
+                    TelescopeResultsBorder = { fg = c.dark3 },
 
-                WindowPickerStatusLine = {
-                    bg = c.dark1,
-                    fg = c.light1,
-                    bold = true,
-                },
-                WindowPickerStatusLineNC = {
-                    bg = c.dark1,
-                    fg = c.light1,
-                    bold = true,
+                    WindowPickerStatusLine = {
+                        bg = c.dark1,
+                        fg = c.light1,
+                        bold = true,
+                    },
+                    WindowPickerStatusLineNC = {
+                        bg = c.dark1,
+                        fg = c.light1,
+                        bold = true,
+                    },
                 },
             }
         end,

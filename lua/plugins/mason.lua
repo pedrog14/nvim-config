@@ -2,6 +2,15 @@ return {
     {
         "williamboman/mason.nvim",
         lazy = false,
+        keys = {
+            {
+                "<leader>m",
+                function()
+                    require("mason.ui").open()
+                end,
+                desc = "Open Mason",
+            },
+        },
         opts = {
             ui = {
                 icons = {

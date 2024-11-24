@@ -1,6 +1,5 @@
 return {
     "nvim-lualine/lualine.nvim",
-    branch = vim.fn.has("nvim-0.11.0") == 1 and "fix_hl_inheritence" or nil,
     dependencies = "echasnovski/mini.icons",
     event = "VeryLazy",
     init = function()
@@ -13,7 +12,7 @@ return {
             vim.o.laststatus = 0
         end
     end,
-    opts = function(_, opts)
+    opts = function()
         local lualine_require = require("lualine_require")
         lualine_require.require = require
 
@@ -21,32 +20,35 @@ return {
 
         vim.o.laststatus = vim.g.lualine_laststatus
 
-        opts.options = {
-            theme = "auto",
-            globalstatus = vim.o.laststatus == 3,
-            disabled_filetypes = { statusline = { "snacks_dashboard" } },
-        }
-        opts.sections = {
-            lualine_b = {
-                "branch",
-                "diff",
-                {
-                    "diagnostics",
-                    symbols = {
-                        error = icons.error,
-                        warn = icons.warn,
-                        info = icons.info,
-                        hint = icons.hint,
+        return {
+            options = {
+                theme = "auto",
+                globalstatus = vim.o.laststatus == 3,
+                disabled_filetypes = { statusline = { "snacks_dashboard" } },
+            },
+            sections = {
+                lualine_b = {
+                    "branch",
+                    "diff",
+                    {
+                        "diagnostics",
+                        symbols = {
+                            error = icons.error .. " ",
+                            warn = icons.warn .. " ",
+                            info = icons.info .. " ",
+                            hint = icons.hint .. " ",
+                        },
                     },
                 },
             },
-        }
-        opts.extensions = {
-            "lazy",
-            "mason",
-            "neo-tree",
-            "trouble",
-            "toggleterm",
+            extensions = {
+                "lazy",
+                "mason",
+                "neo-tree",
+                "quickfix",
+                "trouble",
+                "toggleterm",
+            },
         }
     end,
 }

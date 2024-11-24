@@ -60,7 +60,7 @@ M.setup = function(opts)
         end
     end, {
         nargs = "*",
-        desc = "Open lazygit",
+        desc = "Open LazyGit",
         complete = function(_, _, _)
             return { "log", "log_file" }
         end,

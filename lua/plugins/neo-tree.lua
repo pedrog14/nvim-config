@@ -49,24 +49,28 @@ return {
                 { event = events.FILE_MOVED, handler = on_move },
                 { event = events.FILE_RENAMED, handler = on_move },
             })
-            opts.popup_border_style = "rounded"
-            opts.default_component_configs = {
-                indent = {
-                    with_expanders = true,
+
+            return {
+                event_handlers = opts.event_handlers,
+                popup_border_style = "rounded",
+                default_component_configs = {
+                    indent = {
+                        with_expanders = true,
+                    },
                 },
-            }
-            opts.window = {
-                mappings = {
-                    ["s"] = "vsplit_with_window_picker",
-                    ["S"] = "split_with_window_picker",
+                window = {
+                    mappings = {
+                        ["s"] = "vsplit_with_window_picker",
+                        ["S"] = "split_with_window_picker",
+                    },
                 },
-            }
-            opts.filesystem = {
-                follow_current_file = { enabled = true },
-                use_libuv_file_watcher = true,
-                filtered_items = {
-                    hide_dotfiles = false,
-                    hide_gitignored = false,
+                filesystem = {
+                    follow_current_file = { enabled = true },
+                    use_libuv_file_watcher = true,
+                    filtered_items = {
+                        hide_dotfiles = false,
+                        hide_gitignored = false,
+                    },
                 },
             }
         end,

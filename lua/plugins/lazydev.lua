@@ -7,7 +7,6 @@ return {
             library = {
                 { path = "luvit-meta/library", words = { "vim%.uv" } },
             },
-            integrations = { cmp = vim.fn.has("nvim-0.11.0") ~= 1 },
         },
     },
 
@@ -15,7 +14,6 @@ return {
 
     {
         "hrsh7th/nvim-cmp",
-        enabled = vim.fn.has("nvim-0.11.0") ~= 1,
         optional = true,
         opts = function(_, opts)
             opts.sources = opts.sources or {}
