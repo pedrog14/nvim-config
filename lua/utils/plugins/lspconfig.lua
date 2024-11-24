@@ -1,5 +1,13 @@
+---@class lspconfig.Opts
+---@field diagnostics? vim.diagnostic.Opts
+---@field settings? table<string, table>
+---@field capabilities? lsp.ClientCapabilities
+---@field on_attach? fun(client: vim.lsp.Client, bufnr: integer)
+
 local M = {}
 
+---@param capabilities? lsp.ClientCapabilities
+---@return lsp.ClientCapabilities
 M.default_capabilities = function(capabilities)
     local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
     return vim.tbl_deep_extend(
@@ -11,14 +19,17 @@ M.default_capabilities = function(capabilities)
     )
 end
 
+---@param opts lspconfig.Opts
 M.setup = function(opts)
+    opts.settings = opts.settings or {}
     vim.diagnostic.config(opts.diagnostics)
     require("mason-lspconfig").setup_handlers({
         function(server_name)
+            local settings, capabilities, on_attach = opts.settings[server_name], opts.capabilities, opts.on_attach
             require("lspconfig")[server_name].setup({
-                settings = opts.settings[server_name],
-                capabilities = opts.capabilities,
-                on_attach = opts.on_attach,
+                settings = settings,
+                capabilities = capabilities,
+                on_attach = on_attach,
             })
         end,
     })

@@ -1,11 +1,12 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = { "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp" },
-    lazy = false,
+    event = { "BufNewFile", "BufReadPre" },
     main = "utils.plugins.lspconfig",
     opts = function()
         local severity = vim.diagnostic.severity
         local diagnostic_icons = require("utils.icons").diagnostics
+        ---@type lspconfig.Opts
         return {
             diagnostics = {
                 signs = {
@@ -21,18 +22,7 @@ return {
                 },
                 severity_sort = true,
             },
-            settings = {
-                ["pylsp"] = {
-                    pylsp = {
-                        plugins = {
-                            jedi = {
-                                environment = "/usr/bin/python",
-                            },
-                        },
-                    },
-                },
-            },
-            capabilities = require("utils.plugins.lspconfig").default_capabilities(),
+            -- capabilities = require("utils.plugins.lspconfig").default_capabilities(),
             ---@param client vim.lsp.Client
             ---@param bufnr integer
             on_attach = function(client, bufnr)
@@ -45,7 +35,7 @@ return {
                 end
 
                 if client.supports_method("textDocument/codeLens", { bufnr = bufnr }) then
-                    lsp.codelens.refresh()
+                    lsp.codelens.refresh({ bufnr = bufnr })
 
                     vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
                         buffer = bufnr,
