@@ -6,7 +6,7 @@ return {
         opts = function()
             local cmp = require("cmp")
             local defaults = require("cmp.config.default")()
-            ---@type { global: cmp.ConfigSchema, cmdline: cmp.ConfigSchema, search: cmp.ConfigSchema }
+            ---@type cmp.Opts
             return {
                 global = {
                     sources = cmp.config.sources({ { name = "nvim_lsp" }, { name = "path" } }, { { name = "buffer" } }),

@@ -13,23 +13,28 @@ M.format_cmp = function(_, item)
     return item
 end
 
+---@param opts cmp.Opts
 M.setup = function(opts)
-    local global = opts.global or {}
+    local global, cmdline, search = opts.global or {}, opts.cmdline or {}, opts.search or {}
+    global.sources = global.sources or {}
 
     for _, source in ipairs(global.sources) do
         source.group_index = source.group_index or 1
     end
 
-    vim.api.nvim_set_hl(0, "CmpGhostText", {
-        link = "Comment",
-        default = true,
-    })
+    local ghost_text = global.experimental and global.experimental.ghost_text
+    if ghost_text and ghost_text.hl_group then
+        vim.api.nvim_set_hl(0, ghost_text.hl_group, {
+            link = "Comment",
+            default = true,
+        })
+    end
 
     local cmp = require("cmp")
 
-    cmp.setup.global(opts.global or {})
-    cmp.setup.cmdline(":", opts.cmdline or {})
-    cmp.setup.cmdline({ "/", "?" }, opts.search or {})
+    cmp.setup.global(global)
+    cmp.setup.cmdline(":", cmdline)
+    cmp.setup.cmdline({ "/", "?" }, search)
 end
 
 return M
