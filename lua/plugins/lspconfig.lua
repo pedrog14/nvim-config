@@ -1,6 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
-    dependencies = { "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp" },
+    dependencies = "williamboman/mason-lspconfig.nvim",
     event = { "BufNewFile", "BufReadPre" },
     main = "utils.plugins.lspconfig",
     opts = function()
@@ -24,7 +24,11 @@ return {
             },
             settings = {
                 lua_ls = {
-                    ["Lua.completion.autoRequire"] = false,
+                    Lua = {
+                        completion = {
+                            autoRequire = false,
+                        },
+                    },
                 },
             },
             capabilities = require("utils.plugins.lspconfig").client_capabilities(),
@@ -54,6 +58,17 @@ return {
                     keymap_set("n", "<leader>cC", function()
                         lsp.codelens.refresh({ bufnr = bufnr })
                     end, { desc = "Refresh the lenses" })
+                end
+
+                if client:supports_method("textDocument/completion", bufnr) then
+                    vim.lsp.completion.enable(true, client.id, bufnr, {
+                        autotrigger = true,
+                        convert = require("utils.completion").client_convert(client, bufnr),
+                    })
+
+                    vim.keymap.set("i", "<c-n>", function()
+                        return vim.fn.pumvisible() == 0 and "<c-x><c-o>" or "<c-n>"
+                    end, { expr = true, buffer = bufnr })
                 end
 
                 keymap_set("n", "K", function()

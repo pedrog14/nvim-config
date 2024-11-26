@@ -11,7 +11,7 @@ local opt = vim.opt
 
 opt.autoindent = true
 opt.bg = "dark"
-opt.completeopt = { "menu", "menuone", "noselect" }
+opt.completeopt = { "menu", "menuone", "noselect", "fuzzy", "popup" }
 opt.cursorline = true
 opt.expandtab = true
 opt.formatexpr = "v:lua.require('conform').formatexpr()"
