@@ -35,11 +35,11 @@ return {
                 local builtin = require("telescope.builtin")
                 local keymap_set = vim.keymap.set
 
-                if client.supports_method("textDocument/inlayHint", { bufnr = bufnr }) then
+                if client:supports_method("textDocument/inlayHint", bufnr) then
                     lsp.inlay_hint.enable(true, { bufnr = bufnr })
                 end
 
-                if client.supports_method("textDocument/codeLens", { bufnr = bufnr }) then
+                if client:supports_method("textDocument/codeLens", bufnr) then
                     lsp.codelens.refresh({ bufnr = bufnr })
 
                     vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
