@@ -30,7 +30,7 @@ return {
                 end,
             })
         end,
-        opts = function(_, opts)
+        opts = function()
             vim.api.nvim_create_autocmd("TermClose", {
                 pattern = "*lazygit",
                 callback = function()
@@ -44,14 +44,12 @@ return {
                 require("snacks").rename.on_rename_file(data.source, data.destination)
             end
             local events = require("neo-tree.events")
-            opts.event_handlers = opts.event_handlers or {}
-            vim.list_extend(opts.event_handlers, {
-                { event = events.FILE_MOVED, handler = on_move },
-                { event = events.FILE_RENAMED, handler = on_move },
-            })
 
             return {
-                event_handlers = opts.event_handlers,
+                event_handlers = {
+                    { event = events.FILE_MOVED, handler = on_move },
+                    { event = events.FILE_RENAMED, handler = on_move },
+                },
                 popup_border_style = "rounded",
                 default_component_configs = {
                     indent = {
