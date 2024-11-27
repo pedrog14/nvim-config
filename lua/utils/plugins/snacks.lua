@@ -1,6 +1,6 @@
 local M = {}
 
-M.notify_lsp_progress = function()
+local notify_lsp_progress = function()
     ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
     local progress = vim.defaulttable()
     vim.api.nvim_create_autocmd("LspProgress", {
@@ -18,9 +18,12 @@ M.notify_lsp_progress = function()
                     p[i] = {
                         token = ev.data.params.token,
                         msg = ("[%3d%%] %s%s"):format(
-                            value.kind == "end" and 100 or value.percentage or 100,
+                            value.kind == "end" and 100
+                                or value.percentage
+                                or 100,
                             value.title or "",
-                            value.message and (" **%s**"):format(value.message) or ""
+                            value.message and (" **%s**"):format(value.message)
+                                or ""
                         ),
                         done = value.kind == "end",
                     }
@@ -33,7 +36,18 @@ M.notify_lsp_progress = function()
                 return table.insert(msg, v.msg) or not v.done
             end, p)
 
-            local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+            local spinner = {
+                "⠋",
+                "⠙",
+                "⠹",
+                "⠸",
+                "⠼",
+                "⠴",
+                "⠦",
+                "⠧",
+                "⠇",
+                "⠏",
+            }
             vim.notify(table.concat(msg, "\n"), "info", {
                 id = "lsp_progress",
                 title = client.name,
@@ -50,25 +64,30 @@ M.setup = function(opts)
     local snacks = require("snacks")
     snacks.setup(opts)
 
+    -- LazyGit
+    local lazygit = snacks.lazygit
     vim.api.nvim_create_user_command("LazyGit", function(args)
+        for key, _ in pairs(lazygit) do
+            if args.args == key then
+                lazygit[key]()
+            end
+        end
         if args.args == "" then
-            snacks.lazygit()
-        elseif args.args == "log" then
-            snacks.lazygit.log()
-        elseif args.args == "log_file" then
-            snacks.lazygit.log_file()
+            lazygit()
         end
     end, {
         nargs = "*",
         desc = "Open LazyGit",
-        complete = function(_, _, _)
-            return { "log", "log_file" }
+        complete = function()
+            local completion = {}
+            for key, _ in pairs(lazygit) do
+                completion[#completion + 1] = key ~= "health" and key or nil
+            end
+            return completion
         end,
     })
 
-    if opts.notifier.notify_lsp_progress then
-        M.notify_lsp_progress()
-    end
+    notify_lsp_progress()
 end
 
 return M

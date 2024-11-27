@@ -46,14 +46,19 @@ return {
                 if client:supports_method("textDocument/codeLens", bufnr) then
                     lsp.codelens.refresh({ bufnr = bufnr })
 
-                    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-                        buffer = bufnr,
-                        callback = lsp.codelens.refresh,
-                    })
+                    vim.api.nvim_create_autocmd(
+                        { "BufEnter", "CursorHold", "InsertLeave" },
+                        {
+                            buffer = bufnr,
+                            callback = lsp.codelens.refresh,
+                        }
+                    )
 
                     keymap_set({ "n", "v" }, "<leader>cc", function()
                         lsp.codelens.run()
-                    end, { desc = "Run the code lens in the current line" })
+                    end, {
+                        desc = "Run the code lens in the current line",
+                    })
 
                     keymap_set("n", "<leader>cC", function()
                         lsp.codelens.refresh({ bufnr = bufnr })
@@ -71,7 +76,8 @@ return {
                     completion.enable_documentation(client, bufnr)
 
                     vim.keymap.set("i", "<c-n>", function()
-                        return vim.fn.pumvisible() == 0 and "<c-x><c-o>" or "<c-n>"
+                        return vim.fn.pumvisible() == 0 and "<c-x><c-o>"
+                            or "<c-n>"
                     end, { expr = true, buffer = bufnr })
                 end
 
@@ -101,7 +107,9 @@ return {
 
                 keymap_set("n", "grn", function()
                     lsp.buf.rename()
-                end, { desc = "Renames all references to the symbol under the cursor" })
+                end, {
+                    desc = "Renames all references to the symbol under the cursor",
+                })
 
                 keymap_set({ "n", "x" }, "gra", function()
                     lsp.buf.code_action()

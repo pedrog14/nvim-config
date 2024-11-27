@@ -15,21 +15,32 @@ return {
                     GruvboxAquaSign = { link = "GruvboxAqua" },
                     GruvboxGreenSign = { link = "GruvboxGreen" },
 
-                    CursorLineNr = { bg = c.dark0, fg = c.bright_yellow, bold = true },
+                    CursorLineNr = {
+                        fg = c.bright_yellow,
+                        bg = c.dark0,
+                        bold = true,
+                    },
 
-                    NormalFloat = { bg = c.dark0, fg = c.light1 },
-                    FloatBorder = { bg = c.dark0, fg = c.dark3 },
+                    NormalFloat = { fg = c.light1, bg = c.dark0 },
+                    FloatBorder = { fg = c.dark3, bg = c.dark0 },
 
                     SignColumn = { link = "Normal" },
 
                     -- Plugin highlights
-                    BufferLineOffsetTitle = { bg = c.dark0, fg = c.bright_blue, bold = true },
-                    BufferLineIndicatorSelected = { bg = c.dark0, fg = c.bright_blue },
+                    BufferLineOffsetTitle = {
+                        fg = c.bright_blue,
+                        bg = c.dark0,
+                        bold = true,
+                    },
+                    BufferLineIndicatorSelected = {
+                        fg = c.bright_blue,
+                        bg = c.dark0,
+                    },
 
-                    LazyNormal = { bg = c.dark1, fg = c.light1 },
+                    LazyNormal = { fg = c.light1, bg = c.dark1 },
                     LazyButton = { bg = c.dark2 },
 
-                    MasonNormal = { bg = c.dark1, fg = c.light1 },
+                    MasonNormal = { fg = c.light1, bg = c.dark1 },
 
                     SnacksDashboardHeader = { fg = c.bright_blue },
                     SnacksDashboardIcon = { fg = c.light4 },
@@ -43,13 +54,13 @@ return {
                     TelescopeResultsBorder = { fg = c.dark3 },
 
                     WindowPickerStatusLine = {
-                        bg = c.dark1,
                         fg = c.light1,
+                        bg = c.dark1,
                         bold = true,
                     },
                     WindowPickerStatusLineNC = {
-                        bg = c.dark1,
                         fg = c.light1,
+                        bg = c.dark1,
                         bold = true,
                     },
                 },

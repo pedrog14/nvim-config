@@ -41,8 +41,10 @@ return {
         return {
             options = {
                 numbers = function(num)
-                    ---@diagnostic disable-next-line: undefined-field
-                    return ("%s·%s"):format(num.raise(num.id), num.lower(num.ordinal))
+                    return ("%s·%s"):format(
+                        num.raise(num.id), ---@diagnostic disable-line: undefined-field
+                        num.lower(num.ordinal) ---@diagnostic disable-line: undefined-field
+                    )
                 end,
                 close_command = function(n)
                     bufdelete(n)
@@ -57,7 +59,10 @@ return {
                     local indicator = ""
                     for diagnostic_type, number in pairs(diagnostics_dict) do
                         local icon = diagnostic_type == "error" and icons.error
-                            or (diagnostic_type == "warning" and icons.warn or icons.info)
+                            or (
+                                diagnostic_type == "warning" and icons.warn
+                                or icons.info
+                            )
                         indicator = ("%s%s%s "):format(indicator, number, icon)
                     end
                     return indicator

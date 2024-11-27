@@ -16,6 +16,11 @@ keymap_set("n", "<c-l>", "<c-w>l", { noremap = true })
 
 keymap_set("t", "<esc>", "<c-\\><c-n>", { noremap = true })
 
-keymap_set("n", "<a-X>", "<cmd>bdelete!<cr>", { desc = "Delete Buffer", silent = true })
+keymap_set(
+    "n",
+    "<a-X>",
+    "<cmd>bdelete!<cr>",
+    { desc = "Delete Buffer", silent = true }
+)
 
 keymap_set("n", "<leader>l", require("lazy").show, { desc = "Open Lazy" })

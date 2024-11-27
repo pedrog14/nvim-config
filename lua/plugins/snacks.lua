@@ -11,7 +11,7 @@ return {
             desc = "Delete Buffer",
         },
         {
-            "gR",
+            "grN",
             function()
                 require("snacks").rename.rename_file()
             end,
@@ -61,18 +61,49 @@ return {
             dashboard = {
                 preset = {
                     keys = {
-                        { icon = "󰈔", desc = "New File", key = "n", action = ":ene | startinsert" },
-                        { icon = "󰈞", desc = "Find File", key = "f", action = ":Telescope find_files" },
-                        { icon = "󱋡", desc = "Recent Files", key = "o", action = ":Telescope oldfiles" },
+                        {
+                            icon = "󰈔",
+                            desc = "New File",
+                            key = "n",
+                            action = ":ene | startinsert",
+                        },
+                        {
+                            icon = "󰈞",
+                            desc = "Find File",
+                            key = "f",
+                            action = ":Telescope find_files",
+                        },
+                        {
+                            icon = "󱋡",
+                            desc = "Recent Files",
+                            key = "o",
+                            action = ":Telescope oldfiles",
+                        },
                         {
                             icon = "󱁻",
                             desc = "Config Files",
                             key = "c",
                             action = ":exec 'Neotree' stdpath('config')",
                         },
-                        { icon = "󰒲", desc = "Lazy", key = "l", action = ":Lazy", enabled = package.loaded.lazy },
-                        { icon = "󰏓", desc = "Mason", key = "m", action = ":Mason" },
-                        { icon = "", desc = "Exit Neovim", key = "q", action = ":quitall" },
+                        {
+                            icon = "󰒲",
+                            desc = "Lazy",
+                            key = "l",
+                            action = ":Lazy",
+                            enabled = package.loaded.lazy,
+                        },
+                        {
+                            icon = "󰏓",
+                            desc = "Mason",
+                            key = "m",
+                            action = ":Mason",
+                        },
+                        {
+                            icon = "",
+                            desc = "Exit Neovim",
+                            key = "q",
+                            action = ":quitall",
+                        },
                     },
                 },
                 formats = {
