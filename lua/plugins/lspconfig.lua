@@ -61,10 +61,14 @@ return {
                 end
 
                 if client:supports_method("textDocument/completion", bufnr) then
+                    local completion = require("utils.completion")
+
                     vim.lsp.completion.enable(true, client.id, bufnr, {
                         autotrigger = true,
-                        convert = require("utils.completion").client_convert(client, bufnr),
+                        convert = completion.client_convert(client, bufnr),
                     })
+
+                    completion.enable_documentation(client, bufnr)
 
                     vim.keymap.set("i", "<c-n>", function()
                         return vim.fn.pumvisible() == 0 and "<c-x><c-o>" or "<c-n>"

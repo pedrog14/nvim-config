@@ -1,8 +1,3 @@
----@class cmp.Opts
----@field global? cmp.ConfigSchema
----@field cmdline? cmp.ConfigSchema
----@field search? cmp.ConfigSchema
-
 ---@class lspconfig.Opts
 ---@field diagnostics? vim.diagnostic.Opts
 ---@field settings? table<string, table>
