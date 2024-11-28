@@ -1,3 +1,4 @@
+---@class utils.plugins.snacks
 local M = {}
 
 local notify_lsp_progress = function()

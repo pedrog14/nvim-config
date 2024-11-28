@@ -1,3 +1,4 @@
+---@class utils.completion
 local M = {}
 
 M.exec_keys = function(keys)

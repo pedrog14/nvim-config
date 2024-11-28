@@ -5,7 +5,7 @@ return {
     main = "utils.plugins.lspconfig",
     opts = function()
         local severity = vim.diagnostic.severity
-        local diagnostic_icons = require("utils.icons").diagnostics
+        local diagnostic_icons = require("utils").icons.diagnostics
         ---@type lspconfig.Opts
         return {
             diagnostics = {
@@ -66,7 +66,7 @@ return {
                 end
 
                 if client:supports_method("textDocument/completion", bufnr) then
-                    local completion = require("utils.completion")
+                    local completion = require("utils").completion
 
                     vim.lsp.completion.enable(true, client.id, bufnr, {
                         autotrigger = true,

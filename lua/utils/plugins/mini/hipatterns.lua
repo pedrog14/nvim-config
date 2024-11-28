@@ -1,7 +1,6 @@
-local hipatterns = require("mini.hipatterns")
 local bit = require("bit")
-local tohex, bor, lshift = bit.tohex, bit.bor, bit.lshift
 
+---@class utils.plugins.mini.hipatterns
 local M = {}
 
 M.shorthand = function(opts)
@@ -38,9 +37,9 @@ M.hex_alpha_color = function(opts)
             b = math.floor(b * a)
 
             local hex_color = "#"
-                .. tohex(bor(lshift(r, 16), lshift(g, 8), b), 6)
+                .. bit.tohex(bit.bor(bit.lshift(r, 16), bit.lshift(g, 8), b), 6)
 
-            return hipatterns.compute_hex_color_group(hex_color, "bg")
+            return MiniHipatterns.compute_hex_color_group(hex_color, "bg")
         end,
         extmark_opts = { priority = priority },
     }

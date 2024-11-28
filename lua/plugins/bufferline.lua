@@ -27,10 +27,7 @@ return {
         end
         return keys
     end,
-
     opts = function()
-        local bufdelete = require("snacks").bufdelete
-
         vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", {
             link = "Title",
             default = true,
@@ -47,15 +44,15 @@ return {
                     )
                 end,
                 close_command = function(n)
-                    bufdelete(n)
+                    Snacks.bufdelete(n)
                 end,
                 right_mouse_command = function(n)
-                    bufdelete(n)
+                    Snacks.bufdelete(n)
                 end,
                 always_show_bufferline = false,
                 diagnostics = "nvim_lsp",
                 diagnostics_indicator = function(_, _, diagnostics_dict)
-                    local icons = require("utils.icons").diagnostics
+                    local icons = require("utils").icons.diagnostics
                     local indicator = ""
                     for diagnostic_type, number in pairs(diagnostics_dict) do
                         local icon = diagnostic_type == "error" and icons.error

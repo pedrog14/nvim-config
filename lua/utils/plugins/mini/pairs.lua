@@ -1,3 +1,4 @@
+---@class utils.plugins.mini.pairs
 local M = {}
 
 M.setup = function(opts)

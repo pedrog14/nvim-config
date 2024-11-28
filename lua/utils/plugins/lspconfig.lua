@@ -1,3 +1,4 @@
+---@class utils.plugins.lspconfig
 local M = {}
 
 ---@param capabilities? lsp.ClientCapabilities

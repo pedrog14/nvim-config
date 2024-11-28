@@ -16,7 +16,7 @@ return {
         event = { "BufNewFile", "BufReadPre" },
         opts = function()
             local hipatterns = require("mini.hipatterns")
-            local utils = require("utils.plugins.mini.hipatterns")
+            local utils = require("utils").plugins.mini.hipatterns
             return {
                 highlighters = {
                     -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'

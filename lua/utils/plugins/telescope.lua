@@ -1,3 +1,4 @@
+---@class utils.plugins.telescope
 local M = {}
 
 M.setup = function(opts)

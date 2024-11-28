@@ -6,21 +6,21 @@ return {
         {
             "<a-x>",
             function()
-                require("snacks").bufdelete()
+                Snacks.bufdelete()
             end,
             desc = "Delete Buffer",
         },
         {
             "grN",
             function()
-                require("snacks").rename.rename_file()
+                Snacks.rename.rename_file()
             end,
             desc = "Rename file",
         },
         {
             "[[",
             function()
-                require("snacks").words.jump(-vim.v.count1)
+                Snacks.words.jump(-vim.v.count1)
             end,
             desc = "Previous Reference",
             mode = { "n", "t" },
@@ -28,7 +28,7 @@ return {
         {
             "]]",
             function()
-                require("snacks").words.jump(vim.v.count1)
+                Snacks.words.jump(vim.v.count1)
             end,
             desc = "Next Reference",
             mode = { "n", "t" },
@@ -40,10 +40,10 @@ return {
             callback = function()
                 -- Setup some globals for debugging (lazy-loaded)
                 _G.dd = function(...)
-                    require("snacks").debug.inspect(...)
+                    Snacks.debug.inspect(...)
                 end
                 _G.bt = function()
-                    require("snacks").debug.backtrace()
+                    Snacks.debug.backtrace()
                 end
                 vim.print = _G.dd -- Override print to use snacks for `:=` command
             end,
@@ -51,7 +51,7 @@ return {
     end,
     main = "utils.plugins.snacks",
     opts = function()
-        local icons = require("utils.icons").diagnostics
+        local icons = require("utils").icons.diagnostics
         ---@type snacks.Config
         return {
             bigfile = { enabled = true },
