@@ -13,6 +13,9 @@ end
 
 ---@param opts lspconfig.Opts
 M.setup = function(opts)
+    -- Tweaking kind icons...
+    require("mini.icons").tweak_lsp_kind()
+
     opts.settings = opts.settings or {}
     vim.diagnostic.config(opts.diagnostics)
 

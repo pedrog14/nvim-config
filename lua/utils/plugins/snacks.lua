@@ -64,7 +64,7 @@ M.setup = function(opts)
     local snacks = require("snacks")
     snacks.setup(opts)
 
-    -- LazyGit
+    -- Creating LazyGit command...
     local lazygit = snacks.lazygit
     vim.api.nvim_create_user_command("LazyGit", function(args)
         for key, _ in pairs(lazygit) do

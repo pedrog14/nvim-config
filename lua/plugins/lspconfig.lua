@@ -73,8 +73,6 @@ return {
                         convert = completion.client_convert(client, bufnr),
                     })
 
-                    completion.enable_documentation(client, bufnr)
-
                     vim.keymap.set("i", "<c-n>", function()
                         return vim.fn.pumvisible() == 0 and "<c-x><c-o>"
                             or "<c-n>"
