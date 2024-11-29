@@ -22,15 +22,7 @@ return {
                 },
                 severity_sort = true,
             },
-            settings = {
-                lua_ls = {
-                    Lua = {
-                        completion = {
-                            autoRequire = false,
-                        },
-                    },
-                },
-            },
+            settings = {},
             capabilities = require("utils.plugins.lspconfig").client_capabilities(),
             ---@param client vim.lsp.Client
             ---@param bufnr integer

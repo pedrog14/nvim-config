@@ -29,10 +29,14 @@ M.setup = function(opts)
     if not ok then
         log.error("Failed to set up lspconfig integration.", err)
     end
+    -- END snippet
+
     require("mason-lspconfig").setup_handlers({
         function(server_name)
             local settings, capabilities, on_attach =
-                opts.settings[server_name], opts.capabilities, opts.on_attach
+                opts.settings and opts.settings[server_name],
+                opts.capabilities,
+                opts.on_attach
             require("lspconfig")[server_name].setup({
                 settings = settings,
                 capabilities = capabilities,
