@@ -3,20 +3,7 @@ return {
     dependencies = "folke/snacks.nvim",
     event = { "BufNewFile", "BufReadPre" },
     keys = function()
-        local keys = {
-            {
-                "<a-h>",
-                function()
-                    require("bufferline").cycle(-1)
-                end,
-            },
-            {
-                "<a-l>",
-                function()
-                    require("bufferline").cycle(1)
-                end,
-            },
-        }
+        local keys = {}
         for i = 0, 9 do
             keys[#keys + 1] = {
                 ("<a-%i>"):format(i),
