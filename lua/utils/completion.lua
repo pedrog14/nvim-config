@@ -2,11 +2,7 @@
 local M = {}
 
 M.exec_keys = function(keys)
-    vim.api.nvim_feedkeys(
-        vim.api.nvim_replace_termcodes(keys, true, false, true),
-        "n",
-        true
-    )
+    vim.api.nvim_feedkeys(vim.keycode(keys), "n", false)
 end
 
 ---@param client vim.lsp.Client
@@ -16,22 +12,29 @@ M.client_convert = function(client, bufnr)
 
     ---@param item lsp.CompletionItem
     return function(item)
-        local formatted = {}
+        local converted = {}
 
+        local kind = protocol.CompletionItemKind[item.kind]
+        local icons = require("utils").plugins.mini.icons.get("lsp")
         local widths = {
-            label = vim.g.comp_width and vim.g.comp_width.label or 40,
-            detail = vim.g.comp_width and vim.g.comp_width.detail or 32,
+            label = vim.g.completion_width and vim.g.completion_width.label
+                or 40,
+            detail = vim.g.completion_width and vim.g.completion_width.detail
+                or 32,
         }
+
+        converted["kind"] = ("%s %s"):format(icons[kind:lower()], kind)
         for key, width in pairs(widths) do
             if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
-                formatted[key] = vim.fn.strcharpart(item[key], 0, width - 1)
+                converted[key] = vim.fn.strcharpart(item[key], 0, width - 1)
                     .. "…"
             end
         end
 
         return {
-            abbr = formatted["label"] or item["label"],
-            menu = formatted["detail"] or item["detail"],
+            kind = converted["kind"],
+            abbr = converted["label"] or item["label"],
+            menu = converted["detail"] or item["detail"],
         }
     end
 end
