@@ -1,5 +1,19 @@
+local completion = vim.lsp.completion
+
 ---@class utils.completion
 local M = {}
+
+M.enable = completion.enable
+
+M.trigger = completion.trigger
+
+M.is_visible = function()
+    return vim.fn.pumvisible() ~= 0
+end
+
+M.selected = function()
+    return vim.fn.complete_info({ "selected" })["selected"]
+end
 
 M.exec_keys = function(keys)
     vim.api.nvim_feedkeys(vim.keycode(keys), "n", false)
@@ -18,7 +32,7 @@ M.client_convert = function(client, bufnr)
         local icons = require("utils").plugins.mini.icons.get("lsp")
         local widths = {
             label = vim.g.completion_width and vim.g.completion_width.label
-                or 40,
+                or 32,
             detail = vim.g.completion_width and vim.g.completion_width.detail
                 or 32,
         }

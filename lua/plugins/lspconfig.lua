@@ -23,7 +23,7 @@ return {
                 severity_sort = true,
             },
             settings = {},
-            capabilities = require("utils.plugins.lspconfig").client_capabilities(),
+            capabilities = require("utils").plugins.lspconfig.client_capabilities(),
             ---@param client vim.lsp.Client
             ---@param bufnr integer
             on_attach = function(client, bufnr)
@@ -60,14 +60,14 @@ return {
                 if client:supports_method("textDocument/completion", bufnr) then
                     local completion = require("utils").completion
 
-                    vim.lsp.completion.enable(true, client.id, bufnr, {
+                    completion.enable(true, client.id, bufnr, {
                         autotrigger = true,
                         convert = completion.client_convert(client, bufnr),
                     })
 
                     vim.keymap.set("i", "<c-n>", function()
-                        return vim.fn.pumvisible() == 0 and "<c-x><c-o>"
-                            or "<c-n>"
+                        return completion.is_visible() and "<c-n>"
+                            or "<c-x><c-o>"
                     end, { expr = true, buffer = bufnr })
                 end
 
@@ -116,7 +116,7 @@ return {
                 keymap_set("n", "gri", function()
                     builtin.lsp_implementations()
                 end, {
-                    desc = "Lists all the implementations for the symbol under the cursor in Telescope",
+                    desc = "Jumps to the implementation of the symbol under the cursor, if there's only one, otherwise show all options in Telescope",
                 })
 
                 keymap_set("n", "grd", function()
