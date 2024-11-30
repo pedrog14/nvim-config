@@ -4,13 +4,6 @@ return {
     priority = 1000,
     keys = {
         {
-            "<a-x>",
-            function()
-                Snacks.bufdelete()
-            end,
-            desc = "Delete Buffer",
-        },
-        {
             "grN",
             function()
                 Snacks.rename.rename_file()

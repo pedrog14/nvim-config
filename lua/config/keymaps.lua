@@ -13,7 +13,7 @@ keymap_set(
 )
 keymap_set(
     { "n", "x" },
-    "<Down>",
+    "<down>",
     "v:count == 0 ? 'gj' : 'j'",
     { desc = "Down", expr = true, silent = true }
 )
@@ -25,7 +25,7 @@ keymap_set(
 )
 keymap_set(
     { "n", "x" },
-    "<Up>",
+    "<up>",
     "v:count == 0 ? 'gk' : 'k'",
     { desc = "Up", expr = true, silent = true }
 )
@@ -35,19 +35,10 @@ keymap_set("n", "<c-d>", "<c-d>zz", { noremap = true })
 keymap_set("n", "<c-u>", "<c-u>zz", { noremap = true })
 
 -- Better search
-keymap_set("n", "n", "nzzzv", { noremap = true })
-keymap_set("n", "N", "Nzzzv", { noremap = true })
-
-keymap_set("t", "<esc>", "<c-\\><c-n>", { noremap = true })
-
--- Better buffer control (Check snacks.nvim keys)
-keymap_set("n", "<a-h>", "<cmd>bprev<cr>")
-keymap_set("n", "<a-l>", "<cmd>bnext<cr>")
-
 keymap_set(
     "n",
     "n",
-    "'Nn'[v:searchforward].'zv'",
+    "'Nn'[v:searchforward].'zzzv'",
     { expr = true, desc = "Next Search Result" }
 )
 keymap_set(
@@ -56,21 +47,24 @@ keymap_set(
     "'Nn'[v:searchforward]",
     { expr = true, desc = "Next Search Result" }
 )
-
 keymap_set(
     "n",
     "N",
-    "'nN'[v:searchforward].'zv'",
-    { expr = true, desc = "Prev Search Result" }
+    "'nN'[v:searchforward].'zzzv'",
+    { expr = true, desc = "Previous Search Result" }
 )
 keymap_set(
     { "x", "o" },
     "N",
     "'nN'[v:searchforward]",
-    { expr = true, desc = "Prev Search Result" }
+    { expr = true, desc = "Previous Search Result" }
 )
 
--- Better window control
+-- Better Buffer control
+keymap_set("n", "<s-tab>", "<cmd>bprev<cr>", { desc = "Go to Previous Buffer" })
+keymap_set("n", "<tab>", "<cmd>bnext<cr>", { desc = "Go to Next Buffer" })
+
+-- Better Buffer control
 keymap_set("n", "<c-h>", "<c-w>h", { desc = "Go to Left Window", remap = true })
 keymap_set(
     "n",
@@ -90,14 +84,22 @@ keymap_set(
     "<c-w>l",
     { desc = "Go to Right Window", remap = true }
 )
+
+-- Splits
 keymap_set("n", "<a-s>", "<c-w>s", { desc = "Split Window (Horizontal)" })
 keymap_set("n", "<a-v>", "<c-w>v", { desc = "Split Window (Vertical)" })
-keymap_set("n", "<a-c>", "<c-w>c", { desc = "Delete Window" })
-keymap_set(
-    "n",
-    "<a-X>",
-    "<cmd>bdelete!<cr>",
-    { desc = "Delete Window + Buffer" }
-)
 
-keymap_set("n", "<leader>l", require("lazy").show, { desc = "Open Lazy" })
+-- Delete Buffer/Window
+keymap_set("n", "<a-x>", function()
+    Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
+keymap_set("n", "<a-c>", "<c-w>c", { desc = "Delete Window" })
+keymap_set("n", "<a-X>", "<cmd>bdel<cr>", { desc = "Delete Buffer + Window" })
+
+-- Better terminal exiting
+keymap_set("t", "<esc>", "<c-\\><c-n>", { noremap = true })
+
+-- Lazy
+keymap_set("n", "<leader>l", function()
+    require("lazy").show()
+end, { desc = "Open Lazy" })

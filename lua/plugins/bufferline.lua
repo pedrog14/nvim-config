@@ -10,6 +10,7 @@ return {
                 function()
                     require("bufferline").go_to(i)
                 end,
+                desc = "Go to buffer #" .. i,
             }
         end
         return keys
