@@ -61,10 +61,10 @@ keymap_set(
 )
 
 -- Better Buffer control
-keymap_set("n", "<s-tab>", "<cmd>bprev<cr>", { desc = "Go to Previous Buffer" })
-keymap_set("n", "<tab>", "<cmd>bnext<cr>", { desc = "Go to Next Buffer" })
+keymap_set("n", "<a-h>", "<cmd>bprev<cr>", { desc = "Go to Previous Buffer" })
+keymap_set("n", "<a-l>", "<cmd>bnext<cr>", { desc = "Go to Next Buffer" })
 
--- Better Buffer control
+-- Better Window control
 keymap_set("n", "<c-h>", "<c-w>h", { desc = "Go to Left Window", remap = true })
 keymap_set(
     "n",
