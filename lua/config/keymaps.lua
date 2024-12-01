@@ -4,32 +4,6 @@
 
 local keymap_set = vim.keymap.set
 
--- Better Up Down
-keymap_set(
-    { "n", "x" },
-    "j",
-    "v:count == 0 ? 'gj' : 'j'",
-    { desc = "Down", expr = true, silent = true }
-)
-keymap_set(
-    { "n", "x" },
-    "<down>",
-    "v:count == 0 ? 'gj' : 'j'",
-    { desc = "Down", expr = true, silent = true }
-)
-keymap_set(
-    { "n", "x" },
-    "k",
-    "v:count == 0 ? 'gk' : 'k'",
-    { desc = "Up", expr = true, silent = true }
-)
-keymap_set(
-    { "n", "x" },
-    "<up>",
-    "v:count == 0 ? 'gk' : 'k'",
-    { desc = "Up", expr = true, silent = true }
-)
-
 -- Better <C-d> <C-u>
 keymap_set("n", "<c-d>", "<c-d>zz", { noremap = true })
 keymap_set("n", "<c-u>", "<c-u>zz", { noremap = true })
@@ -96,7 +70,7 @@ end, { desc = "Delete Buffer" })
 keymap_set("n", "<a-c>", "<c-w>c", { desc = "Delete Window" })
 keymap_set("n", "<a-X>", "<cmd>bdel<cr>", { desc = "Delete Buffer + Window" })
 
--- Better terminal exiting
+-- Better Terminal esc
 keymap_set("t", "<esc>", "<c-\\><c-n>", { noremap = true })
 
 -- Lazy

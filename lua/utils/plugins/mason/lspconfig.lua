@@ -1,4 +1,5 @@
 local _ = require("mason-core.functional")
+local log = require("mason-core.log")
 local settings = require("mason-lspconfig.settings")
 local platform = require("mason-core.platform")
 
@@ -14,6 +15,14 @@ M.setup = function(config)
     end
 
     check_and_notify_bad_setup_order()
+
+    local ok, err = pcall(function()
+        require("mason-lspconfig.lspconfig_hook")()
+        require("mason-lspconfig.server_config_extensions")()
+    end)
+    if not ok then
+        log.error("Failed to set up lspconfig integration.", err)
+    end
 
     if not platform.is_headless and #settings.current.ensure_installed > 0 then
         require("mason-lspconfig.ensure_installed")()

@@ -48,5 +48,6 @@ opt.timeoutlen = 500
 opt.undofile = true
 opt.updatetime = 200
 opt.virtualedit = "block"
+opt.wildmode = { "longest:full", "full" }
 opt.wildoptions = { "fuzzy", "pum", "tagfile" }
 opt.wrap = false
