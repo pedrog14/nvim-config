@@ -50,11 +50,15 @@ return {
                         lsp.codelens.run()
                     end, {
                         desc = "Run the code lens in the current line",
+                        buffer = bufnr,
                     })
 
                     keymap_set("n", "<leader>cC", function()
                         lsp.codelens.refresh({ bufnr = bufnr })
-                    end, { desc = "Refresh the lenses" })
+                    end, {
+                        desc = "Refresh the lenses",
+                        buffer = bufnr,
+                    })
                 end
 
                 if client:supports_method("textDocument/completion", bufnr) then
@@ -65,70 +69,88 @@ return {
                         convert = completion.client_convert(client, bufnr),
                     })
 
-                    vim.keymap.set("i", "<c-n>", function()
-                        return completion.is_visible() and "<c-n>"
-                            or "<c-x><c-o>"
-                    end, { expr = true, buffer = bufnr })
+                    -- Better completion
+                    vim.keymap.set(
+                        "i",
+                        "<c-n>",
+                        "pumvisible() == 0 ? '<c-x><c-o>' : '<c-n>'",
+                        {
+                            desc = "Open or Select Next Completion",
+                            silent = true,
+                            expr = true,
+                            buffer = bufnr,
+                        }
+                    )
                 end
 
                 keymap_set("n", "K", function()
                     lsp.buf.hover()
                 end, {
                     desc = "Displays hover information about the symbol under the cursor in a floating window",
+                    buffer = bufnr,
                 })
 
                 keymap_set("n", "gD", function()
                     lsp.buf.declaration()
                 end, {
                     desc = "Jumps to the declaration of the symbol under the cursor",
+                    buffer = bufnr,
                 })
 
                 keymap_set({ "n", "i" }, "<c-s>", function()
                     lsp.buf.signature_help()
                 end, {
                     desc = "Displays signature information about the symbol under the cursor in a floating window",
+                    buffer = bufnr,
                 })
 
                 keymap_set("n", "gO", function()
                     lsp.buf.document_symbol()
                 end, {
                     desc = "Lists all symbols in the current buffer in the quickfix window",
+                    buffer = bufnr,
                 })
 
                 keymap_set("n", "grn", function()
                     lsp.buf.rename()
                 end, {
                     desc = "Renames all references to the symbol under the cursor",
+                    buffer = bufnr,
                 })
 
                 keymap_set({ "n", "x" }, "gra", function()
                     lsp.buf.code_action()
                 end, {
                     desc = "Selects a code action available at the current cursor position",
+                    buffer = bufnr,
                 })
 
                 keymap_set("n", "grr", function()
                     builtin.lsp_references()
                 end, {
                     desc = "Lists all the references to the symbol under the cursor in Telescope",
+                    buffer = bufnr,
                 })
 
                 keymap_set("n", "gri", function()
                     builtin.lsp_implementations()
                 end, {
                     desc = "Jumps to the implementation of the symbol under the cursor, if there's only one, otherwise show all options in Telescope",
+                    buffer = bufnr,
                 })
 
                 keymap_set("n", "grd", function()
                     builtin.lsp_definitions()
                 end, {
                     desc = "Jumps to the definition of the symbol under the cursor, if there's only one, otherwise show all options in Telescope",
+                    buffer = bufnr,
                 })
 
                 keymap_set("n", "grt", function()
                     builtin.lsp_type_definitions()
                 end, {
                     desc = "Jumps to the definition of the type of the symbol under the cursor, if there's only one, otherwise show all options in Telescope",
+                    buffer = bufnr,
                 })
             end,
         }

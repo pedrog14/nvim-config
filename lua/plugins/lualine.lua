@@ -1,6 +1,6 @@
 return {
     "nvim-lualine/lualine.nvim",
-    branch = vim.fn.has("nvim-0.11") ~= 0 and "fix_hl_inheritence",
+    branch = "fix_hl_inheritence",
     dependencies = "echasnovski/mini.icons",
     event = "VeryLazy",
     init = function()

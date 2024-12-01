@@ -70,7 +70,7 @@ end, { desc = "Delete Buffer" })
 keymap_set("n", "<a-c>", "<c-w>c", { desc = "Delete Window" })
 keymap_set("n", "<a-X>", "<cmd>bdel<cr>", { desc = "Delete Buffer + Window" })
 
--- Better Terminal esc
+-- Better Terminal <Esc>
 keymap_set("t", "<esc>", "<c-\\><c-n>", { noremap = true })
 
 -- Lazy
