@@ -148,11 +148,6 @@ return {
                     backdrop = 100,
                 },
             },
-            terminal = {
-                win = {
-                    -- title = "",
-                },
-            },
         }
     end,
 }
