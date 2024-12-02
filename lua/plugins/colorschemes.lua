@@ -6,14 +6,15 @@ return {
         priority = 1000,
         opts = function()
             local c = require("gruvbox").palette
+            ---@type GruvboxConfig
             return {
                 overrides = {
                     -- Base highlights
-                    GruvboxRedSign = { link = "GruvboxRed" },
-                    GruvboxYellowSign = { link = "GruvboxYellow" },
-                    GruvboxBlueSign = { link = "GruvboxBlue" },
-                    GruvboxAquaSign = { link = "GruvboxAqua" },
-                    GruvboxGreenSign = { link = "GruvboxGreen" },
+                    GruvboxRedSign = { fg = c.bright_red, bg = c.dark0 },
+                    GruvboxYellowSign = { fg = c.bright_yellow, bg = c.dark0 },
+                    GruvboxBlueSign = { fg = c.bright_blue, bg = c.dark0 },
+                    GruvboxAquaSign = { fg = c.bright_aqua, bg = c.dark0 },
+                    GruvboxGreenSign = { fg = c.bright_green, bg = c.dark0 },
 
                     CursorLineNr = {
                         fg = c.bright_yellow,
@@ -24,7 +25,7 @@ return {
                     NormalFloat = { fg = c.light1, bg = c.dark0 },
                     FloatBorder = { fg = c.dark3, bg = c.dark0 },
 
-                    SignColumn = { link = "Normal" },
+                    SignColumn = { bg = c.dark0 },
 
                     -- Plugin highlights
                     BufferLineOffsetTitle = {

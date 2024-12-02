@@ -1,6 +1,5 @@
 return {
     "nvim-lualine/lualine.nvim",
-    branch = "fix_hl_inheritence",
     dependencies = "echasnovski/mini.icons",
     event = "VeryLazy",
     init = function()

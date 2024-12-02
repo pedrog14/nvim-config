@@ -24,8 +24,6 @@ return {
             },
             settings = {},
             capabilities = require("utils").plugins.lspconfig.client_capabilities(),
-            ---@param client vim.lsp.Client
-            ---@param bufnr integer
             on_attach = function(client, bufnr)
                 local lsp = vim.lsp
                 local builtin = require("telescope.builtin")
