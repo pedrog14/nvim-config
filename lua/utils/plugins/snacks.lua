@@ -80,11 +80,13 @@ local notify_lsp_progress = function()
 end
 
 M.setup = function(opts)
-    local snacks = require("snacks")
-    snacks.setup(opts)
+    Snacks.setup(opts)
 
-    -- Creating LazyGit command...
-    local lazygit = snacks.lazygit
+    -- Enable LSP progress notification
+    notify_lsp_progress()
+
+    -- Creating LazyGit user command...
+    local lazygit = Snacks.lazygit
     vim.api.nvim_create_user_command("LazyGit", function(args)
         for key, _ in pairs(lazygit) do
             if args.args == key then
@@ -105,8 +107,6 @@ M.setup = function(opts)
             return completion
         end,
     })
-
-    notify_lsp_progress()
 end
 
 return M

@@ -26,6 +26,13 @@ return {
             desc = "Next Reference",
             mode = { "n", "t" },
         },
+        {
+            "<c-/>",
+            function()
+                Snacks.terminal.toggle()
+            end,
+            desc = "Toggle Terminal",
+        },
     },
     init = function()
         vim.api.nvim_create_autocmd("User", {
@@ -139,6 +146,11 @@ return {
                 },
                 lazygit = {
                     backdrop = 100,
+                },
+            },
+            terminal = {
+                win = {
+                    -- title = "",
                 },
             },
         }
