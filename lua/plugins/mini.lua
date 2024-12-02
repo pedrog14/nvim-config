@@ -103,11 +103,7 @@ return {
                 find_left = "", -- Find surrounding (to the left)
                 highlight = "", -- Highlight surrounding
                 update_n_lines = "", -- Update `n_lines`
-
-                suffix_last = "",
-                suffix_next = "",
             },
-            search_method = "cover_or_next",
         },
     },
 }
