@@ -68,17 +68,16 @@ return {
                     })
 
                     -- Better completion
-                    vim.keymap.set(
-                        "i",
-                        "<c-n>",
-                        "pumvisible() == 0 ? '<c-x><c-o>' : '<c-n>'",
-                        {
-                            desc = "Open or Select Next Completion",
-                            silent = true,
-                            expr = true,
-                            buffer = bufnr,
-                        }
-                    )
+                    vim.keymap.set("i", "<c-n>", function()
+                        if completion.is_visible() then
+                            completion.exec_keys("<c-n>")
+                        else
+                            completion.trigger()
+                        end
+                    end, {
+                        desc = "Open or Select Next Completion",
+                        buffer = bufnr,
+                    })
                 end
 
                 keymap_set("n", "K", function()

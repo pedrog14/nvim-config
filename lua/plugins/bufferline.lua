@@ -2,19 +2,6 @@ return {
     "akinsho/bufferline.nvim",
     dependencies = "folke/snacks.nvim",
     event = { "BufNewFile", "BufReadPre" },
-    keys = function()
-        local keys = {}
-        for i = 0, 9 do
-            keys[#keys + 1] = {
-                ("<a-%i>"):format(i),
-                function()
-                    require("bufferline").go_to(i)
-                end,
-                desc = "Go to buffer #" .. i,
-            }
-        end
-        return keys
-    end,
     opts = function()
         vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", {
             link = "Title",

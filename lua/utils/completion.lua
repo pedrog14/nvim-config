@@ -15,6 +15,7 @@ M.selected = function()
     return vim.fn.complete_info({ "selected" })["selected"]
 end
 
+---@param keys string
 M.exec_keys = function(keys)
     vim.api.nvim_feedkeys(vim.keycode(keys), "n", false)
 end
