@@ -9,11 +9,11 @@ return {
             return {
                 overrides = {
                     -- Base highlights
-                    GruvboxRedSign = { fg = c.bright_red, bg = c.dark0 },
-                    GruvboxYellowSign = { fg = c.bright_yellow, bg = c.dark0 },
-                    GruvboxBlueSign = { fg = c.bright_blue, bg = c.dark0 },
-                    GruvboxAquaSign = { fg = c.bright_aqua, bg = c.dark0 },
-                    GruvboxGreenSign = { fg = c.bright_green, bg = c.dark0 },
+                    GruvboxRedSign = { fg = c.bright_red, bg = "NONE" },
+                    GruvboxYellowSign = { fg = c.bright_yellow, bg = "NONE" },
+                    GruvboxBlueSign = { fg = c.bright_blue, bg = "NONE" },
+                    GruvboxAquaSign = { fg = c.bright_aqua, bg = "NONE" },
+                    GruvboxGreenSign = { fg = c.bright_green, bg = "NONE" },
 
                     CursorLineNr = {
                         fg = c.bright_yellow,
