@@ -2,38 +2,6 @@ return {
     "folke/snacks.nvim",
     lazy = false,
     priority = 1000,
-    keys = {
-        {
-            "grN",
-            function()
-                Snacks.rename.rename_file()
-            end,
-            desc = "Rename file",
-        },
-        {
-            "[[",
-            function()
-                Snacks.words.jump(-vim.v.count1)
-            end,
-            desc = "Previous Reference",
-            mode = { "n", "t" },
-        },
-        {
-            "]]",
-            function()
-                Snacks.words.jump(vim.v.count1)
-            end,
-            desc = "Next Reference",
-            mode = { "n", "t" },
-        },
-        {
-            "<c-/>",
-            function()
-                Snacks.terminal.toggle()
-            end,
-            desc = "Toggle Terminal",
-        },
-    },
     init = function()
         vim.api.nvim_create_autocmd("User", {
             pattern = "VeryLazy",

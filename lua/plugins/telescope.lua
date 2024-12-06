@@ -43,6 +43,36 @@ return {
             end,
             desc = "Telescope Oldfiles",
         },
+
+        -- LSP related keymaps
+        {
+            "grr",
+            function()
+                require("telescope.builtin").lsp_references()
+            end,
+            desc = "Lists all the references to the symbol under the cursor in Telescope",
+        },
+        {
+            "gri",
+            function()
+                require("telescope.builtin").lsp_implementations()
+            end,
+            desc = "Jumps to the implementation of the symbol under the cursor, if there's only one, otherwise show all options in Telescope",
+        },
+        {
+            "grd",
+            function()
+                require("telescope.builtin").lsp_definitions()
+            end,
+            desc = "Jumps to the definition of the symbol under the cursor, if there's only one, otherwise show all options in Telescope",
+        },
+        {
+            "grt",
+            function()
+                require("telescope.builtin").lsp_type_definitions()
+            end,
+            desc = "Jumps to the definition of the type of the symbol under the cursor, if there's only one, otherwise show all options in Telescope",
+        },
     },
     main = "utils.plugins.telescope",
     opts = {

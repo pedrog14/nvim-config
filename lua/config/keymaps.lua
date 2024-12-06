@@ -70,10 +70,66 @@ end, { desc = "Delete Buffer" })
 keymap_set("n", "<a-c>", "<c-w>c", { desc = "Delete Window" })
 keymap_set("n", "<a-X>", "<cmd>bdel<cr>", { desc = "Delete Buffer + Window" })
 
--- Better Terminal <Esc>
+-- Better Terminal control
 keymap_set("t", "<esc>", "<c-\\><c-n>", { noremap = true })
+keymap_set("n", "<c-/>", function()
+    Snacks.terminal.toggle()
+end, { desc = "Toggle Terminal" })
 
 -- Lazy
 keymap_set("n", "<leader>l", function()
     require("lazy").show()
 end, { desc = "Open Lazy" })
+
+-- LSP related keymaps
+do
+    local buf = vim.lsp.buf
+    local codelens = vim.lsp.codelens
+
+    keymap_set("n", "K", function()
+        buf.hover()
+    end, {
+        desc = "Displays hover information about the symbol under the cursor in a floating window",
+    })
+    keymap_set({ "n", "i" }, "<c-s>", function()
+        buf.signature_help()
+    end, {
+        desc = "Displays signature information about the symbol under the cursor in a floating window",
+    })
+    keymap_set("n", "gO", function()
+        buf.document_symbol()
+    end, {
+        desc = "Lists all symbols in the current buffer in the quickfix window",
+    })
+    keymap_set("n", "grn", function()
+        buf.rename()
+    end, {
+        desc = "Renames all references to the symbol under the cursor",
+    })
+    keymap_set({ "n", "x" }, "gra", function()
+        buf.code_action()
+    end, {
+        desc = "Selects a code action available at the current cursor position",
+    })
+    keymap_set({ "n", "v" }, "grc", function()
+        codelens.run()
+    end, {
+        desc = "Run the code lens in the current line",
+    })
+    keymap_set("n", "grC", function()
+        codelens.refresh()
+    end, {
+        desc = "Refresh the lenses",
+    })
+
+    keymap_set({ "n", "t" }, "[[", function()
+        Snacks.words.jump(-vim.v.count1)
+    end, { desc = "Previous Reference" })
+    keymap_set({ "n", "t" }, "]]", function()
+        Snacks.words.jump(vim.v.count1)
+    end, { desc = "Next Reference" })
+
+    keymap_set("n", "grN", function()
+        Snacks.rename.rename_file()
+    end, { desc = "Rename file" })
+end

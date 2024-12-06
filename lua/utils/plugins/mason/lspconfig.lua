@@ -16,14 +16,6 @@ M.setup = function(config)
 
     check_and_notify_bad_setup_order()
 
-    local ok, err = pcall(function()
-        require("mason-lspconfig.lspconfig_hook")()
-        require("mason-lspconfig.server_config_extensions")()
-    end)
-    if not ok then
-        log.error("Failed to set up lspconfig integration.", err)
-    end
-
     if not platform.is_headless and #settings.current.ensure_installed > 0 then
         require("mason-lspconfig.ensure_installed")()
     end
