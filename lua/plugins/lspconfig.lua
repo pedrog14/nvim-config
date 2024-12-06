@@ -44,14 +44,14 @@ return {
                         }
                     )
 
-                    keymap_set({ "n", "v" }, "<leader>cc", function()
+                    keymap_set({ "n", "v" }, "grc", function()
                         lsp.codelens.run()
                     end, {
                         desc = "Run the code lens in the current line",
                         buffer = bufnr,
                     })
 
-                    keymap_set("n", "<leader>cC", function()
+                    keymap_set("n", "grC", function()
                         lsp.codelens.refresh({ bufnr = bufnr })
                     end, {
                         desc = "Refresh the lenses",
@@ -84,13 +84,6 @@ return {
                     lsp.buf.hover()
                 end, {
                     desc = "Displays hover information about the symbol under the cursor in a floating window",
-                    buffer = bufnr,
-                })
-
-                keymap_set("n", "gD", function()
-                    lsp.buf.declaration()
-                end, {
-                    desc = "Jumps to the declaration of the symbol under the cursor",
                     buffer = bufnr,
                 })
 
