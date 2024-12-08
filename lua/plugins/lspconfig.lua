@@ -34,13 +34,10 @@ return {
                 if client:supports_method("textDocument/codeLens", bufnr) then
                     lsp.codelens.refresh({ bufnr = bufnr })
 
-                    vim.api.nvim_create_autocmd(
-                        { "BufEnter", "CursorHold", "InsertLeave" },
-                        {
-                            buffer = bufnr,
-                            callback = lsp.codelens.refresh,
-                        }
-                    )
+                    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+                        buffer = bufnr,
+                        callback = lsp.codelens.refresh,
+                    })
                 end
 
                 if client:supports_method("textDocument/completion", bufnr) then

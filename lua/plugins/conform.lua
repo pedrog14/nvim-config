@@ -10,8 +10,7 @@ return {
         format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
         handlers = {
             function(formatter_name)
-                require("conform").formatters_by_ft =
-                    require("mason-conform").formatter_handler(formatter_name)
+                require("conform").formatters_by_ft = require("mason-conform").formatter_handler(formatter_name)
             end,
         },
     },

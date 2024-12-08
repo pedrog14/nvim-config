@@ -1,68 +1,50 @@
 return {
     {
         "pedrog14/gruvbox.nvim",
+        branch = "refactoring",
         lazy = false,
         priority = 1000,
         opts = function()
-            local c = require("gruvbox").palette
+            local colors = require("gruvbox.colors").palette
             ---@type GruvboxConfig
             return {
                 overrides = {
                     -- Base highlights
-                    GruvboxRedSign = { fg = c.bright_red, bg = "NONE" },
-                    GruvboxYellowSign = { fg = c.bright_yellow, bg = "NONE" },
-                    GruvboxBlueSign = { fg = c.bright_blue, bg = "NONE" },
-                    GruvboxAquaSign = { fg = c.bright_aqua, bg = "NONE" },
-                    GruvboxGreenSign = { fg = c.bright_green, bg = "NONE" },
+                    GruvboxRedSign = { fg = colors.bright_red, bg = "NONE" },
+                    GruvboxYellowSign = { fg = colors.bright_yellow, bg = "NONE" },
+                    GruvboxBlueSign = { fg = colors.bright_blue, bg = "NONE" },
+                    GruvboxAquaSign = { fg = colors.bright_aqua, bg = "NONE" },
+                    GruvboxGreenSign = { fg = colors.bright_green, bg = "NONE" },
 
-                    CursorLineNr = {
-                        fg = c.bright_yellow,
-                        bg = c.dark0,
-                        bold = true,
-                    },
+                    CursorLineNr = { fg = colors.bright_yellow, bg = "NONE", bold = true },
 
-                    NormalFloat = { fg = c.light1, bg = c.dark0 },
-                    FloatBorder = { fg = c.dark3, bg = c.dark0 },
+                    NormalFloat = { fg = colors.light1, bg = colors.dark0 },
+                    FloatBorder = { fg = colors.dark3, bg = colors.dark0 },
 
-                    SignColumn = { bg = c.dark0 },
+                    SignColumn = { bg = "NONE" },
 
                     -- Plugin highlights
-                    BufferLineOffsetTitle = {
-                        fg = c.bright_blue,
-                        bg = c.dark0,
-                        bold = true,
-                    },
-                    BufferLineIndicatorSelected = {
-                        fg = c.bright_blue,
-                        bg = c.dark0,
-                    },
+                    BufferLineOffsetTitle = { fg = colors.bright_blue, bg = colors.dark0, bold = true },
+                    BufferLineIndicatorSelected = { fg = colors.bright_blue, bg = colors.dark0 },
 
-                    LazyNormal = { fg = c.light1, bg = c.dark1 },
-                    LazyButton = { bg = c.dark2 },
+                    LazyNormal = { fg = colors.light1, bg = colors.dark1 },
+                    LazyButton = { bg = colors.dark2 },
 
-                    MasonNormal = { fg = c.light1, bg = c.dark1 },
+                    MasonNormal = { fg = colors.light1, bg = colors.dark1 },
 
-                    SnacksDashboardHeader = { fg = c.bright_blue },
-                    SnacksDashboardIcon = { fg = c.light4 },
-                    SnacksDashboardDesc = { fg = c.light4 },
-                    SnacksDashboardKey = { fg = c.bright_blue },
-                    SnacksDashboardFooter = { fg = c.bright_orange },
+                    SnacksDashboardHeader = { fg = colors.bright_blue },
+                    SnacksDashboardIcon = { fg = colors.light4 },
+                    SnacksDashboardDesc = { fg = colors.light4 },
+                    SnacksDashboardKey = { fg = colors.bright_blue },
+                    SnacksDashboardFooter = { fg = colors.bright_orange },
 
                     TelescopeTitle = { link = "FloatTitle" },
-                    TelescopePromptBorder = { fg = c.dark3 },
-                    TelescopePreviewBorder = { fg = c.dark3 },
-                    TelescopeResultsBorder = { fg = c.dark3 },
+                    TelescopePromptBorder = { fg = colors.dark3 },
+                    TelescopePreviewBorder = { fg = colors.dark3 },
+                    TelescopeResultsBorder = { fg = colors.dark3 },
 
-                    WindowPickerStatusLine = {
-                        fg = c.light1,
-                        bg = c.dark1,
-                        bold = true,
-                    },
-                    WindowPickerStatusLineNC = {
-                        fg = c.light1,
-                        bg = c.dark1,
-                        bold = true,
-                    },
+                    WindowPickerStatusLine = { fg = colors.light1, bg = colors.dark1, bold = true },
+                    WindowPickerStatusLineNC = { fg = colors.light1, bg = colors.dark1, bold = true },
                 },
             }
         end,

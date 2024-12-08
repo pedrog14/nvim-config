@@ -64,10 +64,7 @@ keymap_set("n", "<a-s>", "<c-w>s", { desc = "Split Window (Horizontal)" })
 keymap_set("n", "<a-v>", "<c-w>v", { desc = "Split Window (Vertical)" })
 
 -- Delete Buffer/Window
-keymap_set("n", "<a-x>", function()
-    Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
-keymap_set("n", "<a-c>", "<c-w>c", { desc = "Delete Window" })
+keymap_set("n", "<a-c>", "<cmd>quit<cr>", { desc = "Delete Window" })
 keymap_set("n", "<a-X>", "<cmd>bdel<cr>", { desc = "Delete Buffer + Window" })
 
 -- Better Terminal control
@@ -121,15 +118,20 @@ do
     end, {
         desc = "Refresh the lenses",
     })
-
-    keymap_set({ "n", "t" }, "[[", function()
-        Snacks.words.jump(-vim.v.count1)
-    end, { desc = "Previous Reference" })
-    keymap_set({ "n", "t" }, "]]", function()
-        Snacks.words.jump(vim.v.count1)
-    end, { desc = "Next Reference" })
-
-    keymap_set("n", "grN", function()
-        Snacks.rename.rename_file()
-    end, { desc = "Rename file" })
 end
+
+-- Snacks
+keymap_set("n", "<a-x>", function()
+    Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
+
+keymap_set({ "n", "t" }, "[[", function()
+    Snacks.words.jump(-vim.v.count1)
+end, { desc = "Previous Reference" })
+keymap_set({ "n", "t" }, "]]", function()
+    Snacks.words.jump(vim.v.count1)
+end, { desc = "Next Reference" })
+
+keymap_set("n", "grN", function()
+    Snacks.rename.rename_file()
+end, { desc = "Rename file" })

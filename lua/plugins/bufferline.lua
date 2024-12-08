@@ -31,10 +31,7 @@ return {
                     local indicator = ""
                     for diagnostic_type, number in pairs(diagnostics_dict) do
                         local icon = diagnostic_type == "error" and icons.error
-                            or (
-                                diagnostic_type == "warning" and icons.warn
-                                or icons.info
-                            )
+                            or (diagnostic_type == "warning" and icons.warn or icons.info)
                         indicator = ("%s%s%s "):format(indicator, number, icon)
                     end
                     return indicator
