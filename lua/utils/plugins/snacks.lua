@@ -19,12 +19,9 @@ local notify_lsp_progress = function()
                     p[i] = {
                         token = ev.data.params.token,
                         msg = ("[%3d%%] %s%s"):format(
-                            value.kind == "end" and 100
-                                or value.percentage
-                                or 100,
+                            value.kind == "end" and 100 or value.percentage or 100,
                             value.title or "",
-                            value.message and (" **%s**"):format(value.message)
-                                or ""
+                            value.message and (" **%s**"):format(value.message) or ""
                         ),
                         done = value.kind == "end",
                     }
@@ -71,7 +68,7 @@ local notify_lsp_progress = function()
                 id = "lsp_progress",
                 title = client.name,
                 opts = function(notif)
-                    notif.icon = #progress[client.id] == 0 and " "
+                    notif.icon = #progress[client.id] == 0 and ""
                         or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
                 end,
             })

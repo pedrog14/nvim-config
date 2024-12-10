@@ -1,11 +1,6 @@
 return {
     "nvim-telescope/telescope.nvim",
-    dependencies = {
-        {
-            "nvim-telescope/telescope-fzf-native.nvim",
-            build = "make",
-        },
-    },
+    dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
     cmd = "Telescope",
     keys = {
         {
@@ -43,6 +38,13 @@ return {
             end,
             desc = "Telescope Oldfiles",
         },
+        {
+            "<leader>fc",
+            function()
+                require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+            end,
+            desc = "Telescope Config Files",
+        },
 
         -- LSP related keymaps
         {
@@ -77,16 +79,11 @@ return {
     main = "utils.plugins.telescope",
     opts = {
         defaults = {
-            layout_strategy = "vertical",
-            prompt_prefix = "󱞩 ",
+            prompt_prefix = "󰁔 ",
             selection_caret = "󰁔 ",
         },
         pickers = {
             find_files = {
-                follow = true,
-                hidden = true,
-            },
-            fd = {
                 follow = true,
                 hidden = true,
             },
@@ -99,7 +96,5 @@ return {
                 case_mode = "smart_case", -- or "ignore_case" or "respect_case"
             },
         },
-        -- List of extensions that should be loaded using telescope.load_extension("extension_name")
-        load_extensions = { "fzf" },
     },
 }

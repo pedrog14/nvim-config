@@ -38,8 +38,12 @@ return {
                     SnacksDashboardKey = { fg = colors.bright_blue },
                     SnacksDashboardFooter = { fg = colors.bright_orange },
 
-                    TelescopeTitle = { link = "FloatTitle" },
-                    TelescopePromptBorder = { fg = colors.dark3 },
+                    SnacksInputTitle = { fg = colors.bright_blue },
+                    SnacksInputBorder = { fg = colors.bright_blue },
+                    SnacksInputIcon = { fg = colors.bright_red },
+
+                    TelescopeTitle = { fg = colors.bright_blue },
+                    TelescopePromptBorder = { fg = colors.bright_blue },
                     TelescopePreviewBorder = { fg = colors.dark3 },
                     TelescopeResultsBorder = { fg = colors.dark3 },
 

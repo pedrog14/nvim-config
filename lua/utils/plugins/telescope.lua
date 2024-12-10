@@ -3,8 +3,8 @@ local M = {}
 
 M.setup = function(opts)
     require("telescope").setup(opts)
-    if opts.load_extensions then
-        for _, extension in ipairs(opts.load_extensions) do
+    if opts.extensions then
+        for extension, _ in pairs(opts.extensions) do
             require("telescope").load_extension(extension)
         end
     end
