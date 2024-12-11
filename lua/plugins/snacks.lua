@@ -25,7 +25,7 @@ return {
             quickfile = { enabled = true },
             statuscolumn = { enabled = true },
             words = { enabled = true },
-            indent = { enabled = true },
+            indent = { indent = { char = "▎" }, scope = { underline = true, char = "▎" } },
             input = { enabled = true, icon = "󰁔" },
             notifier = {
                 icons = {
@@ -45,8 +45,8 @@ return {
                 input = {
                     keys = {
                         esc = { "<esc>", "cancel" },
-                        i_cr = { "<cr>", "confirm", mode = "i" },
                         i_esc = { "<esc>", "stopinsert", mode = "i" },
+                        i_cr = { "<cr>", "confirm", mode = "i" },
                     },
                 },
             },
@@ -63,35 +63,44 @@ return {
                             icon = "󰈞",
                             desc = "Find File",
                             key = "f",
-                            action = ":Telescope find_files",
+                            action = function()
+                                require("telescope.builtin").find_files()
+                            end,
                         },
                         {
                             icon = "󱋡",
                             desc = "Recent Files",
                             key = "o",
-                            action = ":Telescope oldfiles",
+                            action = function()
+                                require("telescope.builtin").oldfiles()
+                            end,
                         },
                         {
                             icon = "󱁻",
                             desc = "Config Files",
                             key = "c",
-                            action = ":Telescope find_files cwd=" .. vim.fn.stdpath("config"),
+                            action = function()
+                                require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+                            end,
                         },
                         {
                             icon = "󰒲",
                             desc = "Lazy",
                             key = "l",
-                            action = ":Lazy",
-                            enabled = package.loaded.lazy,
+                            action = function()
+                                require("lazy").show()
+                            end,
                         },
                         {
                             icon = "󰏓",
                             desc = "Mason",
                             key = "m",
-                            action = ":Mason",
+                            action = function()
+                                require("mason.ui").open()
+                            end,
                         },
                         {
-                            icon = "",
+                            icon = "󰈆",
                             desc = "Exit Neovim",
                             key = "q",
                             action = ":quitall",
