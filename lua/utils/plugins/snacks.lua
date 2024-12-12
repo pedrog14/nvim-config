@@ -2,7 +2,7 @@
 local M = {}
 
 local notify_lsp_progress = function()
-    ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+    ---@type table<number, { token: lsp.ProgressToken, msg: string, done: boolean }[]>
     local progress = vim.defaulttable()
     vim.api.nvim_create_autocmd("LspProgress", {
         ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
@@ -76,13 +76,40 @@ local notify_lsp_progress = function()
     })
 end
 
+M.set_indent_filter = function(filter)
+    local exclude = {}
+
+    if filter["filetype"] then
+        for _, filetype in ipairs(filter["filetype"]) do
+            exclude[filetype] = true
+        end
+    end
+    if filter["buftype"] then
+        for _, buftype in ipairs(filter["buftype"]) do
+            exclude[buftype] = true
+        end
+    end
+
+    return function(bufnr)
+        if exclude[vim.bo[bufnr].filetype] or exclude[vim.bo[bufnr].buftype] then
+            return false
+        end
+        return vim.g.snacks_indent ~= false and vim.b[bufnr].snacks_indent ~= false and vim.bo[bufnr].buftype == ""
+    end
+end
+
 M.setup = function(opts)
+    -- Generate a filter function
+    if opts.indent and opts.indent.filter then
+        local filter = opts.indent.filter
+        opts.indent.filter = type(filter) == "table" and M.set_indent_filter(filter) or filter
+    end
     Snacks.setup(opts)
 
     -- Enable LSP progress notification
     notify_lsp_progress()
 
-    -- Creating LazyGit user command...
+    -- Create LazyGit user command
     local lazygit = Snacks.lazygit
     vim.api.nvim_create_user_command("LazyGit", function(args)
         for key, _ in pairs(lazygit) do
