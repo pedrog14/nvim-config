@@ -25,7 +25,18 @@ return {
             quickfile = { enabled = true },
             statuscolumn = { enabled = true },
             words = { enabled = true },
-            indent = { indent = { char = "▎" }, scope = { underline = true, char = "▎" } },
+            indent = {
+                indent = { char = "▎" },
+                scope = { char = "▎" },
+                filter = function(bufnr)
+                    if vim.bo[bufnr].filetype == "text" then
+                        return false
+                    end
+                    return vim.g.snacks_indent ~= false
+                        and vim.b[bufnr].snacks_indent ~= false
+                        and vim.bo[bufnr].buftype == ""
+                end,
+            },
             input = { enabled = true, icon = "󰁔" },
             notifier = {
                 icons = {

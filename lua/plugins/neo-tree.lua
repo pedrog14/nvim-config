@@ -7,7 +7,7 @@ return {
             {
                 "<leader>n",
                 function()
-                    require("neo-tree.command").execute({ toggle = true })
+                    require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
                 end,
                 desc = "Toggle Neo-Tree",
             },
