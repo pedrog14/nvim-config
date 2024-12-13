@@ -76,25 +76,25 @@ local notify_lsp_progress = function()
     })
 end
 
-M.set_indent_filter = function(filter)
-    local exclude = {}
+---@param filter? { filetype: string[] }
+---@return fun(bufnr: number): boolean
+local set_indent_filter = function(filter)
+    local exclude = nil
 
-    if filter["filetype"] then
-        for _, filetype in ipairs(filter["filetype"]) do
-            exclude[filetype] = true
-        end
-    end
-    if filter["buftype"] then
-        for _, buftype in ipairs(filter["buftype"]) do
-            exclude[buftype] = true
+    if filter then
+        exclude = {}
+        if filter.filetype then
+            for _, filetype in ipairs(filter.filetype) do
+                exclude[filetype] = true
+            end
         end
     end
 
     return function(bufnr)
-        if exclude[vim.bo[bufnr].filetype] or exclude[vim.bo[bufnr].buftype] then
-            return false
-        end
-        return vim.g.snacks_indent ~= false and vim.b[bufnr].snacks_indent ~= false and vim.bo[bufnr].buftype == ""
+        return not (exclude and exclude[vim.bo[bufnr].filetype])
+            and vim.g.snacks_indent ~= false
+            and vim.b[bufnr].snacks_indent ~= false
+            and vim.bo[bufnr].buftype == ""
     end
 end
 
@@ -102,7 +102,7 @@ M.setup = function(opts)
     -- Generate a filter function
     if opts.indent and opts.indent.filter then
         local filter = opts.indent.filter
-        opts.indent.filter = type(filter) == "table" and M.set_indent_filter(filter) or filter
+        opts.indent.filter = type(filter) == "table" and set_indent_filter(filter) or filter
     end
     Snacks.setup(opts)
 
