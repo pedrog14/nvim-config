@@ -9,30 +9,10 @@ keymap_set("n", "<c-d>", "<c-d>zz", { noremap = true })
 keymap_set("n", "<c-u>", "<c-u>zz", { noremap = true })
 
 -- Better search
-keymap_set(
-    "n",
-    "n",
-    "'Nn'[v:searchforward].'zzzv'",
-    { expr = true, desc = "Next Search Result" }
-)
-keymap_set(
-    { "x", "o" },
-    "n",
-    "'Nn'[v:searchforward]",
-    { expr = true, desc = "Next Search Result" }
-)
-keymap_set(
-    "n",
-    "N",
-    "'nN'[v:searchforward].'zzzv'",
-    { expr = true, desc = "Previous Search Result" }
-)
-keymap_set(
-    { "x", "o" },
-    "N",
-    "'nN'[v:searchforward]",
-    { expr = true, desc = "Previous Search Result" }
-)
+keymap_set("n", "n", "'Nn'[v:searchforward].'zzzv'", { expr = true, desc = "Next Search Result" })
+keymap_set({ "x", "o" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
+keymap_set("n", "N", "'nN'[v:searchforward].'zzzv'", { expr = true, desc = "Previous Search Result" })
+keymap_set({ "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, desc = "Previous Search Result" })
 
 -- Better Buffer control
 keymap_set("n", "<a-h>", "<cmd>bprev<cr>", { desc = "Go to Previous Buffer" })
@@ -40,24 +20,9 @@ keymap_set("n", "<a-l>", "<cmd>bnext<cr>", { desc = "Go to Next Buffer" })
 
 -- Better Window control
 keymap_set("n", "<c-h>", "<c-w>h", { desc = "Go to Left Window", remap = true })
-keymap_set(
-    "n",
-    "<c-j>",
-    "<c-w>j",
-    { desc = "Go to Lower Window", remap = true }
-)
-keymap_set(
-    "n",
-    "<c-k>",
-    "<c-w>k",
-    { desc = "Go to Upper Window", remap = true }
-)
-keymap_set(
-    "n",
-    "<c-l>",
-    "<c-w>l",
-    { desc = "Go to Right Window", remap = true }
-)
+keymap_set("n", "<c-j>", "<c-w>j", { desc = "Go to Lower Window", remap = true })
+keymap_set("n", "<c-k>", "<c-w>k", { desc = "Go to Upper Window", remap = true })
+keymap_set("n", "<c-l>", "<c-w>l", { desc = "Go to Right Window", remap = true })
 
 -- Splits
 keymap_set("n", "<a-s>", "<c-w>s", { desc = "Split Window (Horizontal)" })
@@ -92,11 +57,6 @@ do
         buf.signature_help()
     end, {
         desc = "Displays signature information about the symbol under the cursor in a floating window",
-    })
-    keymap_set("n", "gO", function()
-        buf.document_symbol()
-    end, {
-        desc = "Lists all symbols in the current buffer in the quickfix window",
     })
     keymap_set("n", "grn", function()
         buf.rename()

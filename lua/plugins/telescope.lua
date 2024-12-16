@@ -48,6 +48,13 @@ return {
 
         -- LSP related keymaps
         {
+            "gO",
+            function()
+                require("telescope.builtin").lsp_document_symbols()
+            end,
+            desc = "List all symbols in the current buffer in Telescope",
+        },
+        {
             "grr",
             function()
                 require("telescope.builtin").lsp_references()
