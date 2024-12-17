@@ -4,19 +4,11 @@ local M = {}
 ---@param capabilities? lsp.ClientCapabilities
 ---@return lsp.ClientCapabilities
 M.client_capabilities = function(capabilities)
-    return vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        capabilities or {}
-    )
+    return vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), capabilities or {})
 end
 
 ---@param opts lspconfig.Opts
 M.setup = function(opts)
-    opts.settings = opts.settings or {}
-    vim.diagnostic.config(opts.diagnostics)
-
     -- mason-lspconfig snippet
     local log = require("mason-core.log")
     local ok, err = pcall(function()
@@ -31,9 +23,7 @@ M.setup = function(opts)
     require("mason-lspconfig").setup_handlers({
         function(server_name)
             local settings, capabilities, on_attach =
-                opts.settings and opts.settings[server_name],
-                opts.capabilities,
-                opts.on_attach
+                opts.settings and opts.settings[server_name], opts.capabilities, opts.on_attach
             require("lspconfig")[server_name].setup({
                 settings = settings,
                 capabilities = capabilities,
