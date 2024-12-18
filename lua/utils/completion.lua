@@ -7,10 +7,12 @@ M.enable = completion.enable
 
 M.trigger = completion.trigger
 
+---@return boolean
 M.is_visible = function()
     return vim.fn.pumvisible() ~= 0
 end
 
+---@return integer
 M.selected = function()
     return vim.fn.complete_info({ "selected" })["selected"]
 end
@@ -20,8 +22,8 @@ M.exec_keys = function(keys)
     vim.api.nvim_feedkeys(vim.keycode(keys), "n", false)
 end
 
+---@return fun(item: lsp.CompletionItem): vim.v.completed_item
 M.client_convert = function()
-    ---@param item lsp.CompletionItem
     return function(item)
         local converted = {}
 

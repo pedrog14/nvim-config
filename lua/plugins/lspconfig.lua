@@ -8,27 +8,24 @@ return {
         local diagnostic_icons = require("utils").icons.diagnostics
         ---@type lspconfig.Opts
         return {
+            diagnostic = {
+                signs = {
+                    text = {
+                        [severity.E] = diagnostic_icons.error,
+                        [severity.W] = diagnostic_icons.warn,
+                        [severity.I] = diagnostic_icons.info,
+                        [severity.N] = diagnostic_icons.hint,
+                    },
+                },
+                virtual_text = {
+                    prefix = "●",
+                },
+                severity_sort = true,
+            },
             settings = {},
             capabilities = require("utils").plugins.lspconfig.client_capabilities(),
             on_attach = function(client, bufnr)
                 local lsp = vim.lsp
-
-                if client:supports_method("textDocument/publishDiagnostics", bufnr) then
-                    vim.diagnostic.config({
-                        signs = {
-                            text = {
-                                [severity.E] = diagnostic_icons.error,
-                                [severity.W] = diagnostic_icons.warn,
-                                [severity.I] = diagnostic_icons.info,
-                                [severity.N] = diagnostic_icons.hint,
-                            },
-                        },
-                        virtual_text = {
-                            prefix = "●",
-                        },
-                        severity_sort = true,
-                    })
-                end
 
                 if client:supports_method("textDocument/inlayHint", bufnr) then
                     lsp.inlay_hint.enable(true, { bufnr = bufnr })
