@@ -1,3 +1,4 @@
+---@class utils.plugins.conform
 local M = {}
 
 M.setup = function(opts)

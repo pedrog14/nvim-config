@@ -1,22 +1,15 @@
+---@class utils.plugins.lspconfig
 local M = {}
 
 ---@param capabilities? lsp.ClientCapabilities
 ---@return lsp.ClientCapabilities
 M.client_capabilities = function(capabilities)
-    local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
-    return vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        has_cmp and cmp.default_capabilities() or {},
-        capabilities or {}
-    )
+    return vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), capabilities or {})
 end
 
 ---@param opts lspconfig.Opts
 M.setup = function(opts)
-    opts.settings = opts.settings or {}
-    vim.diagnostic.config(opts.diagnostics)
+    vim.diagnostic.config(opts.diagnostic)
 
     -- mason-lspconfig snippet
     local log = require("mason-core.log")
@@ -27,9 +20,12 @@ M.setup = function(opts)
     if not ok then
         log.error("Failed to set up lspconfig integration.", err)
     end
+    -- END snippet
+
     require("mason-lspconfig").setup_handlers({
         function(server_name)
-            local settings, capabilities, on_attach = opts.settings[server_name], opts.capabilities, opts.on_attach
+            local settings, capabilities, on_attach =
+                opts.settings and opts.settings[server_name], opts.capabilities, opts.on_attach
             require("lspconfig")[server_name].setup({
                 settings = settings,
                 capabilities = capabilities,

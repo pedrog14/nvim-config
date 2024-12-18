@@ -13,7 +13,10 @@ return {
         {
             "<leader>xX",
             function()
-                require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 } })
+                require("trouble").toggle({
+                    mode = "diagnostics",
+                    filter = { buf = 0 },
+                })
             end,
             desc = "Buffer Diagnostics (Trouble)",
         },
@@ -27,7 +30,11 @@ return {
         {
             "<leader>cl",
             function()
-                require("trouble").toggle({ mode = "lsp", focus = false, win = { position = "right" } })
+                require("trouble").toggle({
+                    mode = "lsp",
+                    focus = false,
+                    win = { position = "right" },
+                })
             end,
             desc = "LSP Definitions / references / ... (Trouble)",
         },

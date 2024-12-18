@@ -1,7 +1,8 @@
+---@class utils.plugins.snacks
 local M = {}
 
-M.notify_lsp_progress = function()
-    ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+local notify_lsp_progress = function()
+    ---@type table<number, { token: lsp.ProgressToken, msg: string, done: boolean }[]>
     local progress = vim.defaulttable()
     vim.api.nvim_create_autocmd("LspProgress", {
         ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
@@ -33,12 +34,41 @@ M.notify_lsp_progress = function()
                 return table.insert(msg, v.msg) or not v.done
             end, p)
 
-            local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+            local spinner = {
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+            }
             vim.notify(table.concat(msg, "\n"), "info", {
                 id = "lsp_progress",
                 title = client.name,
                 opts = function(notif)
-                    notif.icon = #progress[client.id] == 0 and " "
+                    notif.icon = #progress[client.id] == 0 and ""
                         or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
                 end,
             })
@@ -46,29 +76,61 @@ M.notify_lsp_progress = function()
     })
 end
 
-M.setup = function(opts)
-    local snacks = require("snacks")
-    snacks.setup(opts)
+---@param filter? { filetype: string[] }
+---@return fun(bufnr: number): boolean
+local set_indent_filter = function(filter)
+    local exclude = nil
 
+    if filter then
+        exclude = {}
+        if filter.filetype then
+            for _, filetype in ipairs(filter.filetype) do
+                exclude[filetype] = true
+            end
+        end
+    end
+
+    return function(bufnr)
+        return not (exclude and exclude[vim.bo[bufnr].filetype])
+            and vim.g.snacks_indent ~= false
+            and vim.b[bufnr].snacks_indent ~= false
+            and vim.bo[bufnr].buftype == ""
+    end
+end
+
+M.setup = function(opts)
+    -- Generate a filter function
+    if opts.indent and opts.indent.filter then
+        local filter = opts.indent.filter
+        opts.indent.filter = type(filter) == "table" and set_indent_filter(filter) or filter
+    end
+    Snacks.setup(opts)
+
+    -- Enable LSP progress notification
+    notify_lsp_progress()
+
+    -- Create LazyGit user command
+    local lazygit = Snacks.lazygit
     vim.api.nvim_create_user_command("LazyGit", function(args)
+        for key, _ in pairs(lazygit) do
+            if args.args == key then
+                lazygit[key]()
+            end
+        end
         if args.args == "" then
-            snacks.lazygit()
-        elseif args.args == "log" then
-            snacks.lazygit.log()
-        elseif args.args == "log_file" then
-            snacks.lazygit.log_file()
+            lazygit()
         end
     end, {
         nargs = "*",
         desc = "Open LazyGit",
-        complete = function(_, _, _)
-            return { "log", "log_file" }
+        complete = function()
+            local completion = {}
+            for key, _ in pairs(lazygit) do
+                completion[#completion + 1] = key ~= "health" and key or nil
+            end
+            return completion
         end,
     })
-
-    if opts.notifier.notify_lsp_progress then
-        M.notify_lsp_progress()
-    end
 end
 
 return M

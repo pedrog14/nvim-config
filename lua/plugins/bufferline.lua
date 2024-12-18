@@ -2,35 +2,7 @@ return {
     "akinsho/bufferline.nvim",
     dependencies = "folke/snacks.nvim",
     event = { "BufNewFile", "BufReadPre" },
-    keys = function()
-        local keys = {
-            {
-                "<a-h>",
-                function()
-                    require("bufferline").cycle(-1)
-                end,
-            },
-            {
-                "<a-l>",
-                function()
-                    require("bufferline").cycle(1)
-                end,
-            },
-        }
-        for i = 0, 9 do
-            keys[#keys + 1] = {
-                ("<a-%i>"):format(i),
-                function()
-                    require("bufferline").go_to(i)
-                end,
-            }
-        end
-        return keys
-    end,
-
     opts = function()
-        local bufdelete = require("snacks").bufdelete
-
         vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", {
             link = "Title",
             default = true,
@@ -41,19 +13,21 @@ return {
         return {
             options = {
                 numbers = function(num)
-                    ---@diagnostic disable-next-line: undefined-field
-                    return ("%s·%s"):format(num.raise(num.id), num.lower(num.ordinal))
+                    return ("%s·%s"):format(
+                        num.raise(num.id), ---@diagnostic disable-line: undefined-field
+                        num.lower(num.ordinal) ---@diagnostic disable-line: undefined-field
+                    )
                 end,
                 close_command = function(n)
-                    bufdelete(n)
+                    Snacks.bufdelete(n)
                 end,
                 right_mouse_command = function(n)
-                    bufdelete(n)
+                    Snacks.bufdelete(n)
                 end,
                 always_show_bufferline = false,
                 diagnostics = "nvim_lsp",
                 diagnostics_indicator = function(_, _, diagnostics_dict)
-                    local icons = require("utils.icons").diagnostics
+                    local icons = require("utils").icons.diagnostics
                     local indicator = ""
                     for diagnostic_type, number in pairs(diagnostics_dict) do
                         local icon = diagnostic_type == "error" and icons.error

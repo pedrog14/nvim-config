@@ -25,20 +25,21 @@ return {
     {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",
+        lazy = false,
         main = "utils.plugins.mason.lspconfig",
         opts = {
             ensure_installed = {
-                "lua_ls",
                 "bashls",
                 "cssls",
                 "clangd",
+                "elixirls",
                 "emmet_ls",
                 "hls",
                 "html",
-                "ts_ls",
+                "lua_ls",
                 "pylsp",
-                "gopls",
                 "rust_analyzer",
+                "ts_ls",
                 "vimls",
             },
         },
@@ -47,13 +48,13 @@ return {
     {
         "pedrog14/mason-conform.nvim",
         dependencies = "williamboman/mason.nvim",
+        lazy = false,
         main = "utils.plugins.mason.conform",
         opts = {
             ensure_installed = {
                 "black",
                 "clang-format",
                 "fourmolu",
-                "gofumpt",
                 "prettier",
                 "shfmt",
                 "stylua",

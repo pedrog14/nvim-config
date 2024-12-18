@@ -7,7 +7,7 @@ return {
             {
                 "<leader>n",
                 function()
-                    require("neo-tree.command").execute({ toggle = true })
+                    require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
                 end,
                 desc = "Toggle Neo-Tree",
             },
@@ -50,7 +50,8 @@ return {
                     { event = events.FILE_MOVED, handler = on_move },
                     { event = events.FILE_RENAMED, handler = on_move },
                 },
-                popup_border_style = "rounded",
+                -- popup_border_style = "rounded",
+                use_popups_for_input = false,
                 default_component_configs = {
                     indent = {
                         with_expanders = true,
@@ -83,7 +84,12 @@ return {
                 include_current_win = false,
                 autoselect_one = true,
                 bo = {
-                    filetype = { "neo-tree", "neo-tree-popup", "notify", "snacks_notif" },
+                    filetype = {
+                        "neo-tree",
+                        "neo-tree-popup",
+                        "notify",
+                        "snacks_notif",
+                    },
                     buftype = { "terminal", "quickfix" },
                 },
             },
