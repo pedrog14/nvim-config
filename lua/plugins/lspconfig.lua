@@ -40,26 +40,26 @@ return {
                     })
                 end
 
-                if client:supports_method("textDocument/completion", bufnr) then
-                    local completion = require("utils").completion
-
-                    completion.enable(true, client.id, bufnr, {
-                        autotrigger = true,
-                        convert = completion.client_convert(),
-                    })
-
-                    -- Better completion
-                    vim.keymap.set("i", "<c-n>", function()
-                        if completion.is_visible() then
-                            completion.exec_keys("<c-n>")
-                        else
-                            completion.trigger()
-                        end
-                    end, {
-                        desc = "Open or Select Next Completion",
-                        buffer = bufnr,
-                    })
-                end
+                -- if client:supports_method("textDocument/completion", bufnr) then
+                --     local completion = require("utils").completion
+                --
+                --     completion.enable(true, client.id, bufnr, {
+                --         autotrigger = true,
+                --         convert = completion.client_convert(),
+                --     })
+                --
+                --     -- Better completion
+                --     vim.keymap.set("i", "<c-n>", function()
+                --         if completion.is_visible() then
+                --             completion.exec_keys("<c-n>")
+                --         else
+                --             completion.trigger()
+                --         end
+                --     end, {
+                --         desc = "Open or Select Next Completion",
+                --         buffer = bufnr,
+                --     })
+                -- end
             end,
         }
     end,

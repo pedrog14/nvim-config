@@ -32,28 +32,6 @@ return {
     },
 
     {
-        "echasnovski/mini.files",
-        lazy = false,
-        keys = {
-            {
-                "<leader>n",
-                function()
-                    MiniFiles.open(vim.uv.cwd())
-                end,
-                desc = "Mini-Files Toggle",
-            },
-        },
-        main = "utils.plugins.mini.files",
-        opts = function()
-            return {
-                windows = {
-                    border = "rounded",
-                },
-            }
-        end,
-    },
-
-    {
         "echasnovski/mini.icons",
         lazy = true,
         init = function()
