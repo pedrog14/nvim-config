@@ -13,7 +13,6 @@ opt.autoindent = true
 opt.bg = "dark"
 opt.clipboard = "unnamedplus"
 opt.confirm = true
-opt.completeopt = { "menuone", "noselect", "fuzzy", "popup" }
 opt.cursorline = true
 opt.expandtab = true
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"

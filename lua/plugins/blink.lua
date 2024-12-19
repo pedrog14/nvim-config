@@ -1,19 +1,36 @@
 return {
     "Saghen/blink.cmp",
-    dependencies = "rafamadriz/friendly-snippets",
+    dependencies = { "rafamadriz/friendly-snippets", "echasnovski/mini.icons" },
     version = "v0.*",
-    opts = {
-        keymap = { preset = "default" },
-        appearance = { use_nvim_cmp_as_default = true, nerd_font_variant = "mono" },
-        sources = {
-            default = { "lsp", "path", "snippets", "buffer", "lazydev" },
-        },
-        completion = {
-            menu = {
-                draw = {
-                    columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind", gap = 1 } },
+    opts = function()
+        local kind = vim.lsp.protocol.CompletionItemKind
+        local kind_icons = {}
+
+        for _, symbol in ipairs(kind) do
+            kind_icons[symbol] = MiniIcons.get("lsp", symbol:lower())
+        end
+
+        return {
+            keymap = { preset = "default" },
+            appearance = { use_nvim_cmp_as_default = true, nerd_font_variant = "mono", kind_icons = kind_icons },
+            sources = {
+                default = { "lsp", "path", "snippets", "buffer", "lazydev" },
+                providers = {
+                    lazydev = {
+                        name = "LazyDev",
+                        module = "lazydev.integrations.blink",
+                        score_offset = 100, -- show at a higher priority than lsp
+                    },
                 },
             },
-        },
-    },
+            completion = {
+                documentation = { auto_show = true },
+                menu = {
+                    draw = {
+                        columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind", gap = 1 } },
+                    },
+                },
+            },
+        }
+    end,
 }
