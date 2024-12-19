@@ -32,6 +32,10 @@ return {
 
                     MasonNormal = { fg = colors.light1, bg = colors.dark1 },
 
+                    MiniFilesTitle = { fg = colors.bright_blue },
+                    MiniFilesTitleFocused = { fg = colors.bright_blue, bold = true },
+                    MiniFilesDirectory = { fg = colors.bright_blue },
+
                     SnacksDashboardHeader = { fg = colors.bright_blue },
                     SnacksDashboardIcon = { fg = colors.light4 },
                     SnacksDashboardDesc = { fg = colors.light4 },
