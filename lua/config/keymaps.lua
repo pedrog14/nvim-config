@@ -4,14 +4,10 @@
 
 local keymap_set = vim.keymap.set
 
--- Better <C-d> <C-u>
-keymap_set("n", "<c-d>", "<c-d>zz", { noremap = true })
-keymap_set("n", "<c-u>", "<c-u>zz", { noremap = true })
-
 -- Better search
-keymap_set("n", "n", "'Nn'[v:searchforward].'zzzv'", { expr = true, desc = "Next Search Result" })
+keymap_set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 keymap_set({ "x", "o" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
-keymap_set("n", "N", "'nN'[v:searchforward].'zzzv'", { expr = true, desc = "Previous Search Result" })
+keymap_set("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Previous Search Result" })
 keymap_set({ "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, desc = "Previous Search Result" })
 
 -- Better Buffer control
@@ -33,7 +29,6 @@ keymap_set("n", "<a-c>", "<cmd>quit<cr>", { desc = "Delete Window" })
 keymap_set("n", "<a-X>", "<cmd>bdel<cr>", { desc = "Delete Buffer + Window" })
 
 -- Better Terminal control
-keymap_set("t", "<esc>", "<c-\\><c-n>", { noremap = true })
 keymap_set("n", "<c-/>", function()
     Snacks.terminal.toggle()
 end, { desc = "Toggle Terminal" })

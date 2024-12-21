@@ -3,25 +3,27 @@ return {
     dependencies = "williamboman/mason-lspconfig.nvim",
     event = { "BufNewFile", "BufReadPre" },
     main = "utils.plugins.lspconfig",
-    opts = function()
+    init = function()
         local severity = vim.diagnostic.severity
         local diagnostic_icons = require("utils").icons.diagnostics
+        vim.diagnostic.config({
+            signs = {
+                text = {
+                    [severity.E] = diagnostic_icons.error,
+                    [severity.W] = diagnostic_icons.warn,
+                    [severity.I] = diagnostic_icons.info,
+                    [severity.N] = diagnostic_icons.hint,
+                },
+            },
+            virtual_text = {
+                prefix = "●",
+            },
+            severity_sort = true,
+        })
+    end,
+    opts = function()
         ---@type lspconfig.Opts
         return {
-            diagnostic = {
-                signs = {
-                    text = {
-                        [severity.E] = diagnostic_icons.error,
-                        [severity.W] = diagnostic_icons.warn,
-                        [severity.I] = diagnostic_icons.info,
-                        [severity.N] = diagnostic_icons.hint,
-                    },
-                },
-                virtual_text = {
-                    prefix = "●",
-                },
-                severity_sort = true,
-            },
             settings = {},
             capabilities = require("utils").plugins.lspconfig.client_capabilities(),
             on_attach = function(client, bufnr)
@@ -44,7 +46,7 @@ return {
                 --     local completion = require("utils").completion
                 --
                 --     completion.enable(true, client.id, bufnr, {
-                --         autotrigger = true,
+                --         autotrigger = false,
                 --         convert = completion.client_convert(),
                 --     })
                 --

@@ -1,7 +1,7 @@
 return {
     "Saghen/blink.cmp",
-    dependencies = { "rafamadriz/friendly-snippets", "echasnovski/mini.icons" },
-    version = "v0.*",
+    dependencies = "echasnovski/mini.icons",
+    version = "*",
     opts = function()
         local kind = vim.lsp.protocol.CompletionItemKind
         local kind_icons = {}
@@ -25,6 +25,7 @@ return {
             },
             completion = {
                 documentation = { auto_show = true },
+                list = { selection = "auto_insert" },
                 menu = {
                     draw = {
                         columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind", gap = 1 } },

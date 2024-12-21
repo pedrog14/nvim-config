@@ -16,8 +16,6 @@ end
 
 ---@param opts lspconfig.Opts
 M.setup = function(opts)
-    vim.diagnostic.config(opts.diagnostic)
-
     -- mason-lspconfig snippet
     local log = require("mason-core.log")
     local ok, err = pcall(function()

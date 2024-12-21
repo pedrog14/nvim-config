@@ -6,8 +6,7 @@ local M = {}
 
 setmetatable(M, {
     __index = function(t, k)
-        t[k] = require("utils.plugins.mini." .. k)
-        return t[k]
+        return require("utils.plugins.mini." .. k)
     end,
 })
 

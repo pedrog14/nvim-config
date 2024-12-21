@@ -12,7 +12,7 @@ return {
     },
     init = function()
         vim.api.nvim_create_autocmd("BufEnter", {
-            group = vim.api.nvim_create_augroup("Neotree_start_directory", { clear = true }),
+            group = vim.api.nvim_create_augroup("NeotreeStartDirectory", { clear = true }),
             desc = "Start Neo-tree with directory",
             once = true,
             callback = function()

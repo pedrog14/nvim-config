@@ -12,6 +12,7 @@ local opt = vim.opt
 opt.autoindent = true
 opt.bg = "dark"
 opt.clipboard = "unnamedplus"
+opt.completeopt = { "menuone", "noselect", "popup", "fuzzy" }
 opt.confirm = true
 opt.cursorline = true
 opt.expandtab = true
