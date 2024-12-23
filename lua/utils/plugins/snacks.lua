@@ -80,13 +80,12 @@ end
 ---@return fun(bufnr: number): boolean
 local set_indent_filter = function(filter)
     local exclude = nil
+    filter = filter or {}
 
-    if filter then
+    if filter.filetype then
         exclude = {}
-        if filter.filetype then
-            for _, filetype in ipairs(filter.filetype) do
-                exclude[filetype] = true
-            end
+        for _, filetype in ipairs(filter.filetype) do
+            exclude[filetype] = true
         end
     end
 
@@ -99,15 +98,22 @@ local set_indent_filter = function(filter)
 end
 
 M.setup = function(opts)
-    -- Generate a filter function
-    if opts.indent and opts.indent.filter then
-        local filter = opts.indent.filter
-        opts.indent.filter = type(filter) == "table" and set_indent_filter(filter) or filter
+    opts = opts or {}
+
+    -- Generate a filter function (indent)
+    local indent = opts.indent or {}
+    if indent.filter then
+        local filter = indent.filter
+        indent.filter = type(filter) == "table" and set_indent_filter(filter) or filter
     end
-    Snacks.setup(opts)
+
+    require("snacks").setup(opts)
 
     -- Enable LSP progress notification
-    notify_lsp_progress()
+    local notifier = opts.notifier or {}
+    if notifier.notify_lsp_progress then
+        notify_lsp_progress()
+    end
 
     -- Create LazyGit user command
     local lazygit = Snacks.lazygit
@@ -126,7 +132,9 @@ M.setup = function(opts)
         complete = function()
             local completion = {}
             for key, _ in pairs(lazygit) do
-                completion[#completion + 1] = key ~= "health" and key or nil
+                if key ~= "health" and key ~= "meta" then
+                    completion[#completion + 1] = key
+                end
             end
             return completion
         end,
