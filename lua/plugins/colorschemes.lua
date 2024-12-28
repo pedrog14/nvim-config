@@ -8,20 +8,21 @@ return {
             local colors = require("gruvbox.colors").palette
             ---@type GruvboxConfig
             return {
-                overrides = {
+                group_override = {
                     -- Base highlights
-                    GruvboxRedSign = { fg = colors.bright_red, bg = "NONE" },
-                    GruvboxYellowSign = { fg = colors.bright_yellow, bg = "NONE" },
-                    GruvboxBlueSign = { fg = colors.bright_blue, bg = "NONE" },
-                    GruvboxAquaSign = { fg = colors.bright_aqua, bg = "NONE" },
-                    GruvboxGreenSign = { fg = colors.bright_green, bg = "NONE" },
+                    DiagnosticSignError = { bg = colors.none },
+                    DiagnosticSignWarn = { bg = colors.none },
+                    DiagnosticSignHint = { bg = colors.none },
+                    DiagnosticSignInfo = { bg = colors.none },
+                    DiagnosticSignOk = { bg = colors.none },
 
-                    CursorLineNr = { fg = colors.bright_yellow, bg = "NONE", bold = true },
+                    CursorLineNr = { bg = colors.none, bold = true },
 
-                    NormalFloat = { fg = colors.light1, bg = colors.dark0 },
-                    FloatBorder = { fg = colors.dark3, bg = colors.dark0 },
+                    FloatTitle = { bg = colors.none },
+                    NormalFloat = { bg = colors.none },
+                    FloatBorder = { bg = colors.none },
 
-                    SignColumn = { bg = "NONE" },
+                    SignColumn = { bg = colors.none },
 
                     -- Plugin highlights
                     BufferLineOffsetTitle = { fg = colors.bright_blue, bg = colors.dark0, bold = true },
@@ -32,17 +33,13 @@ return {
 
                     MasonNormal = { fg = colors.light1, bg = colors.dark1 },
 
-                    MiniFilesTitle = { fg = colors.bright_blue },
-                    MiniFilesTitleFocused = { fg = colors.bright_blue, bold = true },
-                    MiniFilesDirectory = { fg = colors.bright_blue },
-
                     SnacksDashboardHeader = { fg = colors.bright_blue },
                     SnacksDashboardIcon = { fg = colors.light4 },
                     SnacksDashboardDesc = { fg = colors.light4 },
                     SnacksDashboardKey = { fg = colors.bright_blue },
                     SnacksDashboardFooter = { fg = colors.bright_orange },
 
-                    SnacksInputTitle = { fg = colors.bright_blue },
+                    SnacksInputTitle = { fg = colors.bright_green, bold = true },
                     SnacksInputBorder = { fg = colors.bright_blue },
                     SnacksInputIcon = { fg = colors.bright_red },
 
@@ -50,9 +47,6 @@ return {
                     TelescopePromptBorder = { fg = colors.bright_blue },
                     TelescopePreviewBorder = { fg = colors.dark3 },
                     TelescopeResultsBorder = { fg = colors.dark3 },
-
-                    WindowPickerStatusLine = { fg = colors.light1, bg = colors.dark1, bold = true },
-                    WindowPickerStatusLineNC = { fg = colors.light1, bg = colors.dark1, bold = true },
                 },
             }
         end,

@@ -27,11 +27,7 @@ return {
             statuscolumn = { enabled = true },
             words = { enabled = true },
             indent = {
-                indent = { char = "▎" },
-                scope = { char = "▎" },
-                filter = {
-                    filetype = { "text" },
-                },
+                filter = { filetype = { "text" } },
             },
             input = { enabled = true, icon = "󰁔" },
             notifier = {
