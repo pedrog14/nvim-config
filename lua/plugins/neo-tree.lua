@@ -12,7 +12,10 @@ return {
     },
     init = function()
         vim.api.nvim_create_autocmd("BufEnter", {
-            group = vim.api.nvim_create_augroup("NeotreeStartDirectory", { clear = true }),
+            group = vim.api.nvim_create_augroup(
+                "NeotreeStartDirectory",
+                { clear = true }
+            ),
             desc = "Start Neo-tree with directory",
             once = true,
             callback = function()
@@ -39,7 +42,10 @@ return {
         })
 
         local on_move = function(data)
-            require("snacks").rename.on_rename_file(data.source, data.destination)
+            require("snacks").rename.on_rename_file(
+                data.source,
+                data.destination
+            )
         end
         local events = require("neo-tree.events")
 

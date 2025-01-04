@@ -5,7 +5,7 @@
 local M = {}
 
 setmetatable(M, {
-    __index = function(t, k)
+    __index = function(_, k)
         return require("utils." .. k)
     end,
 })

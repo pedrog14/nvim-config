@@ -42,32 +42,14 @@ return {
                 if client:supports_method("textDocument/codeLens", bufnr) then
                     lsp.codelens.refresh({ bufnr = bufnr })
 
-                    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-                        buffer = bufnr,
-                        callback = lsp.codelens.refresh,
-                    })
+                    vim.api.nvim_create_autocmd(
+                        { "BufEnter", "CursorHold", "InsertLeave" },
+                        {
+                            buffer = bufnr,
+                            callback = lsp.codelens.refresh,
+                        }
+                    )
                 end
-
-                -- if client:supports_method("textDocument/completion", bufnr) then
-                --     local completion = require("utils").completion
-                --
-                --     completion.enable(true, client.id, bufnr, {
-                --         autotrigger = false,
-                --         convert = completion.client_convert(),
-                --     })
-                --
-                --     -- Better completion
-                --     vim.keymap.set("i", "<c-n>", function()
-                --         if completion.is_visible() then
-                --             completion.exec_keys("<c-n>")
-                --         else
-                --             completion.trigger()
-                --         end
-                --     end, {
-                --         desc = "Open or Select Next Completion",
-                --         buffer = bufnr,
-                --     })
-                -- end
             end,
         }
     end,

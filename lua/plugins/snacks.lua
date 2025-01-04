@@ -31,11 +31,7 @@ return {
             },
             input = { enabled = true, icon = "󰁔" },
             notifier = {
-                icons = {
-                    error = icons.error,
-                    warn = icons.warn,
-                    info = icons.info,
-                },
+                icons = { warn = icons.warn },
                 notify_lsp_progress = true,
             },
             styles = {
@@ -43,7 +39,8 @@ return {
                     wo = { wrap = true, winblend = 0 },
                 },
                 lazygit = {
-                    backdrop = 100,
+                    backdrop = false,
+                    border = "rounded",
                 },
                 input = {
                     keys = {
@@ -83,7 +80,9 @@ return {
                             desc = "Config Files",
                             key = "c",
                             action = function()
-                                require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+                                require("telescope.builtin").find_files({
+                                    cwd = vim.fn.stdpath("config"),
+                                })
                             end,
                         },
                         {

@@ -4,7 +4,6 @@
 
 -- Bootstrapping lazy.nvim...
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
----@diagnostic disable-next-line: undefined-field
 if not vim.uv.fs_stat(lazypath) then
     local lazyrepo = "https://github.com/folke/lazy.nvim.git"
     local out = vim.fn.system({
@@ -32,7 +31,7 @@ require("lazy").setup({
         { import = "plugins" },
     },
     install = {
-        colorscheme = { "gruvbox", "habamax" },
+        colorscheme = { "gruvbox" },
     },
     checker = {
         enabled = true,

@@ -19,9 +19,12 @@ local notify_lsp_progress = function()
                     p[i] = {
                         token = ev.data.params.token,
                         msg = ("[%3d%%] %s%s"):format(
-                            value.kind == "end" and 100 or value.percentage or 100,
+                            value.kind == "end" and 100
+                                or value.percentage
+                                or 100,
                             value.title or "",
-                            value.message and (" **%s**"):format(value.message) or ""
+                            value.message and (" **%s**"):format(value.message)
+                                or ""
                         ),
                         done = value.kind == "end",
                     }
@@ -34,36 +37,12 @@ local notify_lsp_progress = function()
                 return table.insert(msg, v.msg) or not v.done
             end, p)
 
-            local spinner = {
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-            }
+            -- stylua: ignore
+            local spinner = { "", "", "", "", "", "", "",
+                              "", "", "", "", "", "", "",
+                              "", "", "", "", "", "", "",
+                              "", "", "", "", "", "", "" }
+
             vim.notify(table.concat(msg, "\n"), "info", {
                 id = "lsp_progress",
                 title = client.name,
@@ -104,7 +83,8 @@ M.setup = function(opts)
     local indent = opts.indent or {}
     if indent.filter then
         local filter = indent.filter
-        indent.filter = type(filter) == "table" and set_indent_filter(filter) or filter
+        indent.filter = type(filter) == "table" and set_indent_filter(filter)
+            or filter
     end
 
     require("snacks").setup(opts)

@@ -25,8 +25,15 @@ return {
                     SignColumn = { bg = colors.none },
 
                     -- Plugin highlights
-                    BufferLineOffsetTitle = { fg = colors.bright_blue, bg = colors.dark0, bold = true },
-                    BufferLineIndicatorSelected = { fg = colors.bright_blue, bg = colors.dark0 },
+                    BufferLineOffsetTitle = {
+                        fg = colors.bright_blue,
+                        bg = colors.dark0,
+                        bold = true,
+                    },
+                    BufferLineIndicatorSelected = {
+                        fg = colors.bright_blue,
+                        bg = colors.dark0,
+                    },
 
                     LazyNormal = { fg = colors.light1, bg = colors.dark1 },
                     LazyButton = { bg = colors.dark2 },

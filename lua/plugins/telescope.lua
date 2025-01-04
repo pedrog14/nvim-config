@@ -1,6 +1,8 @@
 return {
     "nvim-telescope/telescope.nvim",
-    dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
+    dependencies = {
+        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    },
     cmd = "Telescope",
     keys = {
         {
@@ -41,7 +43,9 @@ return {
         {
             "<leader>fc",
             function()
-                require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+                require("telescope.builtin").find_files({
+                    cwd = vim.fn.stdpath("config"),
+                })
             end,
             desc = "Telescope Config Files",
         },

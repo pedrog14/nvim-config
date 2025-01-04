@@ -5,7 +5,7 @@ return {
         local lualine_require = require("lualine_require")
         lualine_require.require = require
 
-        local icons = require("utils").icons.diagnostics
+        local symbols = require("utils").icons.diagnostics
 
         return {
             options = {
@@ -17,24 +17,10 @@ return {
                 lualine_b = {
                     "branch",
                     "diff",
-                    {
-                        "diagnostics",
-                        symbols = {
-                            error = icons.error .. " ",
-                            warn = icons.warn .. " ",
-                            info = icons.info .. " ",
-                            hint = icons.hint .. " ",
-                        },
-                    },
+                    { "diagnostics", symbols = symbols },
                 },
             },
-            extensions = {
-                "lazy",
-                "mason",
-                "neo-tree",
-                "quickfix",
-                "toggleterm",
-            },
+            extensions = { "lazy", "mason", "neo-tree", "quickfix" },
         }
     end,
 }

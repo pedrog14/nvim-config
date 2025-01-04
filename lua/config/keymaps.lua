@@ -3,20 +3,65 @@
 ----------------------
 
 -- Better search
-vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
-vim.keymap.set({ "x", "o" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
-vim.keymap.set("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Previous Search Result" })
-vim.keymap.set({ "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, desc = "Previous Search Result" })
+vim.keymap.set(
+    "n",
+    "n",
+    "'Nn'[v:searchforward].'zv'",
+    { expr = true, desc = "Next Search Result" }
+)
+vim.keymap.set(
+    { "x", "o" },
+    "n",
+    "'Nn'[v:searchforward]",
+    { expr = true, desc = "Next Search Result" }
+)
+vim.keymap.set(
+    "n",
+    "N",
+    "'nN'[v:searchforward].'zv'",
+    { expr = true, desc = "Previous Search Result" }
+)
+vim.keymap.set(
+    { "x", "o" },
+    "N",
+    "'nN'[v:searchforward]",
+    { expr = true, desc = "Previous Search Result" }
+)
 
 -- Better Buffer control
-vim.keymap.set("n", "<a-h>", "<cmd>bprev<cr>", { desc = "Go to Previous Buffer" })
+vim.keymap.set(
+    "n",
+    "<a-h>",
+    "<cmd>bprev<cr>",
+    { desc = "Go to Previous Buffer" }
+)
 vim.keymap.set("n", "<a-l>", "<cmd>bnext<cr>", { desc = "Go to Next Buffer" })
 
 -- Better Window control
-vim.keymap.set("n", "<c-h>", "<c-w>h", { desc = "Go to Left Window", remap = true })
-vim.keymap.set("n", "<c-j>", "<c-w>j", { desc = "Go to Lower Window", remap = true })
-vim.keymap.set("n", "<c-k>", "<c-w>k", { desc = "Go to Upper Window", remap = true })
-vim.keymap.set("n", "<c-l>", "<c-w>l", { desc = "Go to Right Window", remap = true })
+vim.keymap.set(
+    "n",
+    "<c-h>",
+    "<c-w>h",
+    { desc = "Go to Left Window", remap = true }
+)
+vim.keymap.set(
+    "n",
+    "<c-j>",
+    "<c-w>j",
+    { desc = "Go to Lower Window", remap = true }
+)
+vim.keymap.set(
+    "n",
+    "<c-k>",
+    "<c-w>k",
+    { desc = "Go to Upper Window", remap = true }
+)
+vim.keymap.set(
+    "n",
+    "<c-l>",
+    "<c-w>l",
+    { desc = "Go to Right Window", remap = true }
+)
 
 -- Splits
 vim.keymap.set("n", "<a-s>", "<c-w>s", { desc = "Split Window (Horizontal)" })
@@ -24,7 +69,12 @@ vim.keymap.set("n", "<a-v>", "<c-w>v", { desc = "Split Window (Vertical)" })
 
 -- Delete Buffer/Window
 vim.keymap.set("n", "<a-c>", "<cmd>quit<cr>", { desc = "Delete Window" })
-vim.keymap.set("n", "<a-X>", "<cmd>bdel<cr>", { desc = "Delete Buffer + Window" })
+vim.keymap.set(
+    "n",
+    "<a-X>",
+    "<cmd>bdel<cr>",
+    { desc = "Delete Buffer + Window" }
+)
 
 -- Better Terminal control
 vim.keymap.set("n", "<c-/>", function()
