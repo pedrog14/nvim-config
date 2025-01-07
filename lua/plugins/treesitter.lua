@@ -19,9 +19,11 @@ return {
             ensure_installed = {
                 "c",
                 "lua",
+                "bash",
                 "vim",
                 "vimdoc",
                 "query",
+                "regex",
                 "markdown",
                 "markdown_inline",
             },
@@ -84,14 +86,13 @@ return {
 
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        event = { "BufNewFile", "BufReadPre" },
+        event = "VeryLazy",
     },
 
     {
         "nvim-treesitter/nvim-treesitter-context",
         event = { "BufNewFile", "BufReadPre" },
         opts = {
-            mode = "cursor",
             max_lines = 3,
             separator = "─",
         },
@@ -105,7 +106,7 @@ return {
 
     {
         "windwp/nvim-ts-autotag",
-        event = "InsertEnter",
+        event = "VeryLazy",
         opts = {},
     },
 }

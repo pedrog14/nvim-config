@@ -46,7 +46,7 @@ return {
                     SnacksDashboardKey = { fg = colors.bright_blue },
                     SnacksDashboardFooter = { fg = colors.bright_orange },
 
-                    SnacksInputTitle = { fg = colors.bright_green, bold = true },
+                    SnacksInputTitle = { fg = colors.bright_blue },
                     SnacksInputBorder = { fg = colors.bright_blue },
                     SnacksInputIcon = { fg = colors.bright_red },
 
