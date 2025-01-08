@@ -1,7 +1,7 @@
 return {
     "Saghen/blink.cmp",
     dependencies = { "echasnovski/mini.icons", "echasnovski/mini.snippets" },
-    version = "*",
+    build = "cargo build --release",
     opts = function()
         local kind = vim.lsp.protocol.CompletionItemKind
         local kind_icons = {}
@@ -21,7 +21,7 @@ return {
                 nerd_font_variant = "mono",
                 kind_icons = kind_icons,
             },
-            -- snippets = { preset = "mini_snippets" },
+            snippets = { preset = "mini_snippets" },
             sources = {
                 default = { "lsp", "path", "snippets", "buffer", "lazydev" },
                 providers = {

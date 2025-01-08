@@ -72,23 +72,34 @@ return {
         },
     },
 
-    -- {
-    --     "echasnovski/mini.snippets",
-    --     lazy = true,
-    --     opts = function()
-    --         local gen_loader = require("mini.snippets").gen_loader
-    --         return {
-    --             snippets = {
-    --                 -- Load custom file with global snippets first (adjust for Windows)
-    --                 gen_loader.from_file("~/.config/nvim/snippets/global.json"),
-    --
-    --                 -- Load snippets based on current language by reading files from
-    --                 -- "snippets/" subdirectories from 'runtimepath' directories.
-    --                 gen_loader.from_lang(),
-    --             },
-    --         }
-    --     end,
-    -- },
+    {
+        "echasnovski/mini.snippets",
+        dependencies = "rafamadriz/friendly-snippets",
+        lazy = true,
+        opts = function()
+            local gen_loader = require("mini.snippets").gen_loader
+
+            -- Custom expand: Insert
+            local insert = function(snippet, _)
+                return MiniSnippets.default_insert(
+                    snippet,
+                    { empty_tabstop = "", empty_tabstop_final = "" }
+                )
+            end
+
+            return {
+                expand = { insert = insert },
+                snippets = {
+                    -- Load custom file with global snippets first (adjust for Windows)
+                    gen_loader.from_file("~/.config/nvim/snippets/global.json"),
+
+                    -- Load snippets based on current language by reading files from
+                    -- "snippets/" subdirectories from 'runtimepath' directories.
+                    gen_loader.from_lang(),
+                },
+            }
+        end,
+    },
 
     {
         "echasnovski/mini.surround",

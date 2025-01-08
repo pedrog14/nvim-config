@@ -24,13 +24,13 @@ return {
     opts = function()
         ---@type lspconfig.Opts
         return {
-            settings = {
-                lua_ls = {
-                    Lua = {
-                        runtime = { version = "LuaJIT" },
-                    },
-                },
-            },
+            -- settings = {
+            --     lua_ls = {
+            --         Lua = {
+            --             runtime = { version = "LuaJIT" },
+            --         },
+            --     },
+            -- },
             capabilities = require("utils").plugins.lspconfig.client_capabilities(),
             on_attach = function(client, bufnr)
                 local lsp = vim.lsp
