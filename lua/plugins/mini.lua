@@ -61,24 +61,6 @@ return {
     },
 
     {
-        "echasnovski/mini.hipatterns",
-        event = { "BufNewFile", "BufReadPre" },
-        opts = function()
-            local hipatterns = require("mini.hipatterns")
-            local utils = require("utils").plugins.mini.hipatterns
-            return {
-                highlighters = {
-                    hex_color = hipatterns.gen_highlighter.hex_color({
-                        priority = 2000,
-                    }),
-                    hex_alpha_color = utils.hex_alpha_color({ priority = 2000 }),
-                    shorthand = utils.shorthand({ priority = 2000 }),
-                },
-            }
-        end,
-    },
-
-    {
         "echasnovski/mini.pairs",
         event = "InsertEnter",
         main = "utils.plugins.mini.pairs",
@@ -89,6 +71,24 @@ return {
             markdown = true,
         },
     },
+
+    -- {
+    --     "echasnovski/mini.snippets",
+    --     lazy = true,
+    --     opts = function()
+    --         local gen_loader = require("mini.snippets").gen_loader
+    --         return {
+    --             snippets = {
+    --                 -- Load custom file with global snippets first (adjust for Windows)
+    --                 gen_loader.from_file("~/.config/nvim/snippets/global.json"),
+    --
+    --                 -- Load snippets based on current language by reading files from
+    --                 -- "snippets/" subdirectories from 'runtimepath' directories.
+    --                 gen_loader.from_lang(),
+    --             },
+    --         }
+    --     end,
+    -- },
 
     {
         "echasnovski/mini.surround",

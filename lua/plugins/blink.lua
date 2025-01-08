@@ -1,6 +1,6 @@
 return {
     "Saghen/blink.cmp",
-    dependencies = "echasnovski/mini.icons",
+    dependencies = { "echasnovski/mini.icons", "echasnovski/mini.snippets" },
     version = "*",
     opts = function()
         local kind = vim.lsp.protocol.CompletionItemKind
@@ -21,6 +21,7 @@ return {
                 nerd_font_variant = "mono",
                 kind_icons = kind_icons,
             },
+            -- snippets = { preset = "mini_snippets" },
             sources = {
                 default = { "lsp", "path", "snippets", "buffer", "lazydev" },
                 providers = {
@@ -33,7 +34,7 @@ return {
             },
             completion = {
                 documentation = { auto_show = true },
-                list = { selection = "auto_insert" },
+                list = { selection = { preselect = false } },
                 menu = {
                     draw = {
                         columns = {
