@@ -80,7 +80,7 @@ return {
             local gen_loader = require("mini.snippets").gen_loader
 
             -- Custom expand: Insert
-            local insert = function(snippet, _)
+            local insert = function(snippet)
                 return MiniSnippets.default_insert(
                     snippet,
                     { empty_tabstop = "", empty_tabstop_final = "" }
@@ -91,7 +91,9 @@ return {
                 expand = { insert = insert },
                 snippets = {
                     -- Load custom file with global snippets first (adjust for Windows)
-                    gen_loader.from_file("~/.config/nvim/snippets/global.json"),
+                    gen_loader.from_file(
+                        vim.fn.stdpath("config") .. "/snippets/global.json"
+                    ),
 
                     -- Load snippets based on current language by reading files from
                     -- "snippets/" subdirectories from 'runtimepath' directories.
