@@ -1,6 +1,7 @@
 ---@class utils.plugins
----@field conform utils.plugins.conform
+---@field lint utils.plugins.lint
 ---@field lspconfig utils.plugins.lspconfig
+---@field mason utils.plugins.mason
 ---@field mini utils.plugins.mini
 ---@field snacks utils.plugins.snacks
 ---@field telescope utils.plugins.telescope
