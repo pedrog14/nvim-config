@@ -2,7 +2,7 @@ local _ = require("mason-core.functional")
 local settings = require("mason-lspconfig.settings")
 local platform = require("mason-core.platform")
 
----@class utils.plugins.mason-lspconfig
+---@class utils.plugins.mason.lspconfig
 local M = {}
 
 local check_and_notify_bad_setup_order = function()
