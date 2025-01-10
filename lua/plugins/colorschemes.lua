@@ -22,7 +22,7 @@ return {
                     NormalFloat = { bg = colors.none },
                     FloatBorder = { bg = colors.none },
 
-                    SignColumn = { bg = colors.none },
+                    SignColumn = { bg = colors.dark0 },
 
                     -- Plugin highlights
                     BufferLineOffsetTitle = {
@@ -54,6 +54,8 @@ return {
                     TelescopePromptBorder = { fg = colors.bright_blue },
                     TelescopePreviewBorder = { fg = colors.dark3 },
                     TelescopeResultsBorder = { fg = colors.dark3 },
+
+                    TroubleIconDirectory = { fg = colors.bright_blue },
                 },
             }
         end,
