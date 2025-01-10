@@ -2,6 +2,7 @@ return {
     {
         "williamboman/mason.nvim",
         lazy = false,
+        main = "utils.plugins.mason",
         keys = {
             {
                 "<leader>m",
@@ -18,6 +19,15 @@ return {
                     package_pending = "󰄱",
                     package_uninstalled = "󱋭",
                 },
+            },
+            ensure_installed = {
+                -- Formatters
+                "black",
+                "clang-format",
+                "fourmolu",
+                "prettier",
+                "shfmt",
+                "stylua",
             },
         },
     },
@@ -41,23 +51,6 @@ return {
                 "rust_analyzer",
                 "ts_ls",
                 "vimls",
-            },
-        },
-    },
-
-    {
-        "pedrog14/mason-conform.nvim",
-        dependencies = "williamboman/mason.nvim",
-        lazy = false,
-        main = "utils.plugins.mason.conform",
-        opts = {
-            ensure_installed = {
-                "black",
-                "clang-format",
-                "fourmolu",
-                "prettier",
-                "shfmt",
-                "stylua",
             },
         },
     },

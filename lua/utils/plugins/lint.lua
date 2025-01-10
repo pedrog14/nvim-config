@@ -1,10 +1,9 @@
-local M = {}
-
 local lint = require("lint")
 
-M.debounce = function(ms, fn)
-    local timer = vim.uv.new_timer()
+local M = {}
 
+function M.debounce(ms, fn)
+    local timer = vim.uv.new_timer()
     return function(...)
         local argv = { ... }
         timer:start(ms, 0, function()
@@ -22,7 +21,7 @@ function M.lint()
     local names = lint._resolve_linter_by_ft(vim.bo.filetype)
 
     -- Create a copy of the names table to avoid modifying the original.
-    names = vim.list_extend({}, names)
+    names = vim.list_extend({}, type(names) == "table" and names or { names })
 
     -- Add fallback linters.
     if #names == 0 then
@@ -38,11 +37,7 @@ function M.lint()
     names = vim.tbl_filter(function(name)
         local linter = lint.linters[name]
         if not linter then
-            vim.notify(
-                "Linter not found: " .. name,
-                vim.log.levels.WARN,
-                { title = "nvim-lint" }
-            )
+            LazyVim.warn("Linter not found: " .. name, { title = "nvim-lint" })
         end
         return linter
             and not (
@@ -59,11 +54,27 @@ function M.lint()
 end
 
 M.setup = function(opts)
+    opts.linters = opts.linters or {}
+    for name, linter in pairs(opts.linters) do
+        if type(linter) == "table" and type(lint.linters[name]) == "table" then
+            lint.linters[name] =
+                vim.tbl_deep_extend("force", lint.linters[name], linter)
+            if type(linter.prepend_args) == "table" then
+                lint.linters[name].args = lint.linters[name].args or {}
+                vim.list_extend(lint.linters[name].args, linter.prepend_args)
+            end
+        else
+            lint.linters[name] = linter
+        end
+    end
     lint.linters_by_ft = opts.linters_by_ft
 
     vim.api.nvim_create_autocmd(
         { "BufWritePost", "BufReadPost", "InsertLeave" },
-        { callback = M.debounce(100, M.lint) }
+        {
+            group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
+            callback = M.debounce(100, M.lint),
+        }
     )
 end
 

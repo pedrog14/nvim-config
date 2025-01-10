@@ -1,13 +1,25 @@
 local _ = require("mason-core.functional")
-local log = require("mason-core.log")
 local settings = require("mason-lspconfig.settings")
 local platform = require("mason-core.platform")
 
----@class utils.plugins.mason.lspconfig
+---@class utils.plugins.mason-lspconfig
 local M = {}
 
-local check_and_notify_bad_setup_order =
-    require("utils.plugins.mason").check_and_notify_bad_setup_order("lspconfig")
+local check_and_notify_bad_setup_order = function()
+    local mason_ok, mason = pcall(require, "mason")
+    local is_bad_order = not mason_ok or mason.has_setup == false
+    local impacts_functionality = not mason_ok
+        or #require("mason-lspconfig.settings").current.ensure_installed > 0
+    return function()
+        if is_bad_order and impacts_functionality then
+            vim.notify(
+                "mason.nvim has not been set up. Make sure to set up 'mason' before 'mason-lspconfig'.",
+                vim.log.levels.WARN,
+                { title = "mason-lspconfig.nvim" }
+            )
+        end
+    end
+end
 
 M.setup = function(config)
     if config then
