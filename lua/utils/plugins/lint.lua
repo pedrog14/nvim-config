@@ -1,5 +1,6 @@
 local lint = require("lint")
 
+---@class utils.plugins.lint
 local M = {}
 
 function M.debounce(ms, fn)

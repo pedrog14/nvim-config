@@ -1,5 +1,4 @@
 ---@class utils
----@field completion utils.completion
 ---@field icons utils.icons
 ---@field plugins utils.plugins
 local M = {}
