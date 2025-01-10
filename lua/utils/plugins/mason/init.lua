@@ -1,3 +1,5 @@
+---@class utils.plugins.mason
+---@field lspconfig utils.plugins.mason.lspconfig
 local M = {}
 
 M.setup = function(opts)
