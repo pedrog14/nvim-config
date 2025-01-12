@@ -40,6 +40,31 @@ return {
 
                     MasonNormal = { fg = colors.light1, bg = colors.dark1 },
 
+                    -- Don't understand why these doesn't work
+                    MiniSnippetsCurrent = {
+                        sp = colors.none,
+                        underdouble = false,
+                    },
+                    MiniSnippetsCurrentReplace = {
+                        sp = colors.none,
+                        underdouble = false,
+                    },
+                    MiniSnippetsFinal = {
+                        sp = colors.none,
+                        underdouble = false,
+                    },
+                    MiniSnippetsUnvisited = {
+                        sp = colors.none,
+                        underdouble = false,
+                    },
+                    MiniSnippetsVisited = {
+                        sp = colors.none,
+                        underdouble = false,
+                    },
+
+                    NeoTreeFloatBorder = { fg = colors.bright_blue },
+                    NeoTreeTitleBar = { bg = colors.bright_blue },
+
                     SnacksDashboardHeader = { fg = colors.bright_blue },
                     SnacksDashboardIcon = { fg = colors.light4 },
                     SnacksDashboardDesc = { fg = colors.light4 },

@@ -6,7 +6,6 @@ return {
         lualine_require.require = require
 
         local symbols = require("utils").icons.diagnostics
-
         return {
             options = {
                 theme = "auto",

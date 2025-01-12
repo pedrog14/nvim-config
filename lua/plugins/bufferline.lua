@@ -1,7 +1,7 @@
 return {
     "akinsho/bufferline.nvim",
     dependencies = "folke/snacks.nvim",
-    event = { "BufNewFile", "BufReadPre" },
+    event = "VeryLazy",
     opts = function()
         vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", {
             link = "Title",
@@ -37,7 +37,7 @@ return {
                             )
                         indicator = ("%s%s%s "):format(indicator, icon, number)
                     end
-                    return indicator
+                    return vim.trim(indicator)
                 end,
                 offsets = {
                     {

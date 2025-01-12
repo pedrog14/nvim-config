@@ -54,12 +54,9 @@ return {
                 { event = events.FILE_MOVED, handler = on_move },
                 { event = events.FILE_RENAMED, handler = on_move },
             },
-            popup_border_style = "rounded",
             use_popups_for_input = false,
             default_component_configs = {
-                indent = {
-                    with_expanders = true,
-                },
+                indent = { with_expanders = true },
             },
             filesystem = {
                 bind_to_cwd = false,

@@ -2,6 +2,7 @@ return {
     "Saghen/blink.cmp",
     dependencies = { "echasnovski/mini.icons", "echasnovski/mini.snippets" },
     build = "cargo build --release",
+    events = { "InsertEnter", "CmdlineEnter" },
     opts = function()
         local kind = vim.lsp.protocol.CompletionItemKind
         local kind_icons = {}
@@ -23,14 +24,7 @@ return {
             },
             snippets = { preset = "mini_snippets" },
             sources = {
-                default = { "lsp", "path", "snippets", "buffer", "lazydev" },
-                providers = {
-                    lazydev = {
-                        name = "LazyDev",
-                        module = "lazydev.integrations.blink",
-                        score_offset = 100, -- show at a higher priority than lsp
-                    },
-                },
+                default = { "lsp", "path", "snippets", "buffer" },
             },
             completion = {
                 documentation = { auto_show = true },
@@ -46,4 +40,5 @@ return {
             },
         }
     end,
+    opts_extend = { "sources.default" },
 }

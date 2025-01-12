@@ -21,11 +21,6 @@ return {
     opts = function()
         local icons = require("utils").icons.diagnostics
         return {
-            bigfile = { enabled = true },
-            quickfile = { enabled = true },
-            scope = { enabled = true },
-            statuscolumn = { enabled = true },
-            words = { enabled = true },
             indent = {
                 filter = { filetype = { "text" } },
             },
@@ -34,6 +29,12 @@ return {
                 icons = { warn = icons.warn },
                 notify_lsp_progress = true,
             },
+            scope = { enabled = true },
+            statuscolumn = { enabled = true },
+            words = { enabled = true },
+            bigfile = { enabled = true },
+            quickfile = { enabled = true },
+
             styles = {
                 notification = { wo = { wrap = true, winblend = 0 } },
                 lazygit = { backdrop = false },
@@ -45,6 +46,7 @@ return {
                     },
                 },
             },
+
             dashboard = {
                 preset = {
                     keys = {
