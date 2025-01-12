@@ -30,6 +30,7 @@ return {
                 "stylua",
             },
         },
+        opts_extend = { "ensure_installed" },
     },
 
     {
