@@ -1,7 +1,7 @@
 return {
     {
         "pedrog14/gruvbox.nvim",
-        branch = "refactoring",
+        branch = "refactor",
         lazy = false,
         priority = 1000,
         opts = function()
@@ -62,6 +62,11 @@ return {
                         underdouble = false,
                     },
 
+                    NeoTreeFloatTitle = {
+                        fg = colors.bright_blue,
+                        bg = colors.none,
+                        bold = false,
+                    },
                     NeoTreeFloatBorder = { fg = colors.bright_blue },
                     NeoTreeTitleBar = { bg = colors.bright_blue },
 
