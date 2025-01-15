@@ -20,6 +20,8 @@ return {
     main = "utils.plugins.snacks",
     opts = function()
         local icons = require("utils").icons.diagnostics
+        ---@diagnostic disable: missing-fields
+        ---@type snacks.Config
         return {
             indent = {
                 filter = { filetype = { "text" } },
@@ -47,6 +49,36 @@ return {
                 },
             },
 
+            picker = {
+                prompt = "󰁔 ",
+                layout = {
+                    layout = {
+                        backdrop = false,
+                        box = "horizontal",
+                        width = 0.8,
+                        min_width = 120,
+                        height = 0.8,
+                        {
+                            box = "vertical",
+                            border = "rounded",
+                            title = "{source} {live}",
+                            title_pos = "center",
+                            { win = "input", height = 1, border = "bottom" },
+                            { win = "list", border = "none" },
+                        },
+                        { win = "preview", border = "rounded", width = 0.5 },
+                    },
+                },
+                icons = {
+                    diagnostics = {
+                        Error = icons.error,
+                        Warn = icons.warn,
+                        Hint = icons.hint,
+                        Info = icons.info,
+                    },
+                },
+            },
+
             dashboard = {
                 preset = {
                     keys = {
@@ -61,15 +93,15 @@ return {
                             desc = "Find File",
                             key = "f",
                             action = function()
-                                require("telescope.builtin").find_files()
+                                Snacks.picker.files()
                             end,
                         },
                         {
                             icon = "󱋡",
                             desc = "Recent Files",
-                            key = "o",
+                            key = "r",
                             action = function()
-                                require("telescope.builtin").oldfiles()
+                                Snacks.picker.recent()
                             end,
                         },
                         {
@@ -77,7 +109,7 @@ return {
                             desc = "Config Files",
                             key = "c",
                             action = function()
-                                require("telescope.builtin").find_files({
+                                Snacks.picker.files({
                                     cwd = vim.fn.stdpath("config"),
                                 })
                             end,

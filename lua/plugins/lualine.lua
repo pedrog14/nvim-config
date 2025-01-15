@@ -10,7 +10,9 @@ return {
             options = {
                 theme = "auto",
                 globalstatus = true,
-                disabled_filetypes = { statusline = { "snacks_dashboard" } },
+                disabled_filetypes = {
+                    statusline = { "snacks_dashboard", "snacks_picker_input" },
+                },
             },
             sections = {
                 lualine_b = {
