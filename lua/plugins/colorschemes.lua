@@ -82,6 +82,8 @@ return {
 
                     SnacksPickerTitle = { fg = colors.bright_blue },
                     SnacksPickerBorder = { fg = colors.bright_blue },
+                    SnacksPickerPrompt = { fg = colors.bright_red },
+                    SnacksPickerDir = { fg = colors.gray },
 
                     TelescopeTitle = { fg = colors.bright_blue },
                     TelescopePromptBorder = { fg = colors.bright_blue },
