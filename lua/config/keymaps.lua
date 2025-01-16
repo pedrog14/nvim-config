@@ -102,11 +102,6 @@ vim.keymap.set(
     { desc = "Delete Buffer + Window" }
 )
 
--- Better Terminal control
-vim.keymap.set("n", "<c-/>", function()
-    Snacks.terminal.toggle()
-end, { desc = "Toggle Terminal" })
-
 -- Lazy
 vim.keymap.set("n", "<leader>l", function()
     require("lazy").show()
@@ -148,62 +143,3 @@ do
         desc = "Refresh the lenses",
     })
 end
-
--- Snacks
-vim.keymap.set("n", "<a-x>", function()
-    Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
-
-vim.keymap.set({ "n", "t" }, "[[", function()
-    Snacks.words.jump(-vim.v.count1)
-end, { desc = "Previous Reference" })
-vim.keymap.set({ "n", "t" }, "]]", function()
-    Snacks.words.jump(vim.v.count1)
-end, { desc = "Next Reference" })
-
-vim.keymap.set("n", "grN", function()
-    Snacks.rename.rename_file()
-end, { desc = "Rename file" })
-
-vim.keymap.set("n", "<leader>sf", function()
-    Snacks.picker.files()
-end, { desc = "Files (Snacks.picker)" })
-vim.keymap.set("n", "<leader>sg", function()
-    Snacks.picker.grep()
-end, { desc = "Grep (Snacks.picker)" })
-vim.keymap.set("n", "<leader>sb", function()
-    Snacks.picker.buffers()
-end, { desc = "Buffers (Snacks.picker)" })
-vim.keymap.set("n", "<leader>sh", function()
-    Snacks.picker.help()
-end, { desc = "Help (Snacks.picker)" })
-vim.keymap.set("n", "<leader>so", function()
-    Snacks.picker.recent()
-end, { desc = "Recent Files (Snacks.picker)" })
-vim.keymap.set("n", "<leader>sc", function()
-    Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
-end, { desc = "Config Files (Snacks.picker)" })
-
-vim.keymap.set("n", "gO", function()
-    Snacks.picker.lsp_symbols()
-end, { desc = "List all symbols in the current buffer in Snacks.picker" })
-vim.keymap.set("n", "grr", function()
-    Snacks.picker.lsp_references()
-end, {
-    desc = "Lists all the references to the symbol under the cursor in Snacks.picker",
-})
-vim.keymap.set("n", "gri", function()
-    Snacks.picker.lsp_implementations()
-end, {
-    desc = "Jumps to the implementation of the symbol under the cursor, if there's only one, otherwise show all options in Snacks.picker",
-})
-vim.keymap.set("n", "grd", function()
-    Snacks.picker.lsp_definitions()
-end, {
-    desc = "Jumps to the definition of the symbol under the cursor, if there's only one, otherwise show all options in Snacks.picker",
-})
-vim.keymap.set("n", "grt", function()
-    Snacks.picker.lsp_type_definitions()
-end, {
-    desc = "Jumps to the definition of the type of the symbol under the cursor, if there's only one, otherwise show all options in Snacks.picker",
-})

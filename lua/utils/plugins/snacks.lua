@@ -55,11 +55,10 @@ local notify_lsp_progress = function()
     })
 end
 
----@param filter? { filetype: string[] }
+---@param filter { filetype: string[] }
 ---@return fun(bufnr: number): boolean
-local set_indent_filter = function(filter)
+local gen_filter = function(filter)
     local exclude = nil
-    filter = filter or {}
 
     if filter.filetype then
         exclude = {}
@@ -80,11 +79,10 @@ M.setup = function(opts)
     opts = opts or {}
 
     -- Generate a filter function (indent)
+    ---@type { filter?: { filetype: string[] } | fun(bufnr: number): boolean }
     local indent = opts.indent or {}
-    if indent.filter then
-        local filter = indent.filter
-        indent.filter = type(filter) == "table" and set_indent_filter(filter)
-            or filter
+    if indent.filter and type(indent.filter) == "table" then
+        indent.filter = gen_filter(indent.filter)
     end
 
     require("snacks").setup(opts)
@@ -96,7 +94,7 @@ M.setup = function(opts)
     end
 
     -- Create LazyGit user command
-    local lazygit = Snacks.lazygit
+    local lazygit = require("snacks").lazygit
     vim.api.nvim_create_user_command("LazyGit", function(args)
         for key, _ in pairs(lazygit) do
             if args.args == key then

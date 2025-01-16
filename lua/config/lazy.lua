@@ -29,7 +29,10 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     spec = {
         { import = "plugins" },
+        { import = "plugins.colorscheme" },
         { import = "plugins.mini" },
+        { import = "plugins.snacks" },
+        { import = "plugins.treesitter" },
     },
     install = {
         colorscheme = { "gruvbox" },

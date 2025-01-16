@@ -4,7 +4,6 @@
 ---@field mason utils.plugins.mason
 ---@field mini utils.plugins.mini
 ---@field snacks utils.plugins.snacks
----@field telescope utils.plugins.telescope
 local M = {}
 
 setmetatable(M, {

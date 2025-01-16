@@ -5,7 +5,7 @@ return {
     main = "utils.plugins.lspconfig",
     init = function()
         local severity = vim.diagnostic.severity
-        local diagnostic_icons = require("utils").icons.diagnostics
+        local diagnostic_icons = require("utils.icons").diagnostic
         vim.diagnostic.config({
             signs = {
                 text = {
@@ -31,7 +31,7 @@ return {
                     },
                 },
             },
-            capabilities = require("utils").plugins.lspconfig.client_capabilities(),
+            capabilities = require("utils.plugins").lspconfig.client_capabilities(),
             on_attach = function(client, bufnr)
                 local lsp = vim.lsp
 

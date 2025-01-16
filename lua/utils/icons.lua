@@ -1,7 +1,7 @@
 ---@class utils.icons
 local M = {}
 
-M.diagnostics = {
+M.diagnostic = {
     error = " ",
     warn = " ",
     info = " ",
