@@ -8,7 +8,6 @@ return {
         ---@type GruvboxConfig
         return {
             group_override = {
-                -- Base highlights
                 DiagnosticSignError = { bg = colors.none },
                 DiagnosticSignWarn = { bg = colors.none },
                 DiagnosticSignHint = { bg = colors.none },
@@ -28,13 +27,16 @@ return {
                     bold = false,
                 },
 
-                FloatTitle = { bg = colors.none },
+                FloatTitle = {
+                    bg = colors.none,
+                    fg = colors.bright_blue,
+                    bold = false,
+                },
                 NormalFloat = { bg = colors.none },
                 FloatBorder = { bg = colors.none },
 
                 SignColumn = { bg = colors.dark0 },
 
-                -- Plugin highlights
                 BufferLineOffsetTitle = {
                     fg = colors.bright_blue,
                     bg = colors.dark0,
@@ -46,7 +48,6 @@ return {
                 },
 
                 LazyNormal = { fg = colors.light1, bg = colors.none },
-                -- LazyButton = { bg = colors.dark2 },
 
                 MasonNormal = { fg = colors.light1, bg = colors.none },
 
@@ -77,29 +78,47 @@ return {
                     bg = colors.none,
                     bold = false,
                 },
-                NeoTreeFloatBorder = { fg = colors.bright_blue },
                 NeoTreeTitleBar = { bg = colors.bright_blue },
 
+                -- Noice
                 NoiceCmdlineIcon = { fg = colors.bright_red },
+                NoiceCmdlineIconLua = { fg = colors.bright_blue },
 
+                NoiceCmdlinePopupBorder = { fg = colors.dark3 },
+
+                NoiceCmdlinePopupTitle = { fg = colors.bright_blue },
+                NoiceCmdlinePopupTitleLua = { link = "NoiceCmdlinePopupTitle" },
+                NoiceCmdlinePopupTitleHelp = { link = "NoiceCmdlinePopupTitle" },
+                NoiceCmdlinePopupTitleInput = {
+                    link = "NoiceCmdlinePopupTitle",
+                },
+                NoiceCmdlinePopupTitleFilter = {
+                    link = "NoiceCmdlinePopupTitle",
+                },
+                NoiceCmdlinePopupTitleCmdline = {
+                    link = "NoiceCmdlinePopupTitle",
+                },
+                NoiceCmdlinePopupTitleCalculator = {
+                    link = "NoiceCmdlinePopupTitle",
+                },
+
+                -- Snacks
                 SnacksDashboardHeader = { fg = colors.bright_blue },
                 SnacksDashboardIcon = { fg = colors.light4 },
                 SnacksDashboardDesc = { fg = colors.light4 },
                 SnacksDashboardKey = { fg = colors.bright_blue },
                 SnacksDashboardFooter = { fg = colors.bright_orange },
 
-                SnacksInputTitle = { fg = colors.bright_blue },
-                SnacksInputBorder = { fg = colors.bright_blue },
+                SnacksInputTitle = { link = "FloatTitle" },
+                SnacksInputBorder = { link = "FloatBorder" },
                 SnacksInputIcon = { fg = colors.bright_red },
 
                 SnacksPicker = { fg = colors.light1, bg = colors.none },
-                SnacksPickerTitle = { fg = colors.bright_blue },
-                SnacksPickerBorder = { fg = colors.bright_blue },
+                SnacksPickerTitle = { link = "FloatTitle" },
                 SnacksPickerPrompt = { fg = colors.bright_red },
                 SnacksPickerDir = { fg = colors.gray },
 
                 TelescopeTitle = { fg = colors.bright_blue },
-                TelescopeBorder = { fg = colors.bright_blue },
 
                 TroubleIconDirectory = { fg = colors.bright_blue },
             },
