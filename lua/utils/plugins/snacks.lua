@@ -82,7 +82,8 @@ M.setup = function(opts)
     ---@type { filter?: { filetype: string[] } | fun(bufnr: number): boolean }
     local indent = opts.indent or {}
     if indent.filter and type(indent.filter) == "table" then
-        indent.filter = gen_filter(indent.filter)
+        indent.filter =
+            gen_filter(indent.filter --[[@as { filetype: string[] }]])
     end
 
     require("snacks").setup(opts)

@@ -42,6 +42,7 @@ require("lazy").setup({
         notify = false,
     },
     ui = {
+        border = "rounded",
         backdrop = 100,
         icons = {
             loaded = "󰱒",

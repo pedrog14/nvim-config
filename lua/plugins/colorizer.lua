@@ -3,7 +3,7 @@ return {
     event = "VeryLazy",
     opts = {
         lazy_load = true,
-        filetypes = { "*", "!lazy", "!mason", "!TelescopePrompt" },
+        filetypes = { "*", "!lazy", "!mason", "!snacks_picker_input" },
         user_default_options = { css = true },
     },
 }

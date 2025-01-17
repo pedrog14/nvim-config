@@ -29,7 +29,7 @@ return {
             function()
                 Snacks.picker.help()
             end,
-            desc = "Help (Snacks.picker)",
+            desc = "Help Pages (Snacks.picker)",
         },
         {
             "<leader>sr",
@@ -56,7 +56,7 @@ return {
         {
             "grr",
             function()
-                Snacks.picker.lsp_symbols()
+                Snacks.picker.lsp_references()
             end,
             desc = "List all symbols in the current buffer (Snacks.picker)",
         },

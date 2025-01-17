@@ -11,7 +11,7 @@ return {
                 theme = "auto",
                 globalstatus = true,
                 disabled_filetypes = {
-                    statusline = { "snacks_dashboard", "snacks_picker_input" },
+                    statusline = { "snacks_dashboard" },
                 },
             },
             sections = {

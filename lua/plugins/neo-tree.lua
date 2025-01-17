@@ -31,42 +31,20 @@ return {
             end,
         })
     end,
-    opts = function()
-        vim.api.nvim_create_autocmd("TermClose", {
-            pattern = "*lazygit",
-            callback = function()
-                if package.loaded["neo-tree.sources.git_status"] then
-                    require("neo-tree.sources.git_status").refresh()
-                end
-            end,
-        })
-
-        local on_move = function(data)
-            require("snacks").rename.on_rename_file(
-                data.source,
-                data.destination
-            )
-        end
-        local events = require("neo-tree.events")
-
-        return {
-            event_handlers = {
-                { event = events.FILE_MOVED, handler = on_move },
-                { event = events.FILE_RENAMED, handler = on_move },
+    main = "utils.plugins.neo-tree",
+    opts = {
+        popup_border_style = "rounded",
+        default_component_configs = {
+            indent = { with_expanders = true },
+        },
+        filesystem = {
+            bind_to_cwd = false,
+            follow_current_file = { enabled = true },
+            use_libuv_file_watcher = true,
+            filtered_items = {
+                hide_dotfiles = false,
+                hide_gitignored = false,
             },
-            popup_border_style = "rounded",
-            default_component_configs = {
-                indent = { with_expanders = true },
-            },
-            filesystem = {
-                bind_to_cwd = false,
-                follow_current_file = { enabled = true },
-                use_libuv_file_watcher = true,
-                filtered_items = {
-                    hide_dotfiles = false,
-                    hide_gitignored = false,
-                },
-            },
-        }
-    end,
+        },
+    },
 }

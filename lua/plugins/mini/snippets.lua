@@ -4,7 +4,6 @@ return {
     lazy = true,
     opts = function()
         local gen_loader = require("mini.snippets").gen_loader
-
         return {
             expand = {
                 insert = function(snippet)

@@ -35,11 +35,26 @@ return {
             on_attach = function(client, bufnr)
                 local lsp = vim.lsp
 
-                if client:supports_method("textDocument/inlayHint", bufnr) then
+                client.supports_method(
+                    "textDocument/inlayHint",
+                    { bufnr = bufnr }
+                )
+
+                if
+                    client.supports_method(
+                        "textDocument/inlayHint",
+                        { bufnr = bufnr }
+                    )
+                then
                     lsp.inlay_hint.enable(true, { bufnr = bufnr })
                 end
 
-                if client:supports_method("textDocument/codeLens", bufnr) then
+                if
+                    client.supports_method(
+                        "textDocument/codeLens",
+                        { bufnr = bufnr }
+                    )
+                then
                     lsp.codelens.refresh({ bufnr = bufnr })
 
                     vim.api.nvim_create_autocmd(

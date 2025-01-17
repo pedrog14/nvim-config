@@ -17,6 +17,17 @@ return {
 
                 CursorLineNr = { bg = colors.none, bold = true },
 
+                Error = {
+                    fg = colors.bright_red,
+                    bg = colors.none,
+                    bold = false,
+                },
+                ErrorMsg = {
+                    fg = colors.bright_red,
+                    bg = colors.none,
+                    bold = false,
+                },
+
                 FloatTitle = { bg = colors.none },
                 NormalFloat = { bg = colors.none },
                 FloatBorder = { bg = colors.none },
@@ -34,10 +45,10 @@ return {
                     bg = colors.dark0,
                 },
 
-                LazyNormal = { fg = colors.light1, bg = colors.dark1 },
-                LazyButton = { bg = colors.dark2 },
+                LazyNormal = { fg = colors.light1, bg = colors.none },
+                -- LazyButton = { bg = colors.dark2 },
 
-                MasonNormal = { fg = colors.light1, bg = colors.dark1 },
+                MasonNormal = { fg = colors.light1, bg = colors.none },
 
                 -- Don't understand why these doesn't work
                 MiniSnippetsCurrent = {
@@ -69,6 +80,8 @@ return {
                 NeoTreeFloatBorder = { fg = colors.bright_blue },
                 NeoTreeTitleBar = { bg = colors.bright_blue },
 
+                NoiceCmdlineIcon = { fg = colors.bright_red },
+
                 SnacksDashboardHeader = { fg = colors.bright_blue },
                 SnacksDashboardIcon = { fg = colors.light4 },
                 SnacksDashboardDesc = { fg = colors.light4 },
@@ -79,15 +92,14 @@ return {
                 SnacksInputBorder = { fg = colors.bright_blue },
                 SnacksInputIcon = { fg = colors.bright_red },
 
+                SnacksPicker = { fg = colors.light1, bg = colors.none },
                 SnacksPickerTitle = { fg = colors.bright_blue },
                 SnacksPickerBorder = { fg = colors.bright_blue },
                 SnacksPickerPrompt = { fg = colors.bright_red },
                 SnacksPickerDir = { fg = colors.gray },
 
                 TelescopeTitle = { fg = colors.bright_blue },
-                TelescopePromptBorder = { fg = colors.bright_blue },
-                TelescopePreviewBorder = { fg = colors.dark3 },
-                TelescopeResultsBorder = { fg = colors.dark3 },
+                TelescopeBorder = { fg = colors.bright_blue },
 
                 TroubleIconDirectory = { fg = colors.bright_blue },
             },

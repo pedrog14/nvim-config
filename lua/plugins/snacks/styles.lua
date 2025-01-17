@@ -4,7 +4,7 @@ return {
     opts = {
         styles = {
             notification = { wo = { wrap = true, winblend = 0 } },
-            lazygit = { backdrop = false },
+            lazygit = { backdrop = false, border = "rounded" },
             input = {
                 keys = {
                     esc = { "<esc>", "cancel" },
