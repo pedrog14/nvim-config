@@ -1,6 +1,6 @@
 return {
     "pedrog14/gruvbox.nvim",
-    branch = "refactor",
+    branch = "testing",
     lazy = false,
     priority = 1000,
     opts = function()
