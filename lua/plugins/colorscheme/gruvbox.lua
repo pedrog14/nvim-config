@@ -51,28 +51,6 @@ return {
 
                 MasonNormal = { fg = colors.light1, bg = colors.none },
 
-                -- Don't understand why these doesn't work
-                MiniSnippetsCurrent = {
-                    sp = colors.none,
-                    underdouble = false,
-                },
-                MiniSnippetsCurrentReplace = {
-                    sp = colors.none,
-                    underdouble = false,
-                },
-                MiniSnippetsFinal = {
-                    sp = colors.none,
-                    underdouble = false,
-                },
-                MiniSnippetsUnvisited = {
-                    sp = colors.none,
-                    underdouble = false,
-                },
-                MiniSnippetsVisited = {
-                    sp = colors.none,
-                    underdouble = false,
-                },
-
                 NeoTreeFloatTitle = {
                     fg = colors.bright_blue,
                     bg = colors.none,

@@ -7,7 +7,6 @@ return {
             lazygit = { backdrop = false, border = "rounded" },
             input = {
                 keys = {
-                    esc = { "<esc>", "cancel" },
                     i_esc = { "<esc>", "stopinsert", mode = "i" },
                     i_cr = { "<cr>", "confirm", mode = "i" },
                 },

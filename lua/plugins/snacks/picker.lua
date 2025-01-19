@@ -15,12 +15,16 @@ return {
                     {
                         box = "vertical",
                         border = "rounded",
-                        title = "{source} {live}",
-                        title_pos = "center",
+                        title = "{source} {live} {flags}",
                         { win = "input", height = 1, border = "bottom" },
                         { win = "list", border = "none" },
                     },
-                    { win = "preview", border = "rounded", width = 0.5 },
+                    {
+                        win = "preview",
+                        title = "{preview}",
+                        border = "rounded",
+                        width = 0.5,
+                    },
                 },
             },
             icons = {

@@ -63,7 +63,7 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<a-l>", "<cmd>bnext<cr>", { desc = "Go to Next Buffer" })
 
--- Better Window control
+-- -- Better Window control
 vim.keymap.set(
     "n",
     "<c-h>",
@@ -89,12 +89,6 @@ vim.keymap.set(
     { desc = "Go to Right Window", remap = true }
 )
 
--- Splits
-vim.keymap.set("n", "<a-s>", "<c-w>s", { desc = "Split Window (Horizontal)" })
-vim.keymap.set("n", "<a-v>", "<c-w>v", { desc = "Split Window (Vertical)" })
-
--- Delete Buffer/Window
-vim.keymap.set("n", "<a-c>", "<cmd>quit<cr>", { desc = "Delete Window" })
 vim.keymap.set(
     "n",
     "<a-X>",
