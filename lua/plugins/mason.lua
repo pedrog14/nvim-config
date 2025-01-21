@@ -1,6 +1,6 @@
 return {
     {
-        "williamboman/mason.nvim",
+        "pedrog14/mason.nvim",
         lazy = false,
         main = "utils.plugins.mason",
         keys = {
@@ -36,7 +36,7 @@ return {
 
     {
         "williamboman/mason-lspconfig.nvim",
-        dependencies = "williamboman/mason.nvim",
+        dependencies = "pedrog14/mason.nvim",
         lazy = false,
         main = "utils.plugins.mason.lspconfig",
         opts = {

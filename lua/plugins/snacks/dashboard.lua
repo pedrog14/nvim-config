@@ -32,9 +32,9 @@ return {
                         desc = "Config Files",
                         key = "c",
                         action = function()
-                            ---@diagnostic disable-next-line: missing-fields
-                            Snacks.picker.files({
+                            Snacks.picker.files({ ---@diagnostic disable-line: missing-fields
                                 cwd = vim.fn.stdpath("config"), ---@diagnostic disable-line: assign-type-mismatch
+                                title = "Config Files",
                             })
                         end,
                     },

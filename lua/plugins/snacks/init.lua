@@ -41,7 +41,10 @@ return {
         {
             "<leader>sc",
             function()
-                Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+                Snacks.picker.files({ ---@diagnostic disable-line: missing-fields
+                    cwd = vim.fn.stdpath("config"), ---@diagnostic disable-line: assign-type-mismatch
+                    title = "Config Files",
+                })
             end,
             desc = "Config Files (Snacks.picker)",
         },
