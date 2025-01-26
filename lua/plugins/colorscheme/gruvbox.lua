@@ -43,6 +43,10 @@ return {
 
                 NeoTreeFloatTitle = { bg = colors.none },
                 NeoTreeTitleBar = { bg = colors.bright_blue },
+
+                WhichKeyNormal = { bg = colors.none },
+                WhichKeyTitle = { bg = colors.none },
+                WhichKeyBorder = { bg = colors.none },
             },
         }
     end,

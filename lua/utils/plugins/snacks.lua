@@ -86,13 +86,7 @@ M.setup = function(opts)
             gen_filter(indent.filter --[[@as { filetype: string[] }]])
     end
 
-    local notify = vim.notify
-
     require("snacks").setup(opts)
-
-    if require("lazy.core.config").plugins["noice.nvim"] then
-        vim.notify = notify
-    end
 
     -- Enable LSP progress notification
     local notifier = opts.notifier or {}
