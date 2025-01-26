@@ -24,7 +24,7 @@ return {
     opts = function()
         ---@type lspconfig.Opts
         return {
-            capabilities = require("utils.plugins").lspconfig.client_capabilities(),
+            capabilities = require("utils.plugins.lspconfig").client_capabilities(),
             on_attach = function(client, bufnr)
                 local lsp = vim.lsp
 
