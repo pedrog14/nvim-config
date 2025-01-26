@@ -1,4 +1,4 @@
 ---@class lspconfig.Opts
----@field settings? table<string, table>
 ---@field capabilities? lsp.ClientCapabilities
 ---@field on_attach? fun(client: vim.lsp.Client, bufnr: integer)
+---@field settings? table<string, table>

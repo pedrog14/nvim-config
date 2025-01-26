@@ -31,10 +31,4 @@ M.setup = function(opts)
     end)
 end
 
-setmetatable(M, {
-    __index = function(_, k)
-        return require("utils.plugins.mason." .. k)
-    end,
-})
-
 return M

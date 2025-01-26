@@ -78,12 +78,7 @@ return {
                     padding = 2,
                 },
                 { section = "keys", gap = 1, padding = 2 },
-                {
-                    footer = table.concat({
-                        "I think we can put our differences behind us.",
-                        "For science. You monster. - GLaDOS",
-                    }, "\n"),
-                },
+                { section = "startup" },
             },
         },
     },

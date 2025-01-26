@@ -10,6 +10,7 @@ return {
 
             css = { "prettier" },
             html = { "prettier" },
+            markdown = { "prettier" },
             javascript = { "prettier" },
             typescript = { "prettier" },
             json = { "prettier" },

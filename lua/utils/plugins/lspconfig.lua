@@ -27,14 +27,14 @@ M.setup = function(opts)
 
     require("mason-lspconfig").setup_handlers({
         function(server_name)
-            local settings, capabilities, on_attach =
-                opts.settings and opts.settings[server_name],
+            local capabilities, on_attach, settings =
                 opts.capabilities,
-                opts.on_attach
+                opts.on_attach,
+                opts.settings and opts.settings[server_name]
             require("lspconfig")[server_name].setup({
-                settings = settings,
                 capabilities = capabilities,
                 on_attach = on_attach,
+                settings = settings,
             })
         end,
     })
