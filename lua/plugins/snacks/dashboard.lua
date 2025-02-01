@@ -1,6 +1,5 @@
 return {
     "folke/snacks.nvim",
-    optional = true,
     opts = {
         dashboard = {
             preset = {
@@ -32,8 +31,8 @@ return {
                         desc = "Config Files",
                         key = "c",
                         action = function()
-                            Snacks.picker.files({ ---@diagnostic disable-line: missing-fields
-                                cwd = vim.fn.stdpath("config"), ---@diagnostic disable-line: assign-type-mismatch
+                            Snacks.explorer({ --[[@diagnostic disable-line: missing-fields]]
+                                cwd = vim.fn.stdpath("config"), --[[@diagnostic disable-line: assign-type-mismatch]]
                                 title = "Config Files",
                             })
                         end,

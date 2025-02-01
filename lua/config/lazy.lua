@@ -10,7 +10,6 @@ if not vim.uv.fs_stat(lazypath) then
         "git",
         "clone",
         "--filter=blob:none",
-        "--branch=stable",
         lazyrepo,
         lazypath,
     })
@@ -42,7 +41,6 @@ require("lazy").setup({
         notify = false,
     },
     ui = {
-        border = "rounded",
         backdrop = 100,
         icons = {
             loaded = "󰱒",

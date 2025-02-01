@@ -1,6 +1,6 @@
 return {
     "folke/snacks.nvim",
     opts = {
-        input = { icon = "󰁔" },
+        explorer = { replace_netrw = true },
     },
 }

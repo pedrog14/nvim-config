@@ -1,6 +1,5 @@
 return {
     "folke/snacks.nvim",
-    optional = true,
     opts = {
         styles = {
             notification = { wo = { wrap = true, winblend = 0 } },

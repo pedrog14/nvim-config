@@ -8,11 +8,9 @@ return {
         ---@type GruvboxConfig
         return {
             group_override = {
-                DiagnosticSignError = { bg = colors.none },
-                DiagnosticSignWarn = { bg = colors.none },
-                DiagnosticSignHint = { bg = colors.none },
-                DiagnosticSignInfo = { bg = colors.none },
-                DiagnosticSignOk = { bg = colors.none },
+                NormalFloat = { bg = colors.none },
+                FloatTitle = { bg = colors.none },
+                FloatBorder = { bg = colors.none },
 
                 CursorLineNr = { bg = colors.none, bold = true },
 
@@ -27,22 +25,16 @@ return {
                     bold = false,
                 },
 
-                Title = {
-                    fg = colors.bright_blue,
-                    bg = colors.none,
-                },
-                FloatTitle = { bg = colors.none },
-                NormalFloat = { bg = colors.none },
-                FloatBorder = { bg = colors.none },
+                Removed = { fg = colors.bright_red },
+
+                Title = { fg = colors.bright_blue },
 
                 SignColumn = { bg = colors.dark0 },
 
-                LazyNormal = { fg = colors.light1, bg = colors.none },
+                MasonNormal = { fg = colors.light1, bg = colors.dark1 },
 
-                MasonNormal = { fg = colors.light1, bg = colors.none },
-
-                NeoTreeFloatTitle = { bg = colors.none },
-                NeoTreeTitleBar = { bg = colors.bright_blue },
+                SnacksPickerDirectory = { fg = colors.light1, bold = true },
+                SnacksPickerGitStatusUntracked = { fg = colors.bright_purple },
 
                 WhichKeyNormal = { bg = colors.none },
                 WhichKeyTitle = { bg = colors.none },

@@ -27,10 +27,7 @@ return {
                 default = { "lsp", "path", "snippets", "buffer" },
             },
             completion = {
-                documentation = {
-                    auto_show = true,
-                    window = { border = "rounded" },
-                },
+                documentation = { auto_show = true },
                 list = { selection = { preselect = false } },
                 menu = {
                     draw = {

@@ -14,8 +14,8 @@ return {
             options = {
                 numbers = function(num)
                     return ("%s·%s"):format(
-                        num.raise(num.id), ---@diagnostic disable-line: undefined-field
-                        num.lower(num.ordinal) ---@diagnostic disable-line: undefined-field
+                        num.raise(num.id), --[[@diagnostic disable-line: undefined-field]]
+                        num.lower(num.ordinal) --[[@diagnostic disable-line: undefined-field]]
                     )
                 end,
                 close_command = function(n)
@@ -47,6 +47,9 @@ return {
                         text = "Neo-Tree",
                         highlight = "BufferLineOffsetTitle",
                         text_align = "left",
+                    },
+                    {
+                        filetype = "snacks_layout_box",
                     },
                 },
             },

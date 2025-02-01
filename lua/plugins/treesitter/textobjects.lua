@@ -6,7 +6,6 @@ return {
 
     {
         "nvim-treesitter/nvim-treesitter",
-        optional = true,
         opts = {
             textobjects = {
                 move = {

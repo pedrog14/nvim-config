@@ -1,6 +1,5 @@
 return {
     "folke/snacks.nvim",
-    optional = true,
     opts = function(_, opts)
         local diagnostic_icons = require("utils.icons").diagnostic
         opts.notifier = {

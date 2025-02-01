@@ -1,6 +1,5 @@
 return {
     "folke/snacks.nvim",
-    optional = true,
     opts = function(_, opts)
         local diagnostic_icons = require("utils.icons").diagnostic
         opts.picker = {
@@ -8,23 +7,6 @@ return {
             layout = {
                 layout = {
                     backdrop = false,
-                    box = "horizontal",
-                    width = 0.8,
-                    min_width = 120,
-                    height = 0.8,
-                    {
-                        box = "vertical",
-                        border = "rounded",
-                        title = "{source} {live} {flags}",
-                        { win = "input", height = 1, border = "bottom" },
-                        { win = "list", border = "none" },
-                    },
-                    {
-                        win = "preview",
-                        title = "{preview}",
-                        border = "rounded",
-                        width = 0.5,
-                    },
                 },
             },
             icons = {
@@ -33,6 +15,17 @@ return {
                     Warn = diagnostic_icons.warn,
                     Hint = diagnostic_icons.hint,
                     Info = diagnostic_icons.info,
+                },
+                git = {
+                    commit = "", -- used by git log
+                    staged = "●", -- staged changes. always overrides the type icons
+                    added = "",
+                    deleted = "",
+                    ignored = " ",
+                    modified = "○",
+                    renamed = "",
+                    unmerged = " ",
+                    untracked = "?",
                 },
             },
         }

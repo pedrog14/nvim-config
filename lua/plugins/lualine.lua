@@ -7,12 +7,10 @@ return {
 
         local snacks_picker = {
             sections = {
-                lualine_a = { "mode" },
-                lualine_b = {
+                lualine_a = {
                     function()
                         return "Snacks.picker"
                     end,
-                    "Snacks.picker.current.title",
                 },
             },
             filetypes = {

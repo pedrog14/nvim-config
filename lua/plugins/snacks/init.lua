@@ -4,6 +4,14 @@ return {
     priority = 1000,
     keys = {
         {
+            "<leader>e",
+            function()
+                Snacks.explorer()
+            end,
+            desc = "Toggle Explorer (Snacks.picker)",
+        },
+
+        {
             "<leader>sf",
             function()
                 Snacks.picker.files()
@@ -39,10 +47,17 @@ return {
             desc = "Recent Files (Snacks.picker)",
         },
         {
+            "<leader>se",
+            function()
+                Snacks.picker.explorer()
+            end,
+            desc = "Explorer (Snacks.picker)",
+        },
+        {
             "<leader>sc",
             function()
-                Snacks.picker.files({ ---@diagnostic disable-line: missing-fields
-                    cwd = vim.fn.stdpath("config"), ---@diagnostic disable-line: assign-type-mismatch
+                Snacks.picker.explorer({
+                    cwd = vim.fn.stdpath("config"), --[[@diagnostic disable-line: assign-type-mismatch]]
                     title = "Config Files",
                 })
             end,
