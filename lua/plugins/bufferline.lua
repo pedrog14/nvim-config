@@ -9,23 +9,33 @@ return {
         })
 
         ---@type bufferline.Config
-        ---@diagnostic disable-next-line: missing-fields
-        return {
+        return { --[[@diagnostic disable-line: missing-fields]]
             options = {
-                numbers = function(num)
-                    return ("%s·%s"):format(
-                        num.raise(num.id), --[[@diagnostic disable-line: undefined-field]]
-                        num.lower(num.ordinal) --[[@diagnostic disable-line: undefined-field]]
-                    )
-                end,
+                always_show_bufferline = false,
+                diagnostics = "nvim_lsp",
+                offsets = {
+                    {
+                        filetype = "neo-tree",
+                        text = "Neo-Tree",
+                        highlight = "BufferLineOffsetTitle",
+                        text_align = "left",
+                    },
+                    {
+                        filetype = "snacks_layout_box",
+                    },
+                },
                 close_command = function(n)
                     Snacks.bufdelete(n)
                 end,
                 right_mouse_command = function(n)
                     Snacks.bufdelete(n)
                 end,
-                always_show_bufferline = false,
-                diagnostics = "nvim_lsp",
+                numbers = function(num)
+                    return ("%s·%s"):format(
+                        num.raise(num.id), --[[@diagnostic disable-line: undefined-field]]
+                        num.lower(num.ordinal) --[[@diagnostic disable-line: undefined-field]]
+                    )
+                end,
                 diagnostics_indicator = function(_, _, diagnostics_dict)
                     local diagnostic_icons = require("utils.icons").diagnostic
                     local indicator = ""
@@ -41,17 +51,6 @@ return {
                     end
                     return vim.trim(indicator)
                 end,
-                offsets = {
-                    {
-                        filetype = "neo-tree",
-                        text = "Neo-Tree",
-                        highlight = "BufferLineOffsetTitle",
-                        text_align = "left",
-                    },
-                    {
-                        filetype = "snacks_layout_box",
-                    },
-                },
             },
         }
     end,

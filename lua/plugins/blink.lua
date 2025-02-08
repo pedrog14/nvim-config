@@ -8,7 +8,7 @@ return {
         local kind_icons = {}
 
         for _, symbol in ipairs(kind) do
-            kind_icons[symbol] = MiniIcons.get("lsp", symbol:lower()) ---@diagnostic disable-line: undefined-field
+            kind_icons[symbol] = MiniIcons.get("lsp", symbol:lower()) --[[@diagnostic disable-line: undefined-field]]
         end
 
         ---@type blink.cmp.Config
