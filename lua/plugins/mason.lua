@@ -1,8 +1,7 @@
 return {
     {
-        "pedrog14/mason.nvim",
+        "williamboman/mason.nvim",
         lazy = false,
-        main = "utils.plugins.mason",
         keys = {
             {
                 "<leader>m",
@@ -12,6 +11,7 @@ return {
                 desc = "Open Mason",
             },
         },
+        main = "utils.plugins.mason",
         opts = {
             ui = {
                 icons = {

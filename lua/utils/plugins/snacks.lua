@@ -19,12 +19,9 @@ local notify_lsp_progress = function()
                     p[i] = {
                         token = ev.data.params.token,
                         msg = ("[%3d%%] %s%s"):format(
-                            value.kind == "end" and 100
-                                or value.percentage
-                                or 100,
+                            value.kind == "end" and 100 or value.percentage or 100,
                             value.title or "",
-                            value.message and (" **%s**"):format(value.message)
-                                or ""
+                            value.message and (" **%s**"):format(value.message) or ""
                         ),
                         done = value.kind == "end",
                     }
@@ -82,8 +79,7 @@ M.setup = function(opts)
     ---@type { filter?: { filetype: string[] } | fun(bufnr: number): boolean }
     local indent = opts.indent or {}
     if indent.filter and type(indent.filter) == "table" then
-        indent.filter =
-            gen_filter(indent.filter --[[@as { filetype: string[] }]])
+        indent.filter = gen_filter(indent.filter --[[@as { filetype: string[] }]])
     end
 
     require("snacks").setup(opts)

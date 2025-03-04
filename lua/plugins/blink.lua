@@ -1,7 +1,7 @@
 return {
     "Saghen/blink.cmp",
     dependencies = { "echasnovski/mini.icons", "echasnovski/mini.snippets" },
-    build = "cargo build --release",
+    version = "*",
     events = { "InsertEnter", "CmdlineEnter" },
     opts = function()
         local kind = vim.lsp.protocol.CompletionItemKind
@@ -11,11 +11,10 @@ return {
             kind_icons[symbol] = MiniIcons.get("lsp", symbol:lower()) --[[@diagnostic disable-line: undefined-field]]
         end
 
-        ---@type blink.cmp.Config
-        return {
+        return { --[[@type blink.cmp.Config]]
             keymap = {
                 preset = "default",
-                ["<c-n>"] = { "select_next", "show" },
+                ["<c-n>"] = { "select_next", "show", "fallback" },
             },
             appearance = {
                 use_nvim_cmp_as_default = true,

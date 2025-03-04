@@ -32,10 +32,7 @@ return {
         return {
             expand = {
                 insert = function(snippet)
-                    return MiniSnippets.default_insert(
-                        snippet,
-                        { empty_tabstop = "", empty_tabstop_final = "" }
-                    )
+                    return MiniSnippets.default_insert(snippet, { empty_tabstop = "", empty_tabstop_final = "" })
                 end,
             },
             mappings = {
@@ -47,9 +44,7 @@ return {
             },
             snippets = {
                 -- Load custom file with global snippets first (adjust for Windows)
-                gen_loader.from_file(
-                    vim.fn.stdpath("config") .. "/snippets/global.json"
-                ),
+                gen_loader.from_file(vim.fn.stdpath("config") .. "/snippets/global.json"),
 
                 -- Load snippets based on current language by reading files from
                 -- "snippets/" subdirectories from 'runtimepath' directories.

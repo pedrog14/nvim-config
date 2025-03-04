@@ -2,14 +2,11 @@ return {
     "pedrog14/gruvbox.nvim",
     lazy = false,
     priority = 1000,
-    opts = function()
-        local colors = require("gruvbox.colors").palette
-        ---@type GruvboxConfig
-        return {
-            group_override = {
-                CursorLineNr = { bg = colors.none, bold = true },
-                SignColumn = { bg = colors.dark0 },
-            },
-        }
-    end,
+    opts = { --[[@type GruvboxConfig]]
+        group_override = function(highlights, colors)
+            local hl = highlights
+            hl.CursorLineNr = { fg = colors.yellow, bg = colors.none, bold = true }
+            hl.SignColumn = { bg = colors.bg0 }
+        end,
+    },
 }

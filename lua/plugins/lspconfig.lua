@@ -2,17 +2,16 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = "williamboman/mason-lspconfig.nvim",
     event = { "BufNewFile", "BufReadPre" },
-    main = "utils.plugins.lspconfig",
     init = function()
         local severity = vim.diagnostic.severity
         local diagnostic_icons = require("utils.icons").diagnostic
         vim.diagnostic.config({
             signs = {
                 text = {
-                    [severity.E] = diagnostic_icons.error,
-                    [severity.W] = diagnostic_icons.warn,
-                    [severity.I] = diagnostic_icons.info,
-                    [severity.N] = diagnostic_icons.hint,
+                    [severity.ERROR] = diagnostic_icons.error,
+                    [severity.WARN] = diagnostic_icons.warn,
+                    [severity.INFO] = diagnostic_icons.info,
+                    [severity.HINT] = diagnostic_icons.hint,
                 },
             },
             virtual_text = {
@@ -21,6 +20,7 @@ return {
             severity_sort = true,
         })
     end,
+    main = "utils.plugins.lspconfig",
     opts = function()
         ---@type lspconfig.Opts
         return {
@@ -28,26 +28,11 @@ return {
             on_attach = function(client, bufnr)
                 local lsp = vim.lsp
 
-                client.supports_method(
-                    "textDocument/inlayHint",
-                    { bufnr = bufnr }
-                )
-
-                if
-                    client.supports_method(
-                        "textDocument/inlayHint",
-                        { bufnr = bufnr }
-                    )
-                then
+                if client.supports_method("textDocument/inlayHint", { bufnr = bufnr }) then
                     lsp.inlay_hint.enable(true, { bufnr = bufnr })
                 end
 
-                if
-                    client.supports_method(
-                        "textDocument/codeLens",
-                        { bufnr = bufnr }
-                    )
-                then
+                if client.supports_method("textDocument/codeLens", { bufnr = bufnr }) then
                     lsp.codelens.refresh({ bufnr = bufnr })
 
                     vim.api.nvim_create_autocmd(

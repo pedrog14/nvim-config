@@ -3,6 +3,5 @@ return {
     event = { "BufNewFile", "BufReadPre" },
     opts = {
         max_lines = 3,
-        -- separator = "─",
     },
 }

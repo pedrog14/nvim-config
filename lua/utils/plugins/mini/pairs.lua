@@ -5,8 +5,7 @@ M.setup = function(opts)
     local pairs = require("mini.pairs")
     pairs.setup(opts)
     local open = pairs.open
-    ---@diagnostic disable-next-line: duplicate-set-field
-    pairs.open = function(pair, neigh_pattern)
+    pairs.open = function(pair, neigh_pattern) --[[@diagnostic disable-line: duplicate-set-field]]
         if vim.fn.getcmdline() ~= "" then
             return open(pair, neigh_pattern)
         end
@@ -15,25 +14,14 @@ M.setup = function(opts)
         local cursor = vim.api.nvim_win_get_cursor(0)
         local next = line:sub(cursor[2] + 1, cursor[2] + 1)
         local before = line:sub(1, cursor[2])
-        if
-            opts.markdown
-            and o == "`"
-            and vim.bo.filetype == "markdown"
-            and before:match("^%s*``")
-        then
-            return "`\n```"
-                .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
+        if opts.markdown and o == "`" and vim.bo.filetype == "markdown" and before:match("^%s*``") then
+            return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
         end
         if opts.skip_next and next ~= "" and next:match(opts.skip_next) then
             return o
         end
         if opts.skip_ts and #opts.skip_ts > 0 then
-            local ok, captures = pcall(
-                vim.treesitter.get_captures_at_pos,
-                0,
-                cursor[1] - 1,
-                math.max(cursor[2] - 1, 0)
-            )
+            local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
             for _, capture in ipairs(ok and captures or {}) do
                 if vim.tbl_contains(opts.skip_ts, capture.capture) then
                     return o

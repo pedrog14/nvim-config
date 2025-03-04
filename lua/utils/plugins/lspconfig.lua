@@ -4,10 +4,12 @@ local M = {}
 ---@param capabilities? lsp.ClientCapabilities
 ---@return lsp.ClientCapabilities
 M.client_capabilities = function(capabilities)
+    local has_blink, blink = pcall(require, "blink-cmp")
     return vim.tbl_deep_extend(
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
+        has_blink and blink.get_lsp_capabilities() or {},
         capabilities or {}
     )
 end
@@ -28,9 +30,7 @@ M.setup = function(opts)
     require("mason-lspconfig").setup_handlers({
         function(server_name)
             local capabilities, on_attach, settings =
-                opts.capabilities,
-                opts.on_attach,
-                opts.settings and opts.settings[server_name]
+                opts.capabilities, opts.on_attach, opts.settings and opts.settings[server_name]
             require("lspconfig")[server_name].setup({
                 capabilities = capabilities,
                 on_attach = on_attach,

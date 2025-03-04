@@ -2,8 +2,7 @@ return {
     "folke/trouble.nvim",
     dependencies = "echasnovski/mini.icons",
     cmd = "Trouble",
-    ---@diagnostic disable: missing-fields
-    keys = {
+    keys = { --[[@diagnostic disable: missing-fields]]
         {
             "<leader>xx",
             function()

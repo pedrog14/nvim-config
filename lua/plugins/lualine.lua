@@ -19,6 +19,16 @@ return {
                 "snacks_picker_preview",
             },
         }
+        local snacks_terminal = {
+            sections = {
+                lualine_a = {
+                    function()
+                        return "Snacks.terminal"
+                    end,
+                },
+            },
+            filetypes = { "snacks_terminal" },
+        }
 
         local diagnostic_icons = require("utils.icons").diagnostic
         return {
@@ -42,6 +52,7 @@ return {
                 "neo-tree",
                 "quickfix",
                 snacks_picker,
+                snacks_terminal,
             },
         }
     end,
