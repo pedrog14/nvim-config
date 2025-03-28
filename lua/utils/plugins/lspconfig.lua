@@ -27,14 +27,16 @@ M.setup = function(opts)
     end
     -- END snippet
 
+    local capabilities = opts.capabilities or {}
+    local on_attach = opts.on_attach or {}
+    local settings = opts.settings or {}
+
     require("mason-lspconfig").setup_handlers({
         function(server_name)
-            local capabilities, on_attach, settings =
-                opts.capabilities, opts.on_attach, opts.settings and opts.settings[server_name]
             require("lspconfig")[server_name].setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-                settings = settings,
+                capabilities = vim.tbl_deep_extend("force", capabilities["*"] or {}, capabilities[server_name] or {}),
+                on_attach = on_attach[server_name] or on_attach["*"],
+                settings = settings[server_name],
             })
         end,
     })

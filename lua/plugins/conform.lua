@@ -2,11 +2,12 @@ return {
     "stevearc/conform.nvim",
     cmd = "ConformInfo",
     event = { "BufNewFile", "BufReadPre" },
-    opts = {
+    opts = { --[[@type conform.setupOpts]]
         formatters_by_ft = {
             c = { "clang-format" },
             cpp = { "clang-format" },
             cs = { "clang-format" },
+            glsl = { "clang-format" },
 
             css = { "prettier" },
             html = { "prettier" },

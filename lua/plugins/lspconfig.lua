@@ -14,6 +14,9 @@ return {
                     [severity.HINT] = diagnostic_icons.hint,
                 },
             },
+            virtual_lines = {
+                current_line = true,
+            },
             virtual_text = {
                 prefix = "●",
             },
@@ -21,33 +24,17 @@ return {
         })
     end,
     main = "utils.plugins.lspconfig",
-    opts = function()
-        ---@type lspconfig.Opts
-        return {
-            capabilities = require("utils.plugins.lspconfig").client_capabilities(),
-            on_attach = function(client, bufnr)
-                local lsp = vim.lsp
-
-                if client.supports_method("textDocument/inlayHint", { bufnr = bufnr }) then
-                    lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                end
-
-                if client.supports_method("textDocument/codeLens", { bufnr = bufnr }) then
-                    lsp.codelens.refresh({ bufnr = bufnr })
-
-                    vim.api.nvim_create_autocmd(
-                        { "BufEnter", "CursorHold", "InsertLeave" },
-                        { buffer = bufnr, callback = lsp.codelens.refresh }
-                    )
-                end
-            end,
-            settings = {
-                lua_ls = {
-                    Lua = {
-                        runtime = { version = "LuaJIT" },
-                    },
-                },
+    opts = { --[[@type lspconfig.Opts]]
+        capabilities = {
+            ["*"] = require("utils.plugins.lspconfig").client_capabilities(),
+        },
+        -- on_attach = {
+        --     ["*"] = function(client, bufnr) end,
+        -- },
+        settings = {
+            lua_ls = {
+                Lua = { workspace = { checkThirdParty = false } },
             },
-        }
-    end,
+        },
+    },
 }

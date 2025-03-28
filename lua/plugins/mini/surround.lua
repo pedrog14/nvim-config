@@ -1,6 +1,11 @@
 return {
     "echasnovski/mini.surround",
     event = { "BufNewFile", "BufReadPre" },
+    keys = {
+        { "gs", desc = "Add Surrounding", mode = { "n", "v" } },
+        { "ds", desc = "Delete Surrounding" },
+        { "cs", desc = "Replace Surrounding" },
+    },
     opts = {
         mappings = {
             add = "gs", -- Add surrounding in Normal and Visual modes
