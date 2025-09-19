@@ -17,5 +17,7 @@ return {
             desc = "Previous Todo Comment",
         },
     },
+    ---@module "todo-comments"
+    ---@type TodoOptions
     opts = { signs = false },
 }

@@ -1,6 +1,8 @@
 return {
     "folke/noice.nvim",
     event = "VeryLazy",
+    ---@module "noice"
+    ---@type NoiceConfig
     opts = {
         cmdline = {
             format = {

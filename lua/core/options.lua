@@ -1,18 +1,14 @@
-----------------------
---  Neovim options --
-----------------------
-
-local g = vim.g
-
-g.mapleader = " "
-g.maplocalleader = "\\"
-
+local g   = vim.g
 local opt = vim.opt
+local cmd = vim.cmd
+
+g.mapleader      = " "
+g.maplocalleader = "\\"
 
 opt.autoindent = true
 opt.bg = "dark"
 opt.clipboard = "unnamedplus"
-opt.completeopt = { "menuone", "noselect", "popup" }
+opt.completeopt = { "fuzzy", "menuone", "noselect", "popup" }
 opt.confirm = true
 opt.cursorline = true
 opt.expandtab = true
@@ -48,6 +44,6 @@ opt.timeoutlen = 500
 opt.undofile = true
 opt.updatetime = 200
 opt.virtualedit = "block"
-opt.wildmode = { "longest:full", "full" }
+opt.wildmode = { "full", "longest:full" }
 opt.wildoptions = { "fuzzy", "pum", "tagfile" }
 opt.wrap = false

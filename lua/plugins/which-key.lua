@@ -10,7 +10,9 @@ return {
             desc = "Buffer Local Keymaps (Which-Key)",
         },
     },
-    opts = {
+    ---@module "which-key"
+    ---@type wk.Opts
+    opts = { --[[@diagnostic disable-line: missing-fields]]
         preset = "modern",
     },
 }

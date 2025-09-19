@@ -19,18 +19,9 @@ return {
                 "snacks_picker_preview",
             },
         }
-        local snacks_terminal = {
-            sections = {
-                lualine_a = {
-                    function()
-                        return "Snacks.terminal"
-                    end,
-                },
-            },
-            filetypes = { "snacks_terminal" },
-        }
 
-        local diagnostic_icons = require("utils.icons").diagnostic
+        local signs = require("utils.icons").diagnostic.signs
+
         return {
             options = {
                 theme = "auto",
@@ -43,7 +34,26 @@ return {
                 lualine_b = {
                     "branch",
                     "diff",
-                    { "diagnostics", symbols = diagnostic_icons },
+                    { "diagnostics", symbols = signs },
+                },
+                lualine_x = {
+                    "encoding",
+                    "fileformat",
+                    "filetype",
+                    {
+                        "lsp_status",
+                        icon = "󰒓",
+                        symbols = {
+                            -- Standard unicode symbols to cycle through for LSP progress:
+                            spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+                            -- Standard unicode symbol for when LSP is done:
+                            done = "󰗠",
+                            -- Delimiter inserted between LSP names:
+                            separator = " ",
+                        },
+                        -- List of LSP names to ignore (e.g., `null-ls`):
+                        ignore_lsp = {},
+                    },
                 },
             },
             extensions = {
@@ -52,7 +62,6 @@ return {
                 "neo-tree",
                 "quickfix",
                 snacks_picker,
-                snacks_terminal,
             },
         }
     end,

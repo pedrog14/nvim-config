@@ -4,10 +4,15 @@ local M = {}
 -- stylua: ignore
 
 M.diagnostic = {
-    error = " ",
-    warn  = " ",
-    info  = " ",
-    hint  = " ",
+    signs = {
+        error = "󰅙 ",
+        warn  = "󰀨 ",
+        info  = "󰋼 ",
+        hint  = "󰋗 ",
+    },
+    virtual_text = {
+        prefix = "●",
+    },
 }
 
 return M

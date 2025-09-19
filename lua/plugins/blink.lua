@@ -1,47 +1,41 @@
 return {
     "Saghen/blink.cmp",
-    dependencies = { "echasnovski/mini.icons", "echasnovski/mini.snippets" },
+    dependencies = { "nvim-mini/mini.icons", "nvim-mini/mini.snippets" },
     version = "*",
     events = { "InsertEnter", "CmdlineEnter" },
     opts_extend = { "sources.default" },
-    opts = function()
-        local kind_icons = {}
-        for _, value in ipairs(vim.lsp.protocol.CompletionItemKind) do
-            kind_icons[value] = MiniIcons.get("lsp", value:lower()) --[[@diagnostic disable-line: undefined-field]]
-        end
-
-        return { --[[@type blink.cmp.Config]]
-            snippets = { preset = "mini_snippets" },
-            sources = {
-                default = { "lsp", "path", "snippets", "buffer" },
-            },
-            cmdline = {
-                keymap = {
-                    ["<tab>"] = { "select_next", "show_and_insert" },
-                    ["<s-tab>"] = { "select_prev", "show_and_insert" },
-                },
-            },
-            keymap = {
-                preset = "default",
-                ["<c-n>"] = { "select_next", "show", "fallback" },
-            },
-            appearance = {
-                use_nvim_cmp_as_default = true,
-                nerd_font_variant = "mono",
-                kind_icons = kind_icons,
-            },
-            completion = {
-                documentation = { auto_show = true },
-                list = { selection = { preselect = false } },
-                menu = {
-                    draw = {
-                        columns = {
-                            { "label", "label_description", gap = 1 },
-                            { "kind_icon", "kind", gap = 1 },
+    ---@module "blink.cmp"
+    ---@type blink.cmp.Config
+    opts = {
+        completion = {
+            documentation = { auto_show = true, auto_show_delay_ms = 500 },
+            list = { selection = { preselect = false } },
+            menu = {
+                draw = {
+                    columns = {
+                        { "label", "label_description", gap = 1 },
+                        { "kind_icon", "kind", gap = 1 },
+                    },
+                    components = {
+                        kind_icon = {
+                            text = function(ctx)
+                                local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                                return kind_icon
+                            end,
                         },
                     },
                 },
             },
-        }
-    end,
+        },
+        keymap = {
+            preset = "default",
+            ["<c-n>"] = { "select_next", "show", "fallback" },
+        },
+        snippets = { preset = "mini_snippets" },
+        cmdline = {
+            completion = {
+                list = { selection = { preselect = false } },
+            },
+        },
+    },
 }

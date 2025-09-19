@@ -16,30 +16,9 @@ end
 
 ---@param opts lspconfig.Opts
 M.setup = function(opts)
-    -- mason-lspconfig snippet
-    local log = require("mason-core.log")
-    local ok, err = pcall(function()
-        require("mason-lspconfig.lspconfig_hook")()
-        require("mason-lspconfig.server_config_extensions")()
-    end)
-    if not ok then
-        log.error("Failed to set up lspconfig integration.", err)
+    for server, value in pairs(opts) do
+        vim.lsp.config(server, value)
     end
-    -- END snippet
-
-    local capabilities = opts.capabilities or {}
-    local on_attach = opts.on_attach or {}
-    local settings = opts.settings or {}
-
-    require("mason-lspconfig").setup_handlers({
-        function(server_name)
-            require("lspconfig")[server_name].setup({
-                capabilities = vim.tbl_deep_extend("force", capabilities["*"] or {}, capabilities[server_name] or {}),
-                on_attach = on_attach[server_name] or on_attach["*"],
-                settings = settings[server_name],
-            })
-        end,
-    })
 end
 
 return M

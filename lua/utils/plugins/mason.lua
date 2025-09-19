@@ -8,12 +8,10 @@ M.setup = function(opts)
     require("mason").setup(opts)
 
     opts.ensure_installed = opts.ensure_installed or {}
-    registry.refresh(function()
+    registry.refresh(vim.schedule_wrap(function()
         for _, pkg_identifier in ipairs(opts.ensure_installed) do
             local pkg_name, version = Package.Parse(pkg_identifier)
-
             local ok, mason_pkg = pcall(registry.get_package, pkg_name)
-
             if ok then
                 if not mason_pkg:is_installed() then
                     mason_pkg:install({ version = version })
@@ -27,7 +25,7 @@ M.setup = function(opts)
                 )
             end
         end
-    end)
+    end))
 end
 
 return M

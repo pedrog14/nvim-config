@@ -1,6 +1,6 @@
 return {
     {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         lazy = false,
         keys = {
             {
@@ -12,8 +12,11 @@ return {
             },
         },
         main = "utils.plugins.mason",
+        ---@module "mason"
+        ---@type MasonSettings
         opts = {
             ui = {
+                backdrop = 100,
                 icons = {
                     package_installed = "󰱒",
                     package_pending = "󰄱",
@@ -22,7 +25,7 @@ return {
             },
             ensure_installed = {
                 -- Formatters
-                "black",
+                "autopep8",
                 "clang-format",
                 "fourmolu",
                 "prettier",
@@ -32,21 +35,20 @@ return {
         },
         opts_extend = { "ensure_installed" },
     },
-
     {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = "williamboman/mason.nvim",
+        "mason-org/mason-lspconfig.nvim",
+        dependencies = "mason-org/mason.nvim",
         lazy = false,
-        main = "utils.plugins.mason.lspconfig",
+        ---@module "mason-lspconfig"
+        ---@type MasonLspconfigSettings
         opts = {
             ensure_installed = {
                 "bashls",
                 "cssls",
                 "clangd",
-                "elixirls",
-                "emmet_ls",
                 "hls",
                 "html",
+                "jdtls",
                 "lua_ls",
                 "pylsp",
                 "rust_analyzer",

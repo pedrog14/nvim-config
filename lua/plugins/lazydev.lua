@@ -3,6 +3,8 @@ return {
         "folke/lazydev.nvim",
         cmd = "LazyDev",
         ft = "lua",
+        ---@module "lazydev"
+        ---@type lazydev.Config
         opts = {
             library = {
                 { path = "${3rd}/luv/library", words = { "vim%.uv" } },
@@ -10,13 +12,17 @@ return {
             },
         },
     },
-
+    { "Bilal2453/luvit-meta", lazy = true },
     {
         "Saghen/blink.cmp",
         optional = true,
+        ---@module "blink.cmp"
+        ---@type blink.cmp.Config
         opts = {
             sources = {
-                default = { "lazydev" },
+                per_filetype = {
+                    lua = { inherit_defaults = true, "lazydev" },
+                },
                 providers = {
                     lazydev = {
                         name = "LazyDev",
@@ -27,6 +33,4 @@ return {
             },
         },
     },
-
-    { "Bilal2453/luvit-meta", lazy = true },
 }

@@ -2,7 +2,9 @@ return {
     "stevearc/conform.nvim",
     cmd = "ConformInfo",
     event = { "BufNewFile", "BufReadPre" },
-    opts = { --[[@type conform.setupOpts]]
+    ---@module "conform"
+    ---@type conform.setupOpts
+    opts = {
         formatters_by_ft = {
             c = { "clang-format" },
             cpp = { "clang-format" },
@@ -23,7 +25,7 @@ return {
 
             haskell = { "fourmolu" },
             lua = { "stylua" },
-            python = { "black" },
+            python = { "autopep8" },
             rust = { "rustfmt" },
         },
         default_format_opts = { lsp_format = "fallback" },

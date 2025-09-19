@@ -1,8 +1,4 @@
------------------------
---  Neovim init.lua --
------------------------
-
-require("config.options")
-require("config.lazy")
-require("config.keymaps")
-vim.cmd.colorscheme("gruvbox")
+require("core.options") -- opts
+require("core.lazy") -- lazy bootstrap + setup
+require("core.misc") -- diagnostic icon definition + colorscheme
+require("core.keymaps") -- keymaps
