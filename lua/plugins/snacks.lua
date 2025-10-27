@@ -1,3 +1,10 @@
+-- Alternatives (Folke is using AI to generate code, and this is bad. Really bad.)
+-- "https://github.com/nvim-telescope/telescope.nvim" -> Telescope.nvim
+-- "https://github.com/nvim-mini/mini.bufremove" -> mini.bufremove
+-- "https://github.com/nvim-mini/mini.starter" -> mini.starter
+-- "https://github.com/nvim-mini/mini.notify" -> mini.notify
+-- "https://github.com/lukas-reineke/indent-blankline.nvim" -> indent-blankline.nvim
+-- "https://github.com/RRethy/vim-illuminate" -> vim-illuminate
 return {
     "folke/snacks.nvim",
     lazy = false,
@@ -10,7 +17,6 @@ return {
             end,
             desc = "Toggle Explorer (Snacks.picker)",
         },
-
         {
             "<leader>sf",
             function()
@@ -200,8 +206,8 @@ return {
                             desc = "Config Files",
                             key = "c",
                             action = function()
-                                Snacks.explorer({ --[[@diagnostic disable-line: missing-fields]]
-                                    cwd = vim.fn.stdpath("config"), --[[@diagnostic disable-line: assign-type-mismatch]]
+                                Snacks.explorer({
+                                    cwd = vim.fn.stdpath("config"),
                                     title = "Config Files",
                                 })
                             end,
@@ -253,11 +259,6 @@ return {
             -- Explorer
             explorer = { replace_netrw = true },
 
-            -- Indent
-            -- indent = {
-            --     filter = { filetype = { "text" } },
-            -- },
-
             -- Input
             input = { icon = "󰁔" },
 
@@ -268,8 +269,6 @@ return {
 
             -- Picker
             picker = {
-                prompt = "󰁔 ",
-                layout = { layout = { backdrop = false } },
                 icons = {
                     -- stylua: ignore
                     diagnostics = {
@@ -279,6 +278,8 @@ return {
                         Info  = signs.info,
                     },
                 },
+                layout = { layout = { backdrop = false } },
+                prompt = "󰁔 ",
             },
 
             -- Styles

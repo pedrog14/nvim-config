@@ -1,6 +1,5 @@
 return {
     "akinsho/bufferline.nvim",
-    dependencies = "folke/snacks.nvim",
     event = "VeryLazy",
     opts = function()
         vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", {
@@ -32,10 +31,7 @@ return {
                     Snacks.bufdelete(n)
                 end,
                 numbers = function(num)
-                    return ("%s·%s"):format(
-                        num.raise(num.id), --[[@diagnostic disable-line: undefined-field]]
-                        num.lower(num.ordinal) --[[@diagnostic disable-line: undefined-field]]
-                    )
+                    return ("%s·%s"):format(num.raise(num.id), num.lower(num.ordinal))
                 end,
                 diagnostics_indicator = function(_, _, diagnostics_dict)
                     local sign_icon = require("utils.icons").diagnostic.signs

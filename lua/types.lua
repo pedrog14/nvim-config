@@ -1,1 +1,0 @@
----@alias lspconfig.Opts table<string,vim.lsp.Config>

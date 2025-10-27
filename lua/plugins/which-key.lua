@@ -12,7 +12,7 @@ return {
     },
     ---@module "which-key"
     ---@type wk.Opts
-    opts = { --[[@diagnostic disable-line: missing-fields]]
+    opts = { ---@diagnostic disable-line: missing-fields
         preset = "modern",
     },
 }

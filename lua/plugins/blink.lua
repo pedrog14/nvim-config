@@ -3,7 +3,6 @@ return {
     dependencies = { "nvim-mini/mini.icons", "nvim-mini/mini.snippets" },
     version = "*",
     events = { "InsertEnter", "CmdlineEnter" },
-    opts_extend = { "sources.default" },
     ---@module "blink.cmp"
     ---@type blink.cmp.Config
     opts = {
@@ -33,6 +32,10 @@ return {
         },
         snippets = { preset = "mini_snippets" },
         cmdline = {
+            keymap = {
+                preset = "cmdline",
+                ["<c-n>"] = { "select_next", "show", "fallback" },
+            },
             completion = {
                 list = { selection = { preselect = false } },
             },

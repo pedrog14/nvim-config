@@ -36,25 +36,6 @@ return {
                     "diff",
                     { "diagnostics", symbols = signs },
                 },
-                lualine_x = {
-                    "encoding",
-                    "fileformat",
-                    "filetype",
-                    {
-                        "lsp_status",
-                        icon = "󰒓",
-                        symbols = {
-                            -- Standard unicode symbols to cycle through for LSP progress:
-                            spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-                            -- Standard unicode symbol for when LSP is done:
-                            done = "󰗠",
-                            -- Delimiter inserted between LSP names:
-                            separator = " ",
-                        },
-                        -- List of LSP names to ignore (e.g., `null-ls`):
-                        ignore_lsp = {},
-                    },
-                },
             },
             extensions = {
                 "lazy",

@@ -1,49 +1,24 @@
-local g   = vim.g
-local opt = vim.opt
-local cmd = vim.cmd
+---@class core.options
+---@field g? table<string, any>
+---@field o? table<string, any>
 
-g.mapleader      = " "
-g.maplocalleader = "\\"
+local M = {}
 
-opt.autoindent = true
-opt.bg = "dark"
-opt.clipboard = "unnamedplus"
-opt.completeopt = { "fuzzy", "menuone", "noselect", "popup" }
-opt.confirm = true
-opt.cursorline = true
-opt.expandtab = true
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-opt.foldlevel = 99
-opt.foldmethod = "expr"
-opt.foldtext = ""
-opt.formatexpr = "v:lua.require('conform').formatexpr()"
-opt.hlsearch = false
-opt.ignorecase = true
-opt.incsearch = true
-opt.laststatus = 3
-opt.list = true
-opt.number = true
-opt.pumheight = 12
-opt.relativenumber = true
-opt.ruler = false
-opt.scrolloff = 4
-opt.shiftround = true
-opt.shiftwidth = 4
-opt.shortmess:append({ W = true, I = true, c = true, C = true })
-opt.showmode = false
-opt.sidescrolloff = 8
-opt.signcolumn = "yes"
-opt.smartindent = true
-opt.smoothscroll = true
-opt.softtabstop = 4
-opt.splitbelow = true
-opt.splitkeep = "screen"
-opt.splitright = true
-opt.tabstop = 4
-opt.timeoutlen = 500
-opt.undofile = true
-opt.updatetime = 200
-opt.virtualedit = "block"
-opt.wildmode = { "full", "longest:full" }
-opt.wildoptions = { "fuzzy", "pum", "tagfile" }
-opt.wrap = false
+---@param opts core.options
+M.set = function(opts)
+    opts = opts or {}
+
+    if opts.g then
+        for name, value in pairs(opts.g) do
+            vim.api.nvim_set_var(name, value)
+        end
+    end
+
+    if opts.o then
+        for name, value in pairs(opts.o) do
+            vim.api.nvim_set_option_value(name, value, {})
+        end
+    end
+end
+
+return M

@@ -1,11 +1,14 @@
 return {
     {
-        "pedrog14/gruvbox.nvim",
+        -- "pedrog14/gruvbox.nvim",
+        dir = "~/Git/gruvbox.nvim",
         lazy = false,
         priority = 1000,
         ---@module "gruvbox"
         ---@type GruvboxConfig
         opts = {
+            ---@param hl table<string, vim.api.keyset.highlight>
+            ---@param colors GruvboxColors
             group_override = function(hl, colors)
                 hl.CursorLineNr = { fg = colors.yellow, bg = colors.none, bold = true }
                 hl.SignColumn = { bg = colors.bg0 }
