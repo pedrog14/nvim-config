@@ -37,8 +37,8 @@ return {
                     local sign_icon = require("utils.icons").diagnostic.signs
                     local indicator = ""
                     for diagnostic_type, number in pairs(diagnostics_dict) do
-                        local icon = diagnostic_type == "error" and sign_icon.error
-                            or (diagnostic_type == "warning" and sign_icon.warn or sign_icon.info)
+                        local icon = diagnostic_type == "error" and sign_icon[1]
+                            or (diagnostic_type == "warning" and sign_icon[2] or sign_icon[3])
                         indicator = ("%s%s%s "):format(indicator, icon, number)
                     end
                     return vim.trim(indicator)

@@ -1,4 +1,4 @@
----@class lspconfig.opts
+---@class lspconfig.opts: MasonLspconfigSettings
 ---@field diagnostic? vim.diagnostic.Opts
 ---@field servers? table<string, vim.lsp.Config>
 ---@field codelens? { enabled: boolean }
@@ -18,6 +18,11 @@ M.setup = vim.schedule_wrap(function(opts)
             vim.lsp.config(lang, content)
         end
     end
+
+    require("mason-lspconfig").setup({
+        ensure_installed = opts.ensure_installed,
+        automatic_enable = opts.automatic_enable,
+    })
 
     vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp_config", { clear = true }),
@@ -55,8 +60,8 @@ M.setup = vim.schedule_wrap(function(opts)
             if vim.tbl_get(opts, "fold", "enabled") then
                 on_supports_method("textDocument/foldingRange", function()
                     local win = vim.api.nvim_get_current_win()
-                    vim.wo[win][0].foldmethod = "expr"
-                    vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+                    vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
+                    vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.lsp.foldexpr()", { win = win })
                 end)
             end
         end,

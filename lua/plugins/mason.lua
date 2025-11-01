@@ -2,6 +2,7 @@ return {
     {
         "mason-org/mason.nvim",
         lazy = false,
+        build = ":MasonUpdate",
         keys = {
             {
                 "<leader>m",
@@ -33,28 +34,10 @@ return {
                 "stylua",
             },
         },
-        opts_extend = { "ensure_installed" },
     },
     {
         "mason-org/mason-lspconfig.nvim",
         dependencies = "mason-org/mason.nvim",
-        lazy = false,
-        ---@module "mason-lspconfig"
-        ---@type MasonLspconfigSettings
-        opts = {
-            ensure_installed = {
-                "bashls",
-                "cssls",
-                "clangd",
-                "hls",
-                "html",
-                "jdtls",
-                "lua_ls",
-                "pylsp",
-                "rust_analyzer",
-                "ts_ls",
-                "vimls",
-            },
-        },
+        cmd = { "LspInstall", "LspUninstall" },
     },
 }

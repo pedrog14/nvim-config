@@ -28,13 +28,20 @@ return {
         },
         keymap = {
             preset = "default",
-            ["<c-n>"] = { "select_next", "show", "fallback" },
+            ["<c-n>"] = { "select_next", "show", "fallback_to_mappings" },
         },
         snippets = { preset = "mini_snippets" },
+        sources = {
+            default = { "lsp", "path", "snippets", "buffer" },
+        },
         cmdline = {
             keymap = {
                 preset = "cmdline",
                 ["<c-n>"] = { "select_next", "show", "fallback" },
+                ["<c-p>"] = { "select_prev", "fallback" },
+
+                ["<tab>"] = { "select_next", "show" },
+                ["<s-tab>"] = { "select_prev", "show" },
             },
             completion = {
                 list = { selection = { preselect = false } },

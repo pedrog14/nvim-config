@@ -1,10 +1,3 @@
--- Alternatives (Folke is using AI to generate code, and this is bad. Really bad.)
--- "https://github.com/nvim-telescope/telescope.nvim" -> Telescope.nvim
--- "https://github.com/nvim-mini/mini.bufremove" -> mini.bufremove
--- "https://github.com/nvim-mini/mini.starter" -> mini.starter
--- "https://github.com/nvim-mini/mini.notify" -> mini.notify
--- "https://github.com/lukas-reineke/indent-blankline.nvim" -> indent-blankline.nvim
--- "https://github.com/RRethy/vim-illuminate" -> vim-illuminate
 return {
     "folke/snacks.nvim",
     lazy = false,
@@ -63,7 +56,7 @@ return {
             "<leader>sc",
             function()
                 Snacks.picker.explorer({
-                    cwd = vim.fn.stdpath("config"), --[[@diagnostic disable-line: assign-type-mismatch]]
+                    cwd = vim.fn.stdpath("config"),
                     title = "Config Files",
                 })
             end,
@@ -264,7 +257,7 @@ return {
 
             -- Notifier
             notifier = {
-                icons = { warn = signs.warn },
+                icons = { error = signs[1], warn = signs[2], info = signs[3] },
             },
 
             -- Picker
@@ -272,10 +265,10 @@ return {
                 icons = {
                     -- stylua: ignore
                     diagnostics = {
-                        Error = signs.error,
-                        Warn  = signs.warn,
-                        Hint  = signs.hint,
-                        Info  = signs.info,
+                        Error = signs[1],
+                        Warn  = signs[2],
+                        Info  = signs[3],
+                        Hint  = signs[4],
                     },
                 },
                 layout = { layout = { backdrop = false } },

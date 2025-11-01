@@ -1,6 +1,6 @@
 return {
     "folke/todo-comments.nvim",
-    event = { "BufNewFile", "BufReadPre" },
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     keys = {
         {
             "]t",
@@ -19,5 +19,7 @@ return {
     },
     ---@module "todo-comments"
     ---@type TodoOptions
-    opts = { signs = false },
+    opts = {
+        signs = false,
+    },
 }

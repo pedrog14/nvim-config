@@ -4,12 +4,8 @@ local M = {}
 -- stylua: ignore
 
 M.diagnostic = {
-    signs = {
-        error = "󰅙 ",
-        warn  = "󰀨 ",
-        info  = "󰋼 ",
-        hint  = "󰋗 ",
-    },
+    ---@type table<vim.diagnostic.Severity, string>
+    signs = { "󰅙 ", "󰀨 ", "󰋼 ", "󰋗 " },
     virtual_text = {
         prefix = "●",
     },

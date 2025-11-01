@@ -20,7 +20,11 @@ return {
             },
         }
 
+        local symbols = {}
         local signs = require("utils.icons").diagnostic.signs
+        for i, type in ipairs({ "error", "warn", "info", "hint" }) do
+            symbols[type] = signs[i]
+        end
 
         return {
             options = {
@@ -34,7 +38,10 @@ return {
                 lualine_b = {
                     "branch",
                     "diff",
-                    { "diagnostics", symbols = signs },
+                    {
+                        "diagnostics",
+                        symbols = symbols,
+                    },
                 },
             },
             extensions = {

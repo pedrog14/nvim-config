@@ -7,7 +7,7 @@ M.setup = function(opts)
     textobjects.setup(opts)
 
     local attach = function(buf)
-        local lang = vim.treesitter.language.get_lang(vim.bo[buf].filetype)
+        local lang = vim.treesitter.language.get_lang(vim.api.nvim_get_option_value("filetype", { buf = buf }))
         if not (lang and vim.tbl_get(opts, "move", "enable") and utils.get_query(lang, "textobjects")) then
             return
         end
@@ -20,7 +20,12 @@ M.setup = function(opts)
                 desc = desc:sub(1, 1):upper() .. desc:sub(2)
                 desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
                 desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
-                if not (vim.wo.diff and key:find("[cC]")) then
+                if
+                    not (
+                        vim.api.nvim_get_option_value("diff", { win = vim.api.nvim_get_current_win() })
+                        and key:find("[cC]")
+                    )
+                then
                     vim.keymap.set({ "n", "x", "o" }, key, function()
                         require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
                     end, {

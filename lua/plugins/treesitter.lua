@@ -4,11 +4,10 @@ return {
         branch = "main",
         build = ":TSUpdate",
         lazy = vim.fn.argc(-1) == 0,
-        event = { "BufNewFile", "BufWritePre", "BufReadPost", "VeryLazy" },
+        event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
         cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
         main = "utils.plugins.treesitter",
         opts = {
-            auto_install = { enable = true },
             ensure_installed = {
                 "c",
                 "lua",
@@ -32,13 +31,6 @@ return {
             highlight = { enable = true },
             fold = { enable = true },
             indent = { enable = true },
-        },
-    },
-    {
-        "nvim-treesitter/nvim-treesitter-context",
-        event = "VeryLazy",
-        opts = {
-            max_lines = 3,
         },
     },
     {
@@ -72,8 +64,15 @@ return {
         },
     },
     {
+        "nvim-treesitter/nvim-treesitter-context",
+        event = "VeryLazy",
+        opts = {
+            max_lines = 3,
+        },
+    },
+    {
         "windwp/nvim-ts-autotag",
-        event = { "BufNewFile", "BufWritePre", "BufReadPost" },
+        event = { "BufReadPost", "BufNewFile", "BufWritePre" },
         opts = {},
     },
     {
