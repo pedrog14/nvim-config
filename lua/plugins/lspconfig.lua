@@ -1,7 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = "mason-org/mason-lspconfig.nvim",
-    lazy = vim.fn.argc(-1) == 0,
     event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     cmd = { "LspInfo", "LspStart", "LspStop", "LspRestart" },
     main = "utils.plugins.lspconfig",
@@ -23,9 +22,7 @@ return {
         },
         diagnostic = {
             severity_sort = true,
-            signs = {
-                text = require("utils.icons").diagnostic.signs,
-            },
+            signs = { text = require("utils.icons").diagnostic.signs },
         },
         servers = {
             ["*"] = {
@@ -43,7 +40,12 @@ return {
                     Lua = {
                         workspace = { checkThirdParty = false },
                         codeLens = { enable = true },
-                        hint = { enable = true },
+                        hint = {
+                            enable = true,
+                            paramName = "Disable",
+                            semicolon = "Disable",
+                            arrayIndex = "Disable",
+                        },
                     },
                 },
             },

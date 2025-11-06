@@ -64,39 +64,47 @@ return {
         },
 
         {
-            "gO",
+            "gri",
             function()
-                Snacks.picker.lsp_symbols()
+                Snacks.picker.lsp_implementations()
             end,
-            desc = "List all symbols in the current buffer (Snacks.picker)",
+            desc = "Lists all the implementations for the symbol under the cursor (Snacks.picker)",
         },
         {
             "grr",
             function()
                 Snacks.picker.lsp_references()
             end,
-            desc = "List all symbols in the current buffer (Snacks.picker)",
-        },
-        {
-            "gri",
-            function()
-                Snacks.picker.lsp_implementations()
-            end,
-            desc = "Jumps to the implementation of the symbol under the cursor, if there's only one, otherwise show all options (Snacks.picker)",
-        },
-        {
-            "grd",
-            function()
-                Snacks.picker.lsp_definitions()
-            end,
-            desc = "Jumps to the definition of the symbol under the cursor, if there's only one, otherwise show all options (Snacks.picker)",
+            desc = "Lists all the references to the symbol under the cursor (Snacks.picker)",
         },
         {
             "grt",
             function()
                 Snacks.picker.lsp_type_definitions()
             end,
-            desc = "Jumps to the definition of the type of the symbol under the cursor, if there's only one, otherwise show all options (Snacks.picker)",
+            desc = "Jumps to the definition of the type of the symbol under the cursor (Snacks.picker)",
+        },
+        {
+            "gO",
+            function()
+                Snacks.picker.lsp_symbols()
+            end,
+            desc = "List all symbols in the current buffer (Snacks.picker)",
+        },
+
+        {
+            "grd",
+            function()
+                Snacks.picker.lsp_definitions()
+            end,
+            desc = "Lists all the definitions for the symbol under the cursor (Snacks.picker)",
+        },
+        {
+            "grD",
+            function()
+                Snacks.picker.lsp_declarations()
+            end,
+            desc = "Lists all the declarations for the symbol under the cursor (Snacks.picker)",
         },
 
         {
@@ -151,7 +159,15 @@ return {
                 _G.bt = function()
                     Snacks.debug.backtrace()
                 end
-                vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+                -- Override print to use snacks for `:=` command
+                if vim.fn.has("nvim-0.11") == 1 then
+                    vim._print = function(_, ...)
+                        dd(...)
+                    end
+                else
+                    vim.print = _G.dd
+                end
             end,
         })
     end,
@@ -179,8 +195,27 @@ return {
                             action = ":ene | startinsert",
                         },
                         {
+                            icon = "󱧶",
+                            desc = "Explorer",
+                            key = "e",
+                            action = function()
+                                Snacks.explorer()
+                            end,
+                        },
+                        {
+                            icon = "󱁿",
+                            desc = "Config Explorer",
+                            key = "c",
+                            action = function()
+                                Snacks.explorer({
+                                    cwd = vim.fn.stdpath("config"),
+                                    title = "Config Explorer",
+                                })
+                            end,
+                        },
+                        {
                             icon = "󰈞",
-                            desc = "Find File",
+                            desc = "Find Files",
                             key = "f",
                             action = function()
                                 Snacks.picker.files()
@@ -192,17 +227,6 @@ return {
                             key = "r",
                             action = function()
                                 Snacks.picker.recent()
-                            end,
-                        },
-                        {
-                            icon = "󱁻",
-                            desc = "Config Files",
-                            key = "c",
-                            action = function()
-                                Snacks.explorer({
-                                    cwd = vim.fn.stdpath("config"),
-                                    title = "Config Files",
-                                })
                             end,
                         },
                         {
@@ -248,9 +272,6 @@ return {
                     { section = "startup" },
                 },
             },
-
-            -- Explorer
-            explorer = { replace_netrw = true },
 
             -- Input
             input = { icon = "󰁔" },

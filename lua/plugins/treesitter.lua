@@ -3,7 +3,6 @@ return {
         "nvim-treesitter/nvim-treesitter",
         branch = "main",
         build = ":TSUpdate",
-        lazy = vim.fn.argc(-1) == 0,
         event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
         cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
         main = "utils.plugins.treesitter",

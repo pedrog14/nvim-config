@@ -1,4 +1,3 @@
----@class utils.plugins.mason
 local M = {}
 
 M.setup = function(opts)

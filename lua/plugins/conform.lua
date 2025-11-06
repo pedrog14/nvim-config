@@ -1,7 +1,10 @@
 return {
     "stevearc/conform.nvim",
     cmd = "ConformInfo",
-    event = { "BufNewFile", "BufReadPre" },
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    init = function()
+        vim.api.nvim_set_option_value("formatexpr", "v:lua.require('conform').formatexpr()", {})
+    end,
     ---@module "conform"
     ---@type conform.setupOpts
     opts = {

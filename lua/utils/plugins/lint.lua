@@ -1,9 +1,8 @@
 local lint = require("lint")
 
----@class utils.plugins.lint
 local M = {}
 
-function M.debounce(ms, fn)
+M.debounce = function(ms, fn)
     local timer = vim.uv.new_timer()
     return function(...)
         local argv = { ... }
@@ -14,7 +13,7 @@ function M.debounce(ms, fn)
     end
 end
 
-function M.lint()
+M.lint = function()
     -- Use nvim-lint's logic first:
     -- * checks if linters exist for the full filetype first
     -- * otherwise will split filetype by "." and add all those linters

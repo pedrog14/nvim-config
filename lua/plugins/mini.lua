@@ -77,9 +77,10 @@ return {
     },
     {
         "nvim-mini/mini.pairs",
-        event = "InsertEnter",
+        event = "VeryLazy",
         main = "utils.plugins.mini.pairs",
         opts = {
+            modes = { insert = true, command = true, terminal = false },
             skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
             skip_ts = { "string" },
             skip_unbalanced = true,
@@ -91,33 +92,36 @@ return {
         dependencies = "rafamadriz/friendly-snippets",
         lazy = true,
         opts = function()
-            -- Stop all sessions on Normal mode exit
-            vim.api.nvim_create_autocmd("User", {
-                pattern = "MiniSnippetsSessionStart",
-                callback = function()
-                    vim.api.nvim_create_autocmd("ModeChanged", {
-                        pattern = "*:n",
-                        once = true,
-                        callback = function()
-                            while MiniSnippets.session.get() do
-                                MiniSnippets.session.stop()
-                            end
-                        end,
-                    })
-                end,
-            })
-            -- Stop session immediately after jumping to final tabstop
-            vim.api.nvim_create_autocmd("User", {
-                pattern = "MiniSnippetsSessionJump",
-                callback = function(args)
-                    if args.data.tabstop_to == "0" then
-                        MiniSnippets.session.stop()
-                    end
-                end,
+            require("core.autocmds").set({
+                -- Stop all sessions on Normal mode exit
+                {
+                    event = "User",
+                    pattern = "MiniSnippetsSessionStart",
+                    callback = function()
+                        vim.api.nvim_create_autocmd("ModeChanged", {
+                            pattern = "*:n",
+                            once = true,
+                            callback = function()
+                                while MiniSnippets.session.get() do
+                                    MiniSnippets.session.stop()
+                                end
+                            end,
+                        })
+                    end,
+                },
+                -- Stop session immediately after jumping to final tabstop
+                {
+                    event = "User",
+                    pattern = "MiniSnippetsSessionJump",
+                    callback = function(args)
+                        if args.data.tabstop_to == "0" then
+                            MiniSnippets.session.stop()
+                        end
+                    end,
+                },
             })
 
             local gen_loader = require("mini.snippets").gen_loader
-
             return {
                 expand = {
                     insert = function(snippet)

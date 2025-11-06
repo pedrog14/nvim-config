@@ -1,9 +1,12 @@
----@class utils.plugins.mini.pairs
 local M = {}
 
+---@param opts? table
 M.setup = function(opts)
+    opts = opts or {}
+
     local pairs = require("mini.pairs")
     pairs.setup(opts)
+
     local open = pairs.open
     pairs.open = function(pair, neigh_pattern) --[[@diagnostic disable-line: duplicate-set-field]]
         if vim.fn.getcmdline() ~= "" then

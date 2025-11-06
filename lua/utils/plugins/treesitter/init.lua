@@ -24,11 +24,7 @@ M.setup = function(opts)
         callback = function(args)
             local lang = vim.treesitter.language.get_lang(args.match)
 
-            if not (lang and utils.get_available()[lang]) then
-                return
-            end
-
-            if not utils.get_installed({ update = true })[lang] then
+            if not (lang and utils.get_installed({ update = true })[lang]) then
                 return
             end
 
@@ -45,7 +41,7 @@ M.setup = function(opts)
             if vim.tbl_get(opts, "indent", "enable") and utils.get_query(lang, "indents") then
                 vim.api.nvim_set_option_value(
                     "indentexpr",
-                    "v:lua.require'nvim-treesitter'.indentexpr()",
+                    "v:lua.require('nvim-treesitter').indentexpr()",
                     { buf = args.buf }
                 )
             end

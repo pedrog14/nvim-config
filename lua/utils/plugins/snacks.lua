@@ -1,6 +1,5 @@
 local snacks = require("snacks")
 
----@class utils.plugins.snacks
 local M = {}
 
 ---@param filter { filetype: string[] }
@@ -78,11 +77,12 @@ end
 M.setup = function(opts)
     opts = opts or {}
 
-    ---@type { filter?: { filetype: string[] } | fun(bufnr: number): boolean }
+    ---@type {filter?: {filetype: string[]} | fun(bufnr: number): boolean}
     local indent = opts.indent or {}
-    if indent.filter and type(indent.filter) == "table" then
-        indent.filter = gen_filter(indent.filter --[[@as { filetype: string[] }]])
-    end
+    indent.filter = indent.filter
+            and type(indent.filter) == "table"
+            and gen_filter(indent.filter --[[@as {filetype: string[]}]])
+        or indent.filter
 
     snacks.setup(opts)
 
