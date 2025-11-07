@@ -9,9 +9,7 @@ return {
         scope = {
             show_start = false,
             show_end = false,
-            include = {
-                node_type = { ["lua"] = { "table_constructor" } },
-            },
+            include = { node_type = { ["lua"] = { "table_constructor" } } },
         },
     },
 }

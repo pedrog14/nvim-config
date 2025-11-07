@@ -28,10 +28,7 @@ return {
             ["*"] = {
                 capabilities = {
                     workspace = {
-                        fileOperations = {
-                            didRename = true,
-                            willRename = true,
-                        },
+                        fileOperations = { didRename = true, willRename = true },
                     },
                 },
             },

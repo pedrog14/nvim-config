@@ -31,9 +31,7 @@ return {
             ["<c-n>"] = { "select_next", "show", "fallback_to_mappings" },
         },
         snippets = { preset = "mini_snippets" },
-        sources = {
-            default = { "lsp", "path", "snippets", "buffer" },
-        },
+        sources = { default = { "lsp", "path", "snippets", "buffer" } },
         cmdline = {
             keymap = {
                 preset = "cmdline",
@@ -43,9 +41,7 @@ return {
                 ["<tab>"] = { "select_next", "show" },
                 ["<s-tab>"] = { "select_prev", "show" },
             },
-            completion = {
-                list = { selection = { preselect = false } },
-            },
+            completion = { list = { selection = { preselect = false } } },
         },
     },
 }

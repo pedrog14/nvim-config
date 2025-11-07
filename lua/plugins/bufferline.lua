@@ -2,10 +2,7 @@ return {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     opts = function()
-        vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", {
-            link = "Title",
-            default = true,
-        })
+        vim.api.nvim_set_hl(0, "BufferLineOffsetTitle", { link = "Title", default = true })
 
         ---@module "bufferline"
         ---@type bufferline.Config
@@ -20,9 +17,7 @@ return {
                         highlight = "BufferLineOffsetTitle",
                         text_align = "left",
                     },
-                    {
-                        filetype = "snacks_layout_box",
-                    },
+                    { filetype = "snacks_layout_box" },
                 },
                 close_command = function(n)
                     Snacks.bufdelete(n)

@@ -16,9 +16,9 @@ local gen_filter = function(filter)
 
     return function(bufnr)
         return not (exclude and exclude[vim.bo[bufnr].filetype])
-            and vim.g.snacks_indent ~= false
-            and vim.b[bufnr].snacks_indent ~= false
-            and vim.bo[bufnr].buftype == ""
+            and vim.api.nvim_get_var("snacks_indent") ~= false
+            and vim.api.nvim_buf_get_var(bufnr, "snacks_indent") ~= false
+            and vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == ""
     end
 end
 
@@ -77,12 +77,13 @@ end
 M.setup = function(opts)
     opts = opts or {}
 
-    ---@type {filter?: {filetype: string[]} | fun(bufnr: number): boolean}
-    local indent = opts.indent or {}
-    indent.filter = indent.filter
-            and type(indent.filter) == "table"
-            and gen_filter(indent.filter --[[@as {filetype: string[]}]])
-        or indent.filter
+    ---@type {filetype: string[]}|fun(bufnr: number): boolean
+    local filter = vim.tbl_get(opts, "indent", "filter")
+    filter = filter
+        and (
+            type(filter) == "table" and gen_filter(filter --[[@as {filetype: string[]}]]) or filter
+        )
+    opts.indent = filter and vim.tbl_deep_extend("force", opts.indent, { filter = filter })
 
     snacks.setup(opts)
 

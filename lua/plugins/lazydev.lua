@@ -20,9 +20,7 @@ return {
         ---@type blink.cmp.Config
         opts = {
             sources = {
-                per_filetype = {
-                    lua = { inherit_defaults = true, "lazydev" },
-                },
+                per_filetype = { lua = { inherit_defaults = true, "lazydev" } },
                 providers = {
                     lazydev = {
                         name = "LazyDev",
