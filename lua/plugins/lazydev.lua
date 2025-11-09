@@ -1,8 +1,8 @@
 return {
     {
         "folke/lazydev.nvim",
-        cmd = "LazyDev",
         ft = "lua",
+        cmd = "LazyDev",
         ---@module "lazydev"
         ---@type lazydev.Config
         opts = {

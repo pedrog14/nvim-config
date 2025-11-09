@@ -19,7 +19,6 @@ M.setup = function(opts)
 
             for _, pkg_identifier in ipairs(opts.ensure_installed) do
                 local pkg_name, version = Package.Parse(pkg_identifier)
-
                 local ok, pkg = pcall(registry.get_package, pkg_name)
 
                 if ok then
