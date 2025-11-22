@@ -1,4 +1,4 @@
--- [ NeoVim Settings ] --
+-- [[ NeoVim Settings ]] --
 require("core.options").set({
     g = {
         mapleader = " ",
@@ -16,7 +16,6 @@ require("core.options").set({
         foldlevel = 99,
         foldtext = "",
         hlsearch = false,
-        ignorecase = true,
         incsearch = true,
         laststatus = 3,
         list = true,
@@ -48,8 +47,24 @@ require("core.options").set({
     },
 })
 
+require("core.keymaps").del({
+    { "gra", mode = { "n", "x" } },
+    { "gri" },
+    { "grn" },
+    { "grr" },
+    { "grt" },
+    { "gO" },
+    { "<c-s>", mode = "i" },
+})
+
 require("core.lazy").set({
-    spec = { { import = "plugins" } },
+    spec = {
+        { import = "plugins" },
+        { import = "plugins.colorschemes" },
+        { import = "plugins.blink" },
+        { import = "plugins.mini" },
+        { import = "plugins.treesitter" },
+    },
     install = { colorscheme = { "gruvbox" } },
     checker = { enabled = true },
     ui = {
@@ -94,7 +109,7 @@ require("core.keymaps").set({
 
     -- Better Buffer control
     { "<s-h>", "<cmd>bprev<cr>", desc = "Go to Previous Buffer" },
-    { "<s-l>", "<cmd>bnext<cr>", { desc = "Go to Next Buffer" } },
+    { "<s-l>", "<cmd>bnext<cr>", desc = "Go to Next Buffer" },
 
     -- Better Window control
     { "<c-h>", "<c-w>h", desc = "Go to Left Window", remap = true },
@@ -113,7 +128,7 @@ require("core.keymaps").set({
         desc = "Open Lazy",
     },
 
-    -- LSP
+    -- LSP mappings
     {
         "gra",
         function()
@@ -121,7 +136,13 @@ require("core.keymaps").set({
         end,
         mode = { "n", "x" },
         desc = "Selects a code action available at the cursor position",
-        lsp = { method = vim.lsp.protocol.Methods.textDocument_codeAction },
+    },
+    {
+        "gri",
+        function()
+            Snacks.picker.lsp_implementations()
+        end,
+        desc = "Lists all the implementations for the symbol under the cursor (Snacks.picker)",
     },
     {
         "grn",
@@ -129,7 +150,27 @@ require("core.keymaps").set({
             vim.lsp.buf.rename()
         end,
         desc = "Renames all references to the symbol under the cursor",
-        lsp = { method = vim.lsp.protocol.Methods.textDocument_rename },
+    },
+    {
+        "grr",
+        function()
+            Snacks.picker.lsp_references()
+        end,
+        desc = "Lists all the references to the symbol under the cursor (Snacks.picker)",
+    },
+    {
+        "grt",
+        function()
+            Snacks.picker.lsp_type_definitions()
+        end,
+        desc = "Jumps to the definition of the type of the symbol under the cursor (Snacks.picker)",
+    },
+    {
+        "gO",
+        function()
+            Snacks.picker.lsp_symbols()
+        end,
+        desc = "List all symbols in the current buffer (Snacks.picker)",
     },
     {
         "<c-s>",
@@ -138,15 +179,20 @@ require("core.keymaps").set({
         end,
         mode = "i",
         desc = "Displays signature information about the symbol under the cursor",
-        lsp = { method = vim.lsp.protocol.Methods.textDocument_signatureHelp },
     },
     {
-        "K",
+        "grd",
         function()
-            vim.lsp.buf.hover()
+            Snacks.picker.lsp_definitions()
         end,
-        desc = "Displays hover information about the symbol under the cursor",
-        lsp = { method = vim.lsp.protocol.Methods.textDocument_hover },
+        desc = "Lists all the definitions for the symbol under the cursor (Snacks.picker)",
+    },
+    {
+        "grD",
+        function()
+            Snacks.picker.lsp_declarations()
+        end,
+        desc = "Lists all the declarations for the symbol under the cursor (Snacks.picker)",
     },
 })
 
@@ -154,7 +200,7 @@ require("core.autocmds").set({
     {
         event = "TextYankPost",
         callback = function()
-            (vim.hl or vim.highlight).on_yank()
+            vim.hl.on_yank()
         end,
     },
 })

@@ -1,8 +1,8 @@
 return {
-    "Saghen/blink.cmp",
+    "saghen/blink.cmp",
     dependencies = { "nvim-mini/mini.icons", "nvim-mini/mini.snippets" },
     version = "*",
-    events = { "InsertEnter", "CmdlineEnter" },
+    event = { "InsertEnter", "CmdlineEnter" },
     ---@module "blink.cmp"
     ---@type blink.cmp.Config
     opts = {
@@ -31,7 +31,6 @@ return {
             ["<c-n>"] = { "select_next", "show", "fallback_to_mappings" },
         },
         snippets = { preset = "mini_snippets" },
-        sources = { default = { "lsp", "path", "snippets", "buffer" } },
         cmdline = {
             keymap = {
                 preset = "cmdline",

@@ -1,12 +1,13 @@
 local M = {}
 
----@param callback fun(...)
+---@param callback fun(...): any
+---@return number, any
 M.benchmark = function(callback, ...)
     local start_time = os.clock()
-    callback(...)
+    local output = callback(...)
     local end_time = os.clock()
 
-    return end_time - start_time
+    return end_time - start_time, output
 end
 
 return M

@@ -5,7 +5,7 @@ return {
     cmd = { "LspInfo", "LspStart", "LspStop", "LspRestart" },
     main = "utils.plugins.lspconfig",
     ---@module "utils.plugins.lspconfig"
-    ---@type lspconfig.opts
+    ---@type utils.lspconfig.opts
     opts = {
         ensure_installed = {
             "bashls",
@@ -36,11 +36,8 @@ return {
                 settings = {
                     Lua = {
                         workspace = { checkThirdParty = false },
-                        codeLens = { enable = true },
                         hint = {
-                            enable = true,
                             paramName = "Disable",
-                            semicolon = "Disable",
                             arrayIndex = "Disable",
                         },
                     },

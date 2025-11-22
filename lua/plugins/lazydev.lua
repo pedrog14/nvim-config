@@ -12,9 +12,8 @@ return {
             },
         },
     },
-    { "Bilal2453/luvit-meta", lazy = true },
     {
-        "Saghen/blink.cmp",
+        "saghen/blink.cmp",
         optional = true,
         ---@module "blink.cmp"
         ---@type blink.cmp.Config

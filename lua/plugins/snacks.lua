@@ -64,51 +64,7 @@ return {
         },
 
         {
-            "gri",
-            function()
-                Snacks.picker.lsp_implementations()
-            end,
-            desc = "Lists all the implementations for the symbol under the cursor (Snacks.picker)",
-        },
-        {
-            "grr",
-            function()
-                Snacks.picker.lsp_references()
-            end,
-            desc = "Lists all the references to the symbol under the cursor (Snacks.picker)",
-        },
-        {
-            "grt",
-            function()
-                Snacks.picker.lsp_type_definitions()
-            end,
-            desc = "Jumps to the definition of the type of the symbol under the cursor (Snacks.picker)",
-        },
-        {
-            "gO",
-            function()
-                Snacks.picker.lsp_symbols()
-            end,
-            desc = "List all symbols in the current buffer (Snacks.picker)",
-        },
-
-        {
-            "grd",
-            function()
-                Snacks.picker.lsp_definitions()
-            end,
-            desc = "Lists all the definitions for the symbol under the cursor (Snacks.picker)",
-        },
-        {
-            "grD",
-            function()
-                Snacks.picker.lsp_declarations()
-            end,
-            desc = "Lists all the declarations for the symbol under the cursor (Snacks.picker)",
-        },
-
-        {
-            "grN",
+            "gR",
             function()
                 Snacks.rename.rename_file()
             end,
@@ -175,8 +131,8 @@ return {
     opts = function()
         local signs = require("utils.icons").diagnostic.signs
 
-        ---@module "snacks"
-        ---@type snacks.Config
+        ---@module "utils.plugins.snacks"
+        ---@type utils.snacks.opts
         return {
             bigfile = { enabled = true },
             quickfile = { enabled = true },
@@ -278,6 +234,7 @@ return {
 
             -- Notifier
             notifier = {
+                lsp = { enabled = false },
                 icons = { error = signs[1], warn = signs[2], info = signs[3] },
             },
 

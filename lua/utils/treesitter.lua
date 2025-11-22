@@ -1,31 +1,33 @@
 local M = {}
 
-M._available = nil ---@type table<string, boolean>?
-M._installed = nil ---@type table<string, boolean>?
-M._query = {} ---@type table<string, table<string, boolean>>
+local _available = nil ---@type table<string, boolean>?
+local _installed = nil ---@type table<string, boolean>?
+local _query = {} ---@type table<string, table<string, boolean>>
 
 ---@param opts { update: boolean }?
 ---@return table<string, boolean>
 M.get_available = function(opts)
-    if opts and opts.update then
-        M._available = {}
+    opts = opts or {}
+    if opts.update then
+        _available = {}
         for _, parser in ipairs(require("nvim-treesitter").get_available()) do
-            M._available[parser] = true
+            _available[parser] = true
         end
     end
-    return M._available or {}
+    return _available or {}
 end
 
 ---@param opts { update: boolean }?
 ---@return table<string, boolean>
 M.get_installed = function(opts)
-    if opts and opts.update then
-        M._installed = {}
+    opts = opts or {}
+    if opts.update then
+        _installed = {}
         for _, parser in ipairs(require("nvim-treesitter").get_installed("parsers")) do
-            M._installed[parser] = true
+            _installed[parser] = true
         end
     end
-    return M._installed or {}
+    return _installed or {}
 end
 
 ---@param lang string
@@ -35,16 +37,16 @@ M.get_query = function(lang, query)
     if not M.get_installed({ update = true })[lang] then
         return false
     end
-    if not M._query[lang] then
-        M._query[lang] = {}
+    if not _query[lang] then
+        _query[lang] = {}
     end
     if not query then
-        return M._query[lang]
+        return _query[lang]
     end
-    if M._query[lang][query] == nil then
-        M._query[lang][query] = vim.treesitter.query.get(lang, query) ~= nil
+    if _query[lang][query] == nil then
+        _query[lang][query] = vim.treesitter.query.get(lang, query) ~= nil
     end
-    return M._query[lang][query]
+    return _query[lang][query]
 end
 
 return M

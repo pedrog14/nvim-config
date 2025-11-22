@@ -1,6 +1,6 @@
-local lint = require("lint")
-
 local M = {}
+
+local lint = require("lint")
 
 M.debounce = function(ms, fn)
     local timer = vim.uv.new_timer()

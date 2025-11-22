@@ -1,5 +1,9 @@
+---@class utils.mason.opts: MasonSettings
+---@field ensure_installed? string[]
+
 local M = {}
 
+---@param opts utils.mason.opts
 M.setup = function(opts)
     require("mason").setup(opts)
 

@@ -1,5 +1,13 @@
+---@class utils.treesitter.textobjects.move: TSTextObjects.Config.Move
+---@field enable? boolean
+---@field keys? table<string, table<string, string>>
+
+---@class utils.treesitter.textobjects.opts: TSTextObjects.UserConfig
+---@field move? utils.treesitter.textobjects.move
+
 local M = {}
 
+---@param opts utils.treesitter.textobjects.opts
 M.setup = function(opts)
     local textobjects = require("nvim-treesitter-textobjects")
     local utils = require("utils.treesitter")

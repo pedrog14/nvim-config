@@ -1,29 +1,46 @@
----@class core.keymap: snacks.keymap.set.Opts
+---@class core.keymap.set: vim.keymap.set.Opts
 ---@field [1] string
 ---@field [2] string|function
 ---@field mode? string|string[]
 
+---@class core.keymap.del: vim.keymap.del.Opts
+---@field [1] string
+---@field mode? string|string[]
+
 local M = {}
 
----@param keymaps core.keymap[]
+---@param keymaps core.keymap.set[]
 M.set = function(keymaps)
     keymaps = keymaps or {}
 
-    local has_snacks, snacks = pcall(require, "snacks")
-    local util = has_snacks and snacks or vim
-
-    for _, opts in ipairs(keymaps) do
-        local mode = opts.mode
-                and (
-                    type(opts.mode) == "table" and vim.deepcopy(opts.mode --[[@as string[] ]]) or opts.mode
-                )
+    for _, keymap in ipairs(keymaps) do
+        local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as string[] ]])
+            or keymap.mode
             or "n"
-        opts.mode = nil
+        keymap.mode = nil
 
-        local lhs = table.remove(opts, 1)
-        local rhs = table.remove(opts, 1)
+        local lhs = table.remove(keymap, 1)
+        local rhs = table.remove(keymap, 1)
+        local opts = keymap
 
-        util.keymap.set(mode, lhs, rhs, opts)
+        vim.keymap.set(mode, lhs, rhs, opts)
+    end
+end
+
+---@param keymaps core.keymap.del[]
+M.del = function(keymaps)
+    keymaps = keymaps or {}
+
+    for _, keymap in ipairs(keymaps) do
+        local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as string[] ]])
+            or keymap.mode
+            or "n"
+        keymap.mode = nil
+
+        local lhs = table.remove(keymap, 1)
+        local opts = keymap
+
+        vim.keymap.del(mode, lhs, opts)
     end
 end
 
