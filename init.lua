@@ -1,4 +1,4 @@
--- [[ NeoVim Settings ]] --
+-- [[ Neovim Settings ]] --
 require("core.options").set({
     g = {
         mapleader = " ",

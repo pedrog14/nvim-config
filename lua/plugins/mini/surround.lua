@@ -1,8 +1,7 @@
 return {
     "nvim-mini/mini.surround",
-    event = { "BufNewFile", "BufReadPre" },
     keys = {
-        { "gs", desc = "Add Surrounding", mode = { "n", "v" } },
+        { "gs", desc = "Add Surrounding", mode = { "n", "x" } },
         { "ds", desc = "Delete Surrounding" },
         { "cs", desc = "Replace Surrounding" },
     },
