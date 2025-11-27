@@ -4,7 +4,7 @@ local _available = nil ---@type table<string, boolean>?
 local _installed = nil ---@type table<string, boolean>?
 local _query = {} ---@type table<string, table<string, boolean>>
 
----@param opts { update: boolean }?
+---@param opts? { update: boolean }
 ---@return table<string, boolean>
 M.get_available = function(opts)
     opts = opts or {}
@@ -17,7 +17,7 @@ M.get_available = function(opts)
     return _available or {}
 end
 
----@param opts { update: boolean }?
+---@param opts? { update: boolean }
 ---@return table<string, boolean>
 M.get_installed = function(opts)
     opts = opts or {}

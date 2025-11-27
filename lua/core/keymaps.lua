@@ -27,21 +27,4 @@ M.set = function(keymaps)
     end
 end
 
----@param keymaps core.keymap.del[]
-M.del = function(keymaps)
-    keymaps = keymaps or {}
-
-    for _, keymap in ipairs(keymaps) do
-        local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as string[] ]])
-            or keymap.mode
-            or "n"
-        keymap.mode = nil
-
-        local lhs = table.remove(keymap, 1)
-        local opts = keymap
-
-        vim.keymap.del(mode, lhs, opts)
-    end
-end
-
 return M

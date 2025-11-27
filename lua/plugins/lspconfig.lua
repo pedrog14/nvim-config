@@ -44,6 +44,7 @@ return {
                 },
             },
         },
+        semantic_tokens = { enabled = true },
         codelens = { enabled = true },
         inlay_hint = { enabled = true },
         fold = { enabled = true },

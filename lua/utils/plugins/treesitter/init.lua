@@ -50,7 +50,6 @@ M.setup = function(opts)
             if is_enabled("highlight", { lang = lang, query = "highlights", default = true }) then
                 pcall(vim.treesitter.start, bufnr, lang)
             end
-
             if is_enabled("indent", { lang = lang, query = "indents", default = true }) then
                 vim.api.nvim_set_option_value(
                     "indentexpr",
@@ -58,7 +57,6 @@ M.setup = function(opts)
                     { buf = bufnr }
                 )
             end
-
             if is_enabled("fold", { lang = lang, query = "folds", default = true }) then
                 local win = vim.api.nvim_get_current_win()
                 vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })

@@ -6,8 +6,10 @@ return {
     ---@module "blink.cmp"
     ---@type blink.cmp.Config
     opts = {
+        snippets = { preset = "mini_snippets" },
         completion = {
-            documentation = { auto_show = true, auto_show_delay_ms = 500 },
+            accept = { auto_brackets = { enabled = true } },
+            documentation = { auto_show = true, auto_show_delay_ms = 200 },
             list = { selection = { preselect = false } },
             menu = {
                 draw = {
@@ -30,7 +32,6 @@ return {
             preset = "default",
             ["<c-n>"] = { "select_next", "show", "fallback_to_mappings" },
         },
-        snippets = { preset = "mini_snippets" },
         cmdline = {
             keymap = {
                 preset = "cmdline",

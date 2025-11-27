@@ -5,15 +5,14 @@ require("core.options").set({
         maplocalleader = "\\",
     },
     o = {
-        autoindent = true,
-        bg = "dark",
         clipboard = "unnamedplus",
         completeopt = "fuzzy,menuone,noselect,popup",
         confirm = true,
         cursorline = true,
         expandtab = true,
-        fillchars = vim.api.nvim_get_option_value("fillchars", {}) .. "foldclose:󰅂",
+        fillchars = vim.api.nvim_get_option_value("fillchars", {}) .. "foldopen:󰅀,foldclose:󰅂",
         foldlevel = 99,
+        foldmethod = "indent",
         foldtext = "",
         hlsearch = false,
         incsearch = true,
@@ -37,7 +36,7 @@ require("core.options").set({
         splitkeep = "screen",
         splitright = true,
         tabstop = 4,
-        timeoutlen = 500,
+        timeoutlen = 300,
         undofile = true,
         updatetime = 200,
         virtualedit = "block",
@@ -45,16 +44,6 @@ require("core.options").set({
         wildoptions = "fuzzy,pum,tagfile",
         wrap = false,
     },
-})
-
-require("core.keymaps").del({
-    { "gra", mode = { "n", "x" } },
-    { "gri" },
-    { "grn" },
-    { "grr" },
-    { "grt" },
-    { "gO" },
-    { "<c-s>", mode = "i" },
 })
 
 require("core.lazy").set({

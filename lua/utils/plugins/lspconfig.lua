@@ -1,9 +1,10 @@
 ---@class utils.lspconfig.opts: MasonLspconfigSettings
----@field diagnostic? vim.diagnostic.Opts
 ---@field servers? table<string, vim.lsp.Config>
+---@field diagnostic? vim.diagnostic.Opts
 ---@field codelens? { enabled: boolean, exclude: string[] }
 ---@field inlay_hint? { enabled: boolean, exclude: string[] }
 ---@field fold? { enabled: boolean, exclude: string[] }
+---@field semantic_tokens? { enabled: boolean, exclude: string[] }
 
 local M = {}
 
@@ -37,19 +38,25 @@ M.setup = function(opts)
 
     vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp_config", { clear = true }),
-        callback = vim.schedule_wrap(function(args)
+        callback = function(args)
             local bufnr = args.buf
 
             local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
             local ft = vim.api.nvim_get_option_value("filetype", { buf = args.buf })
 
             -- LSPConfig settings
+            if is_enabled("semantic_tokens", { ft = ft, default = true }) then
+                utils.on_supports_method(client, "textDocument/semanticTokens/full", bufnr, function()
+                    vim.lsp.semantic_tokens.enable(true, { bufnr = bufnr })
+                end)
+            end
             if is_enabled("codelens", { ft = ft, default = false }) then
                 utils.on_supports_method(client, "textDocument/codeLens", bufnr, function()
-                    vim.lsp.codelens.refresh()
                     vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
                         buffer = bufnr,
-                        callback = vim.lsp.codelens.refresh,
+                        callback = function()
+                            vim.lsp.codelens.refresh({ bufnr = bufnr })
+                        end,
                     })
                 end)
             end
@@ -69,7 +76,7 @@ M.setup = function(opts)
             vim.keymap.set("n", "K", function()
                 vim.lsp.buf.hover()
             end, { desc = "Displays hover information about the symbol under the cursor", buffer = bufnr })
-        end),
+        end,
     })
 end
 
