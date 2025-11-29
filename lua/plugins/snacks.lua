@@ -136,9 +136,11 @@ return {
         return {
             bigfile = { enabled = true },
             quickfile = { enabled = true },
-            scope = { enabled = true },
             statuscolumn = { enabled = true },
             words = { enabled = true },
+
+            indent = { enabled = false, indent = { char = "▏" }, scope = { char = "▏" } },
+            scope = { enabled = false },
 
             -- Dashboard
             dashboard = {
@@ -234,7 +236,6 @@ return {
 
             -- Notifier
             notifier = {
-                lsp = { enabled = false },
                 icons = { error = signs[1], warn = signs[2], info = signs[3] },
             },
 

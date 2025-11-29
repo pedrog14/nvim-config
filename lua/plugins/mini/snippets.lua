@@ -2,7 +2,7 @@ return {
     "nvim-mini/mini.snippets",
     dependencies = "rafamadriz/friendly-snippets",
     lazy = true,
-    opts = function()
+    init = function()
         -- Stop all sessions on Normal mode exit
         vim.api.nvim_create_autocmd("User", {
             pattern = "MiniSnippetsSessionStart",
@@ -28,7 +28,8 @@ return {
                 end
             end,
         })
-
+    end,
+    opts = function()
         local gen_loader = require("mini.snippets").gen_loader
         return {
             expand = {

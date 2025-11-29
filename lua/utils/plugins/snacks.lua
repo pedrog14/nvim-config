@@ -1,4 +1,8 @@
----@alias utils.snacks.indent snacks.indent.Config|{ filter: { exclude: string[] }? }
+---@class utils.snacks.indent: snacks.indent.Config
+---@field filter utils.snacks.indent.filter?
+
+---@class utils.snacks.indent.filter
+---@field exclude string[]
 
 ---@class utils.snacks.opts: snacks.Config
 ---@field indent? utils.snacks.indent
