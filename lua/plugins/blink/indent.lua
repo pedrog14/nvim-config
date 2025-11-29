@@ -4,7 +4,8 @@ return {
     --- @module 'blink.indent'
     --- @type blink.indent.Config
     opts = {
+        blocked = { filetypes = { include_defaults = true, "text" } },
         static = { char = "▏" },
-        scope = { enabled = false, char = "▏", highlights = { "BlinkIndentScope" } },
+        scope = { char = "▏", highlights = { "BlinkIndentScope" } },
     },
 }
