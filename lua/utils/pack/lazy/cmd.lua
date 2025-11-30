@@ -32,7 +32,7 @@ local cmd_create = function(cmd, spec)
 
         local info = vim.api.nvim_get_commands({})[cmd] or vim.api.nvim_buf_get_commands(0, {})[cmd]
         if not info then
-            vim.schedule_wrap(vim.notify)(
+            vim.schedule(vim.notify)(
                 "Command " .. cmd .. " not found after loading " .. spec.name,
                 vim.log.levels.ERROR
             )

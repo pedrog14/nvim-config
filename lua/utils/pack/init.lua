@@ -1,16 +1,21 @@
 ---@class utils.pack.Opts: vim.pack.keyset.add
 ---@field path (string|string[])? Path of pack specs (`:h vim.pack.Spec`), same notation as lua modules
 
----@class utils.pack.Spec: vim.pack.Spec, utils.pack.Data
+---@class utils.pack.Spec: vim.pack.Spec
+---@field data utils.pack.Data
 
 ---@class utils.pack.SpecResolved: vim.pack.Spec
----@field data utils.pack.Data
+---@field data utils.pack.DataResolved
 
 ---@class utils.pack.Data
 ---@field module string?
 ---@field config fun(opts: table?)?
 ---@field opts (table|fun(): table)?
 ---@field lazy utils.pack.Lazy?
+
+---@class utils.pack.DataResolved: utils.pack.Data
+---@field module string
+---@field opts table?
 
 ---@class utils.pack.Lazy
 ---@field cmd (string|string[])?
@@ -21,12 +26,12 @@ local M = {}
 M.spec = nil ---@type utils.pack.Spec[]?
 
 ---@param path string|string[]
----@return utils.pack.Spec[]
-M.gen_spec = function(path)
+---@return table
+M.get_spec = function(path)
     ---@param spec_path string
-    ---@return vim.pack.Spec[]
+    ---@return table
     local require_spec = function(spec_path)
-        local spec = {} ---@type vim.pack.Spec[]
+        local spec = {}
         local path_str = vim.fn.stdpath("config") .. "/lua/" .. spec_path:gsub("%.", "/")
         local stream = vim.uv.fs_scandir(path_str)
 
@@ -59,7 +64,7 @@ M.load = function(spec)
     vim.cmd.packadd(spec.name)
     local data = spec.data
     if data.config then
-        data.config(data.opts --[[@as table?]])
+        data.config(data.opts)
     end
 end
 
@@ -71,11 +76,8 @@ M.setup = function(pack_opts)
         return
     end
 
-    M.spec = M.gen_spec(path)
-
-    ---@type utils.pack.SpecResolved[]
-    local spec = vim.tbl_map(function(spec) ---@param spec utils.pack.Spec
-        ---@type utils.pack.SpecResolved
+    M.spec = vim.tbl_map(function(spec) ---@param spec table
+        ---@type utils.pack.Spec
         return {
             src = spec.src,
             name = spec.name,
@@ -87,20 +89,17 @@ M.setup = function(pack_opts)
                 opts = spec.opts,
             },
         }
-    end, M.spec)
+    end, M.get_spec(path))
 
     ---@param data { spec: utils.pack.SpecResolved, path: string }
     local load = function(data)
         local plug_spec = data.spec
         local plug_data = plug_spec.data
 
-        ---@type string
         plug_data.module = plug_data.module or plug_spec.name:gsub("%.nvim$", "")
-        ---@type table
-        plug_data.opts = type(plug_data.opts) == "function" and plug_data.opts() or plug_data.opts --[[@as table]]
-        ---@type fun(opts: table?)?
+        plug_data.opts = type(plug_data.opts) == "function" and plug_data.opts() or plug_data.opts
         plug_data.config = plug_data.config == nil
-                and plug_data.opts
+                and plug_data.opts ~= nil
                 and function(opts) ---@param opts table?
                     require(plug_data.module).setup(opts)
                 end
@@ -115,7 +114,7 @@ M.setup = function(pack_opts)
         end
     end
 
-    vim.pack.add(spec, { confirm = pack_opts.confirm or true, load = pack_opts.load or load })
+    vim.pack.add(M.spec, { confirm = pack_opts.confirm or true, load = pack_opts.load or load })
 end
 
 return M
