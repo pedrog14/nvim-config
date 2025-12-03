@@ -1,5 +1,5 @@
 ---@class utils.treesitter.textobjects.move: TSTextObjects.Config.Move
----@field enable? boolean
+---@field enabled? boolean
 ---@field keys? table<string, table<string, string>>
 
 ---@class utils.treesitter.textobjects.opts: TSTextObjects.UserConfig
@@ -16,9 +16,18 @@ M.setup = function(opts)
 
     local attach = function(buf)
         local lang = vim.treesitter.language.get_lang(vim.api.nvim_get_option_value("filetype", { buf = buf }))
-        if not (lang and vim.tbl_get(opts, "move", "enable") and utils.get_query(lang, "textobjects")) then
+        local is_installed = lang and utils.get_installed()[lang]
+
+        if
+            not (
+                is_installed
+                and vim.tbl_get(opts, "move", "enabled")
+                and utils.get_query(lang --[[@as string]], "textobjects")
+            )
+        then
             return
         end
+
         ---@type table<string, table<string, string>>
         local moves = vim.tbl_get(opts, "move", "keys") or {}
 
@@ -53,7 +62,7 @@ M.setup = function(opts)
     end
 
     vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("textobjects_config", { clear = true }),
+        group = require("utils.plugins.treesitter").augroup,
         callback = function(args)
             attach(args.buf)
         end,

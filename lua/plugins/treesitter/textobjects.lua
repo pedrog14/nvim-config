@@ -7,7 +7,7 @@ return {
     ---@type utils.treesitter.textobjects.opts
     opts = {
         move = {
-            enable = true,
+            enabled = true,
             set_jumps = true,
             keys = {
                 goto_next_start = {

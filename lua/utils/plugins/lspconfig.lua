@@ -37,7 +37,7 @@ M.setup = function(opts)
     end
 
     vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("lsp_config", { clear = true }),
+        group = vim.api.nvim_create_augroup("LSPConfig", { clear = true }),
         callback = function(args)
             local bufnr = args.buf
 

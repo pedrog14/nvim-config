@@ -6,6 +6,8 @@
 
 local M = {}
 
+M.augroup = vim.api.nvim_create_augroup("TSConfig", { clear = true })
+
 ---@param opts utils.treesitter.opts
 M.setup = function(opts)
     local treesitter = require("nvim-treesitter")
@@ -13,7 +15,6 @@ M.setup = function(opts)
 
     treesitter.setup(opts)
 
-    utils.get_available({ update = true })
     utils.get_installed({ update = true })
 
     local install = vim.tbl_filter(function(lang)
@@ -38,31 +39,69 @@ M.setup = function(opts)
     end
 
     vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("treesitter_config", { clear = true }),
+        group = M.augroup,
         callback = function(args)
             local bufnr = args.buf
             local lang = vim.treesitter.language.get_lang(args.match)
+            local is_installed = lang and utils.get_installed()[lang]
 
-            if not (lang and utils.get_installed({ update = true })[lang]) then
+            if not is_installed then
                 return
             end
 
-            if is_enabled("highlight", { lang = lang, query = "highlights", default = true }) then
+            if
+                is_enabled("highlight", {
+                    lang = lang --[[@as string]],
+                    query = "highlights",
+                    default = true,
+                })
+            then
                 pcall(vim.treesitter.start, bufnr, lang)
             end
-            if is_enabled("indent", { lang = lang, query = "indents", default = true }) then
+
+            if
+                is_enabled("indent", {
+                    lang = lang --[[@as string]],
+                    query = "indents",
+                    default = true,
+                })
+            then
                 vim.api.nvim_set_option_value(
                     "indentexpr",
                     "v:lua.require('nvim-treesitter').indentexpr()",
                     { buf = bufnr }
                 )
             end
-            if is_enabled("fold", { lang = lang, query = "folds", default = true }) then
+
+            if
+                is_enabled("fold", {
+                    lang = lang --[[@as string]],
+                    query = "folds",
+                    default = true,
+                })
+            then
                 local win = vim.api.nvim_get_current_win()
                 vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
                 vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = win })
             end
         end,
+    })
+
+    local cmd_opts = vim.tbl_get(vim.api.nvim_get_commands({}), "TSInstall")
+
+    vim.api.nvim_del_user_command("TSInstall")
+
+    vim.api.nvim_create_user_command("TSInstall", function(args)
+        treesitter.install(args.fargs, { force = args.bang, summary = true }):await(function()
+            utils.get_installed({ update = true })
+            vim.api.nvim_exec_autocmds("FileType", { group = M.augroup })
+        end)
+    end, {
+        nargs = cmd_opts.nargs,
+        bang = cmd_opts.bang,
+        bar = cmd_opts.bar,
+        complete = cmd_opts.complete,
+        desc = cmd_opts.definition,
     })
 end
 
