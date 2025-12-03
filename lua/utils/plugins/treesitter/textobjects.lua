@@ -62,7 +62,7 @@ M.setup = function(opts)
     end
 
     vim.api.nvim_create_autocmd("FileType", {
-        group = require("utils.plugins.treesitter").augroup,
+        group = vim.api.nvim_create_augroup("TSConfig", { clear = false }),
         callback = function(args)
             attach(args.buf)
         end,

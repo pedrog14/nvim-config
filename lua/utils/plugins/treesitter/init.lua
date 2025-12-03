@@ -6,8 +6,6 @@
 
 local M = {}
 
-M.augroup = vim.api.nvim_create_augroup("TSConfig", { clear = true })
-
 ---@param opts utils.treesitter.opts
 M.setup = function(opts)
     local treesitter = require("nvim-treesitter")
@@ -39,7 +37,7 @@ M.setup = function(opts)
     end
 
     vim.api.nvim_create_autocmd("FileType", {
-        group = M.augroup,
+        group = vim.api.nvim_create_augroup("TSConfig", { clear = true }),
         callback = function(args)
             local bufnr = args.buf
             local lang = vim.treesitter.language.get_lang(args.match)
@@ -88,17 +86,31 @@ M.setup = function(opts)
     })
 
     local cmd_opts = vim.tbl_get(vim.api.nvim_get_commands({}), "TSInstall")
-
     vim.api.nvim_del_user_command("TSInstall")
-
     vim.api.nvim_create_user_command("TSInstall", function(args)
         treesitter.install(args.fargs, { force = args.bang, summary = true }):await(function()
             utils.get_installed({ update = true })
-            vim.api.nvim_exec_autocmds("FileType", { group = M.augroup })
+            vim.api.nvim_exec_autocmds(
+                "FileType",
+                { group = vim.api.nvim_create_augroup("TSConfig", { clear = false }) }
+            )
         end)
     end, {
         nargs = cmd_opts.nargs,
         bang = cmd_opts.bang,
+        bar = cmd_opts.bar,
+        complete = cmd_opts.complete,
+        desc = cmd_opts.definition,
+    })
+
+    cmd_opts = vim.tbl_get(vim.api.nvim_get_commands({}), "TSUninstall")
+    vim.api.nvim_del_user_command("TSUninstall")
+    vim.api.nvim_create_user_command("TSUninstall", function(args)
+        treesitter.uninstall(args.fargs, { summary = true }):await(function()
+            utils.get_installed({ update = true })
+        end)
+    end, {
+        nargs = cmd_opts.nargs,
         bar = cmd_opts.bar,
         complete = cmd_opts.complete,
         desc = cmd_opts.definition,
