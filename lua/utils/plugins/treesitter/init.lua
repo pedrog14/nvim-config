@@ -31,7 +31,7 @@ M.setup = function(opts)
     local is_enabled = function(field, data)
         local opt = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
         local exclude = opt.exclude or {}
-        return (opt.enabled ~= nil or data.default)
+        return (opt.enabled ~= nil and opt.enabled or data.default)
             and not vim.tbl_contains(exclude, data.lang)
             and utils.get_query(data.lang, data.query) --[[@as boolean]]
     end
