@@ -85,16 +85,66 @@ require("core.commands").set({
 
 require("core.keymaps").set({
     -- Better Up/Down (for wrapped text)
-    { "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
-    { "<Down>", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
-    { "k", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
-    { "<Up>", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
+    {
+        "j",
+        "v:count == 0 ? 'gj' : 'j'",
+        mode = { "n", "x" },
+        desc = "Down",
+        expr = true,
+        silent = true,
+    },
+    {
+        "<Down>",
+        "v:count == 0 ? 'gj' : 'j'",
+        mode = { "n", "x" },
+        desc = "Down",
+        expr = true,
+        silent = true,
+    },
+    {
+        "k",
+        "v:count == 0 ? 'gk' : 'k'",
+        mode = { "n", "x" },
+        desc = "Up",
+        expr = true,
+        silent = true,
+    },
+    {
+        "<Up>",
+        "v:count == 0 ? 'gk' : 'k'",
+        mode = { "n", "x" },
+        desc = "Up",
+        expr = true,
+        silent = true,
+    },
 
     -- Better search
-    { "n", "'Nn'[v:searchforward].'zv'", expr = true, desc = "Next Search Result" },
-    { "n", "'Nn'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Next Search Result" },
-    { "N", "'nN'[v:searchforward].'zv'", expr = true, desc = "Previous Search Result" },
-    { "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Previous Search Result" },
+    {
+        "n",
+        "'Nn'[v:searchforward].'zv'",
+        expr = true,
+        desc = "Next Search Result",
+    },
+    {
+        "n",
+        "'Nn'[v:searchforward]",
+        mode = { "x", "o" },
+        expr = true,
+        desc = "Next Search Result",
+    },
+    {
+        "N",
+        "'nN'[v:searchforward].'zv'",
+        expr = true,
+        desc = "Previous Search Result",
+    },
+    {
+        "N",
+        "'nN'[v:searchforward]",
+        mode = { "x", "o" },
+        expr = true,
+        desc = "Previous Search Result",
+    },
 
     -- Better Buffer control
     { "<s-h>", "<cmd>bprev<cr>", desc = "Go to Previous Buffer" },
