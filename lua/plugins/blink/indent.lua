@@ -1,0 +1,11 @@
+return {
+    "saghen/blink.indent",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    ---@module "blink.indent"
+    ---@type blink.indent.Config
+    opts = {
+        static = { char = "▏" },
+        scope = { char = "▏", highlights = { "BlinkIndentScope" } },
+        blocked = { filetypes = { "text", "snacks_terminal", include_defaults = true } },
+    },
+}

@@ -139,9 +139,6 @@ return {
             statuscolumn = { enabled = true },
             words = { enabled = true },
 
-            indent = { enabled = false, indent = { char = "▏" }, scope = { char = "▏" } },
-            scope = { enabled = false },
-
             -- Dashboard
             dashboard = {
                 preset = {
