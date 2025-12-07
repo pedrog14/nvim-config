@@ -51,7 +51,7 @@ M.setup = function(opts)
             if
                 is_enabled("semantic_tokens", {
                     client = client,
-                    method = "textDocument/semanticTokens/full",
+                    method = "textDocument/semanticTokens",
                     buf = bufnr,
                     ft = ft,
                     default = true,
