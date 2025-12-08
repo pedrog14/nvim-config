@@ -1,10 +1,19 @@
 ---@class utils.lspconfig.opts: MasonLspconfigSettings
----@field servers? table<string, vim.lsp.Config>
----@field diagnostic? vim.diagnostic.Opts
----@field codelens? { enabled: boolean, exclude: string[] }
----@field inlay_hint? { enabled: boolean, exclude: string[] }
----@field fold? { enabled: boolean, exclude: string[] }
----@field semantic_tokens? { enabled: boolean, exclude: string[] }
+---@field servers         table<string, vim.lsp.Config>?
+---@field diagnostic      vim.diagnostic.Opts?
+---@field codelens        { enabled: boolean, exclude: string[] }?
+---@field inlay_hint      { enabled: boolean, exclude: string[] }?
+---@field fold            { enabled: boolean, exclude: string[] }?
+---@field semantic_tokens { enabled: boolean, exclude: string[] }?
+
+---@class utils.lspconfig.check_enabled.callback.data
+---@field client   vim.lsp.Client
+---@field method   vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
+---@field buf      number
+---@field default  boolean
+
+---@class utils.lspconfig.check_enabled.data: utils.lspconfig.check_enabled.callback.data
+---@field callback fun(data: utils.lspconfig.check_enabled.callback.data)
 
 local M = {}
 
@@ -26,86 +35,74 @@ M.setup = function(opts)
     })
 
     ---@param field string
-    ---@param data { client: vim.lsp.Client, method: vim.lsp.protocol.Method.ClientToServer, buf: number?, ft: string, default: boolean }
-    ---@return boolean
-    local is_enabled = function(field, data)
-        local opt = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
-        local exclude = opt.exclude or {}
-        return (opt.enabled ~= nil and opt.enabled or data.default)
-            and not vim.tbl_contains(exclude, data.ft)
+    ---@param data utils.lspconfig.check_enabled.data
+    local check_enabled = function(field, data)
+        local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
+        local exclude, ft = option.exclude or {}, vim.api.nvim_get_option_value("filetype", { buf = data.buf })
+        return (option.enabled ~= nil and option.enabled or data.default)
+            and not vim.tbl_contains(exclude, ft)
             and data.client:supports_method(data.method, data.buf)
+            and data:callback()
     end
 
     vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("LSPConfig", { clear = true }),
         callback = function(args)
-            local bufnr = args.buf
-
             local client = vim.lsp.get_client_by_id(args.data.client_id)
             if not client then
                 return
             end
 
-            local ft = vim.api.nvim_get_option_value("filetype", { buf = args.buf })
+            check_enabled("semantic_tokens", {
+                client = client,
+                method = "textDocument/semanticTokens",
+                buf = args.buf,
+                default = true,
+                callback = function(data)
+                    vim.lsp.semantic_tokens.enable(true, { bufnr = data.buf })
+                end,
+            })
 
-            if
-                is_enabled("semantic_tokens", {
-                    client = client,
-                    method = "textDocument/semanticTokens",
-                    buf = bufnr,
-                    ft = ft,
-                    default = true,
-                })
-            then
-                vim.lsp.semantic_tokens.enable(true, { bufnr = bufnr })
-            end
+            check_enabled("codelens", {
+                client = client,
+                method = "textDocument/codeLens",
+                buf = args.buf,
+                default = false,
+                callback = function(data)
+                    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+                        buffer = args.buf,
+                        callback = function()
+                            vim.lsp.codelens.refresh({ bufnr = data.buf })
+                        end,
+                    })
+                end,
+            })
 
-            if
-                is_enabled("codelens", {
-                    client = client,
-                    method = "textDocument/codeLens",
-                    buf = bufnr,
-                    ft = ft,
-                    default = false,
-                })
-            then
-                vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-                    buffer = bufnr,
-                    callback = function()
-                        vim.lsp.codelens.refresh({ bufnr = bufnr })
-                    end,
-                })
-            end
+            check_enabled("inlay_hint", {
+                client = client,
+                method = "textDocument/inlayHint",
+                buf = args.buf,
+                default = false,
+                callback = function(data)
+                    vim.lsp.inlay_hint.enable(true, { bufnr = data.buf })
+                end,
+            })
 
-            if
-                is_enabled("inlay_hint", {
-                    client = client,
-                    method = "textDocument/inlayHint",
-                    buf = bufnr,
-                    ft = ft,
-                    default = false,
-                })
-            then
-                vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-            end
-
-            if
-                is_enabled("fold", {
-                    client = client,
-                    method = "textDocument/foldingRange",
-                    buf = bufnr,
-                    ft = ft,
-                    default = false,
-                })
-            then
-                local win = vim.api.nvim_get_current_win()
-                vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
-                vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.lsp.foldexpr()", { win = win })
-            end
+            check_enabled("fold", {
+                client = client,
+                method = "textDocument/foldingRange",
+                buf = args.buf,
+                default = false,
+                callback = function()
+                    local win = vim.api.nvim_get_current_win()
+                    vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
+                    vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.lsp.foldexpr()", { win = win })
+                end,
+            })
 
             vim.keymap.set("n", "K", function()
                 vim.lsp.buf.hover()
-            end, { desc = "Displays hover information about the symbol under the cursor", buffer = bufnr })
+            end, { desc = "Displays hover information about the symbol under the cursor", buffer = args.buf })
         end,
     })
 end
