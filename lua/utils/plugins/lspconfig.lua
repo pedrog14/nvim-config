@@ -2,15 +2,15 @@
 ---@field servers         table<string, vim.lsp.Config>?
 ---@field diagnostic      vim.diagnostic.Opts?
 ---@field codelens        { enabled: boolean, exclude: string[] }?
----@field inlay_hint      { enabled: boolean, exclude: string[] }?
 ---@field fold            { enabled: boolean, exclude: string[] }?
+---@field inlay_hint      { enabled: boolean, exclude: string[] }?
 ---@field semantic_tokens { enabled: boolean, exclude: string[] }?
 
 ---@class utils.lspconfig.check_enabled.callback.data
 ---@field client   vim.lsp.Client
 ---@field method   vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
----@field buf      number
----@field default  boolean
+---@field buf      number?
+---@field default  boolean?
 
 ---@class utils.lspconfig.check_enabled.data: utils.lspconfig.check_enabled.callback.data
 ---@field callback fun(data: utils.lspconfig.check_enabled.callback.data)
@@ -36,13 +36,14 @@ M.setup = function(opts)
 
     ---@param field string
     ---@param data utils.lspconfig.check_enabled.data
+    ---@return any
     local check_enabled = function(field, data)
         local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
-        local exclude, ft = option.exclude or {}, vim.api.nvim_get_option_value("filetype", { buf = data.buf })
-        return (option.enabled ~= nil and option.enabled or data.default)
+        local exclude, ft = option.exclude or {}, vim.api.nvim_get_option_value("ft", { buf = data.buf })
+        return (option.enabled == nil and data.default or option.enabled)
             and not vim.tbl_contains(exclude, ft)
             and data.client:supports_method(data.method, data.buf)
-            and data:callback()
+            and (data:callback() or true)
     end
 
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -52,16 +53,6 @@ M.setup = function(opts)
             if not client then
                 return
             end
-
-            check_enabled("semantic_tokens", {
-                client = client,
-                method = "textDocument/semanticTokens",
-                buf = args.buf,
-                default = true,
-                callback = function(data)
-                    vim.lsp.semantic_tokens.enable(true, { bufnr = data.buf })
-                end,
-            })
 
             check_enabled("codelens", {
                 client = client,
@@ -78,6 +69,17 @@ M.setup = function(opts)
                 end,
             })
 
+            check_enabled("fold", {
+                client = client,
+                method = "textDocument/foldingRange",
+                default = false,
+                callback = function()
+                    local win = vim.api.nvim_get_current_win()
+                    vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
+                    vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.lsp.foldexpr()", { win = win })
+                end,
+            })
+
             check_enabled("inlay_hint", {
                 client = client,
                 method = "textDocument/inlayHint",
@@ -88,15 +90,13 @@ M.setup = function(opts)
                 end,
             })
 
-            check_enabled("fold", {
+            check_enabled("semantic_tokens", {
                 client = client,
-                method = "textDocument/foldingRange",
+                method = "textDocument/semanticTokens",
                 buf = args.buf,
-                default = false,
-                callback = function()
-                    local win = vim.api.nvim_get_current_win()
-                    vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
-                    vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.lsp.foldexpr()", { win = win })
+                default = true,
+                callback = function(data)
+                    vim.lsp.semantic_tokens.enable(true, { bufnr = data.buf })
                 end,
             })
 

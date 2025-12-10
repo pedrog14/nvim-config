@@ -228,6 +228,9 @@ return {
                 },
             },
 
+            -- Explorer
+            explorer = { replace_netrw = true },
+
             -- Input
             input = { icon = "󰁔" },
 

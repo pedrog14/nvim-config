@@ -6,6 +6,9 @@ return {
     opts = {
         static = { char = "▏" },
         scope = { char = "▏", highlights = { "BlinkIndentScope" } },
-        blocked = { filetypes = { "text", "snacks_terminal", include_defaults = true } },
+        blocked = {
+            filetypes = { "text", "snacks_terminal", include_defaults = true },
+            buftypes = { include_defaults = true }
+        },
     },
 }

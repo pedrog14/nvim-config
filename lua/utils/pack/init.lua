@@ -9,16 +9,17 @@
 
 ---@class utils.pack.Data
 ---@field module string?
+---@field opts   (table|fun(): table)?
 ---@field config fun(opts: table?)?
----@field opts (table|fun(): table)?
----@field lazy utils.pack.Lazy?
+---@field lazy   utils.pack.Lazy?
 
 ---@class utils.pack.DataResolved: utils.pack.Data
 ---@field module string
----@field opts table?
+---@field opts   table?
+---@field config fun(opts: table?)
 
 ---@class utils.pack.Lazy
----@field cmd (string|string[])?
+---@field cmd   (string|string[])?
 ---@field event (vim.api.keyset.events|vim.api.keyset.events[])?
 
 local M = {}
@@ -76,17 +77,18 @@ M.setup = function(pack_opts)
         return
     end
 
-    M.spec = vim.tbl_map(function(spec) ---@param spec table
+    M.spec = vim.tbl_map(function(spec) ---@param spec vim.pack.Spec|utils.pack.Data
         ---@type utils.pack.Spec
+        -- stylua: ignore
         return {
-            src = spec.src,
-            name = spec.name,
+            src     = spec.src,
+            name    = spec.name,
             version = spec.version,
             data = {
-                lazy = spec.lazy,
+                lazy   = spec.lazy,
                 module = spec.module,
                 config = spec.config,
-                opts = spec.opts,
+                opts   = spec.opts,
             },
         }
     end, M.get_spec(path))
@@ -98,12 +100,10 @@ M.setup = function(pack_opts)
 
         plug_data.module = plug_data.module or plug_spec.name:gsub("%.nvim$", "")
         plug_data.opts = type(plug_data.opts) == "function" and plug_data.opts() or plug_data.opts
-        plug_data.config = plug_data.config == nil
-                and plug_data.opts ~= nil
-                and function(opts) ---@param opts table?
-                    require(plug_data.module).setup(opts)
-                end
-            or plug_data.config
+        plug_data.config = plug_data.config
+            or function(opts) ---@param opts table?
+                require(plug_data.module).setup(opts)
+            end
 
         if plug_data.lazy then
             for key, value in pairs(plug_data.lazy) do

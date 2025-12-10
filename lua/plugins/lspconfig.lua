@@ -14,7 +14,7 @@ return {
             "hls",
             "html",
             "jdtls",
-            "lua_ls@3.15.0",
+            "lua_ls",
             "pylsp",
             "rust_analyzer",
             "ts_ls",

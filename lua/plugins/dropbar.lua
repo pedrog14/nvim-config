@@ -2,10 +2,7 @@ return {
     "Bekaboo/dropbar.nvim",
     dependencies = { "nvim-mini/mini.icons" },
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    ---@module "dropbar"
-    ---@type dropbar_configs_t
     opts = {
-        menu = { preview = false },
         icons = {
             kinds = {
                 dir_icon = function(path)
@@ -17,7 +14,7 @@ return {
                     return icon .. " ", hl
                 end,
             },
-            ui = { bar = { separator = " 󰁔 " }, menu = { indicator = "󰁔" } },
+            ui = { bar = { separator = " 󰅂 " }, menu = { indicator = "󰅂 " } },
         },
-    },
+    }
 }
