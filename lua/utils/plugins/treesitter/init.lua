@@ -17,6 +17,8 @@ local M = {}
 
 ---@param opts utils.treesitter.opts
 M.setup = function(opts)
+    opts = opts or {}
+
     local treesitter = require("nvim-treesitter")
     local utils = require("utils.treesitter")
 

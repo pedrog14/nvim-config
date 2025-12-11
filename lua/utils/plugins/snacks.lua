@@ -12,11 +12,11 @@ local M = {}
 ---@param exclude string[]
 ---@return fun(buf: number): boolean
 local gen_filter = function(exclude)
-    return function(buf)
-        return not vim.tbl_contains(exclude, vim.api.nvim_get_option_value("filetype", { buf = buf }))
+    return function(bufnr)
+        return not vim.tbl_contains(exclude, vim.api.nvim_get_option_value("filetype", { buf = bufnr }))
             and vim.g.snacks_indent ~= false
-            and vim.b[buf].snacks_indent ~= false
-            and vim.api.nvim_get_option_value("buftype", { buf = buf }) == ""
+            and vim.b[bufnr].snacks_indent ~= false
+            and vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == ""
     end
 end
 

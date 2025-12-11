@@ -1,53 +1,53 @@
 return {
     "Bekaboo/dropbar.nvim",
-    dependencies = { "nvim-mini/mini.icons" },
+    dependencies = "nvim-mini/mini.icons",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    opts = function ()
+    opts = function()
         local symbols = {
-            BlockMappingPair  = ' ',
-            BreakStatement    = ' ',
-            Call              = ' ',
-            CaseStatement     = ' ',
-            ContinueStatement = ' ',
-            Copilot           = ' ',
-            Declaration       = ' ',
-            Delete            = ' ',
-            DoStatement       = ' ',
-            Element           = ' ',
-            ForStatement      = ' ',
-            GotoStatement     = ' ',
-            Identifier        = ' ',
-            IfStatement       = ' ',
-            List              = ' ',
-            Log               = ' ',
-            Lsp               = ' ',
-            Macro             = ' ',
-            Pair              = ' ',
-            Regex             = ' ',
-            Repeat            = ' ',
-            Return            = ' ',
-            Rule              = ' ',
-            RuleSet           = ' ',
-            Scope             = ' ',
-            Section           = ' ',
-            Specifier         = ' ',
-            Statement         = ' ',
-            SwitchStatement   = ' ',
-            Table             = ' ',
-            Terminal          = ' ',
-            Type              = ' ',
-            WhileStatement    = ' ',
+            BlockMappingPair = " ",
+            BreakStatement = " ",
+            Call = " ",
+            CaseStatement = " ",
+            ContinueStatement = " ",
+            Copilot = " ",
+            Declaration = " ",
+            Delete = " ",
+            DoStatement = " ",
+            Element = " ",
+            ForStatement = " ",
+            GotoStatement = " ",
+            Identifier = " ",
+            IfStatement = " ",
+            List = " ",
+            Log = " ",
+            Lsp = " ",
+            Macro = " ",
+            Pair = " ",
+            Regex = " ",
+            Repeat = " ",
+            Return = " ",
+            Rule = " ",
+            RuleSet = " ",
+            Scope = " ",
+            Section = " ",
+            Specifier = " ",
+            Statement = " ",
+            SwitchStatement = " ",
+            Table = " ",
+            Terminal = " ",
+            Type = " ",
+            WhileStatement = " ",
 
-            MarkdownH1 = '󰉫 ',
-            MarkdownH2 = '󰉬 ',
-            MarkdownH3 = '󰉭 ',
-            MarkdownH4 = '󰉮 ',
-            MarkdownH5 = '󰉯 ',
-            MarkdownH6 = '󰉰 ',
+            MarkdownH1 = "󰉫 ",
+            MarkdownH2 = "󰉬 ",
+            MarkdownH3 = "󰉭 ",
+            MarkdownH4 = "󰉮 ",
+            MarkdownH5 = "󰉯 ",
+            MarkdownH6 = "󰉰 ",
         }
 
         for _, symbol in ipairs(vim.lsp.protocol.SymbolKind) do
-            local icon = require("mini.icons").get("lsp", symbol --[[@as string]])
+            local icon = MiniIcons.get("lsp", symbol --[[@as string]])
             symbols[symbol] = icon .. " "
         end
 
@@ -58,13 +58,13 @@ return {
                 kinds = {
                     dir_icon = "",
                     file_icon = function(path)
-                        local icon, hl = require("mini.icons").get("file", path)
+                        local icon, hl = MiniIcons.get("file", path)
                         return icon .. " ", hl
                     end,
-                    symbols = symbols
+                    symbols = symbols,
                 },
                 ui = { bar = { separator = "  " }, menu = { indicator = " " } },
             },
         }
-    end
+    end,
 }

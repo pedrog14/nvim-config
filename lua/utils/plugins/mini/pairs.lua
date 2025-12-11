@@ -4,11 +4,10 @@ local M = {}
 M.setup = function(opts)
     opts = opts or {}
 
-    local pairs = require("mini.pairs")
-    pairs.setup(opts)
+    require("mini.pairs").setup(opts)
 
-    local open = pairs.open
-    pairs.open = function(pair, neigh_pattern) --[[@diagnostic disable-line: duplicate-set-field]]
+    local open = MiniPairs.open
+    MiniPairs.open = function(pair, neigh_pattern) --[[@diagnostic disable-line: duplicate-set-field]]
         if vim.fn.getcmdline() ~= "" then
             return open(pair, neigh_pattern)
         end

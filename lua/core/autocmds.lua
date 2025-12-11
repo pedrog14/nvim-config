@@ -1,5 +1,5 @@
 ---@class core.autocmd: vim.api.keyset.create_autocmd
----@field event string|string[]
+---@field event vim.api.keyset.events|vim.api.keyset.events[]
 
 local M = {}
 

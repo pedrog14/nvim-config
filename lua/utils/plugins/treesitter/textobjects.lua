@@ -9,6 +9,8 @@ local M = {}
 
 ---@param opts utils.treesitter.textobjects.opts
 M.setup = function(opts)
+    opts = opts or {}
+
     local textobjects = require("nvim-treesitter-textobjects")
     local utils = require("utils.treesitter")
 
