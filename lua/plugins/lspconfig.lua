@@ -14,6 +14,7 @@ return {
             "hls",
             "html",
             "jdtls",
+            "jsonls",
             "lua_ls",
             "pylsp",
             "rust_analyzer",
