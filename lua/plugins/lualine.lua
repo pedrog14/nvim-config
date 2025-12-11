@@ -37,6 +37,17 @@ return {
                     "diff",
                     { "diagnostics", symbols = symbols },
                 },
+                lualine_x = {
+                    "encoding",
+                    "fileformat",
+                    "filetype",
+                    {
+                        "lsp_status",
+                        icon = "",
+                        symbols = { done = "" },
+                        ignore_lsp = { "stylua" },
+                    },
+                },
             },
             extensions = {
                 "lazy",

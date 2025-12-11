@@ -7,5 +7,17 @@ return {
             return package.loaded["nvim-web-devicons"]
         end
     end,
-    opts = {},
+    opts = {
+        lsp = {
+            constructor   = { glyph = '' },
+            ['function']  = { glyph = '' },
+            key           = { glyph = '' },
+            null          = { glyph = '' },
+            number        = { glyph = '' },
+            object        = { glyph = '' },
+            package       = { glyph = '' },
+            reference     = { glyph = '' },
+            value         = { glyph = '' },
+        }
+    },
 }

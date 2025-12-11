@@ -3,6 +3,7 @@ return {
     event = "VeryLazy",
     opts = function()
         local ai = require("mini.ai")
+
         return {
             n_lines = 500,
             custom_textobjects = {

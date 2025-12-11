@@ -1,6 +1,5 @@
 return {
-    -- "pedrog14/gruvbox.nvim",
-    dir = "~/Git/gruvbox.nvim/",
+    "pedrog14/gruvbox.nvim",
     lazy = false,
     priority = 1000,
     ---@module "gruvbox"

@@ -9,7 +9,7 @@ return {
         return {
             expand = {
                 insert = function(snippet)
-                    return MiniSnippets.default_insert(snippet, { empty_tabstop = "", empty_tabstop_final = "" })
+                    return require("mini.snippets").default_insert(snippet, { empty_tabstop = "", empty_tabstop_final = "" })
                 end,
             },
             mappings = {

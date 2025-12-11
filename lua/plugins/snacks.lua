@@ -232,7 +232,7 @@ return {
             explorer = { replace_netrw = true },
 
             -- Input
-            input = { icon = "󰁔" },
+            input = { icon = "" },
 
             -- Notifier
             notifier = {
@@ -251,7 +251,7 @@ return {
                     },
                 },
                 layout = { layout = { backdrop = false } },
-                prompt = "󰁔 ",
+                prompt = " ",
             },
 
             -- Styles

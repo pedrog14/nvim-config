@@ -6,32 +6,14 @@ return {
     opts = {
         cmdline = {
             format = {
-                cmdline = { icon = "󰁔" },
-                search_up = { icon = "󰍉 󰁝" },
-                search_down = { icon = "󰍉 󰁅" },
-                input = { icon = "󰁔" },
+                cmdline = { icon = "" },
+                search_up = { icon = " " },
+                search_down = { icon = " " },
+                input = { icon = "" },
             },
         },
         lsp = {
-            progress = {
-                format = {
-                    {
-                        "{progress} ",
-                        key = "progress.percentage",
-                        contents = {
-                            { "{data.progress.message} " },
-                        },
-                    },
-                    { "{spinner} ", hl_group = "NoiceLspProgressSpinner" },
-                    { "{data.progress.title} ", hl_group = "NoiceLspProgressTitle" },
-                    { "{data.progress.client} ", hl_group = "NoiceLspProgressClient" },
-                },
-                format_done = {
-                    { "󰄬 ", hl_group = "NoiceLspProgressSpinner" },
-                    { "{data.progress.title} ", hl_group = "NoiceLspProgressTitle" },
-                    { "{data.progress.client} ", hl_group = "NoiceLspProgressClient" },
-                },
-            },
+            progress = { enabled = false },
             override = {
                 ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
                 ["vim.lsp.util.stylize_markdown"] = true,
