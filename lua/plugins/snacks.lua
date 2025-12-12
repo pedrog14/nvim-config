@@ -251,14 +251,13 @@ return {
                         Hint  = signs[4],
                     },
                 },
-                layout = { layout = { backdrop = false } },
                 prompt = " ",
             },
 
             -- Styles
             styles = {
                 notification = { wo = { wrap = true, winblend = 0 } },
-                lazygit = { backdrop = false, border = "rounded" },
+                lazygit = { border = "rounded" },
                 input = {
                     keys = {
                         i_esc = { "<esc>", "stopinsert", mode = "i" },
@@ -271,6 +270,9 @@ return {
             terminal = {
                 win = { wo = { winhighlight = "" } },
             },
+
+            -- Win
+            win = { backdrop = false },
         }
     end,
 }
