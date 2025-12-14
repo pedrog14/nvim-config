@@ -1,5 +1,6 @@
 return {
     "nvim-mini/mini.surround",
+    event = "VeryLazy",
     keys = {
         { "gs", desc = "Add Surrounding", mode = { "n", "x" } },
         { "ds", desc = "Delete Surrounding" },

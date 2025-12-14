@@ -1,4 +1,5 @@
----@class utils.treesitter.opts
+---@class utils.treesitter.opts: TSConfig
+---@field install_dir      string?
 ---@field ensure_installed string[]?
 ---@field fold      { enabled: boolean, exclude: string[] }?
 ---@field highlight { enabled: boolean, exclude: string[] }?

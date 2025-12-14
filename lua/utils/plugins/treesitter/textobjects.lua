@@ -1,9 +1,9 @@
+---@class utils.treesitter.textobjects.opts: TSTextObjects.UserConfig
+---@field move? utils.treesitter.textobjects.move
+
 ---@class utils.treesitter.textobjects.move: TSTextObjects.Config.Move
 ---@field enabled? boolean
 ---@field keys? table<string, table<string, string>>
-
----@class utils.treesitter.textobjects.opts: TSTextObjects.UserConfig
----@field move? utils.treesitter.textobjects.move
 
 local M = {}
 

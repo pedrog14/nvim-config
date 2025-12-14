@@ -11,7 +11,7 @@
 local M = {}
 
 local _installed = nil ---@type table<string, boolean>?
-local _query = nil ---@type table<string, utils.treesitter.QueryList>
+local _query = nil ---@type table<string, utils.treesitter.QueryList>?
 
 ---@param lang string?
 ---@param opts { update: boolean }?

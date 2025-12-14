@@ -9,7 +9,7 @@ return {
             key = { glyph = "" },
             null = { glyph = "" },
             number = { glyph = "" },
-            object = { glyph = "" },
+            object = { glyph = "" },
             package = { glyph = "" },
             reference = { glyph = "" },
             value = { glyph = "" },
