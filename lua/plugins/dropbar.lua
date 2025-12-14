@@ -46,9 +46,10 @@ return {
             MarkdownH6 = "󰉰 ",
         }
 
-        for _, symbol in ipairs(vim.lsp.protocol.SymbolKind) do
-            local icon = MiniIcons.get("lsp", symbol --[[@as string]])
-            symbols[symbol] = icon .. " "
+        local symbol_kind = vim.lsp.protocol.SymbolKind
+        for _, kind in ipairs(symbol_kind) do
+            local icon = MiniIcons.get("lsp", kind --[[@as string]])
+            symbols[kind] = icon .. " "
         end
 
         ---@module "dropbar"
