@@ -1,6 +1,5 @@
 return {
-    -- "folke/snacks.nvim",
-    dir = "~/Git/snacks.nvim/",
+    "folke/snacks.nvim",
     dependencies = "nvim-mini/mini.icons",
     lazy = false,
     priority = 1000,
