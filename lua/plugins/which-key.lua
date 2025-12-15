@@ -1,18 +1,18 @@
 return {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    keys = {
-        {
-            "<leader>?",
-            function()
-                require("which-key").show({ global = false })
-            end,
-            desc = "Buffer Local Keymaps (Which-Key)",
-        },
+  "folke/which-key.nvim",
+  event = "VeryLazy",
+  keys = {
+    {
+      "<leader>?",
+      function()
+        require("which-key").show({ global = false })
+      end,
+      desc = "Buffer Local Keymaps (Which-Key)",
     },
-    ---@module "which-key"
-    ---@type wk.Opts
-    opts = {
-        preset = "modern",
-    },
+  },
+  ---@module "which-key"
+  ---@type wk.Opts
+  opts = {
+    preset = "modern",
+  },
 }

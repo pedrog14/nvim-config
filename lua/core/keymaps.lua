@@ -11,20 +11,20 @@ local M = {}
 
 ---@param keymaps core.keymap.set[]
 M.set = function(keymaps)
-    keymaps = keymaps or {}
+  keymaps = keymaps or {}
 
-    for _, keymap in ipairs(keymaps) do
-        local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as string[] ]])
-            or keymap.mode
-            or "n"
-        keymap.mode = nil
+  for _, keymap in ipairs(keymaps) do
+    local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as string[] ]])
+      or keymap.mode
+      or "n"
+    keymap.mode = nil
 
-        local lhs = table.remove(keymap, 1)
-        local rhs = table.remove(keymap, 1)
-        local opts = keymap
+    local lhs = table.remove(keymap, 1)
+    local rhs = table.remove(keymap, 1)
+    local opts = keymap
 
-        vim.keymap.set(mode, lhs, rhs, opts)
-    end
+    vim.keymap.set(mode, lhs, rhs, opts)
+  end
 end
 
 return M

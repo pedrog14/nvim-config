@@ -6,19 +6,19 @@ local M = {}
 
 ---@param opts core.options
 M.set = function(opts)
-    opts = opts or {}
+  opts = opts or {}
 
-    if opts.g then
-        for name, value in pairs(opts.g) do
-            vim.api.nvim_set_var(name, value)
-        end
+  if opts.g then
+    for name, value in pairs(opts.g) do
+      vim.api.nvim_set_var(name, value)
     end
+  end
 
-    if opts.o then
-        for name, value in pairs(opts.o) do
-            vim.api.nvim_set_option_value(name, value, {})
-        end
+  if opts.o then
+    for name, value in pairs(opts.o) do
+      vim.api.nvim_set_option_value(name, value, {})
     end
+  end
 end
 
 return M

@@ -9,12 +9,12 @@ M.filter = vim.tbl_filter
 ---@param t any[]
 ---@return any
 M.reduce = function(fn, t)
-    local t_keys = vim.tbl_keys(t)
-    local acc = t[table.remove(t_keys)]
-    for _, key in ipairs(t_keys) do
-        acc = fn(acc, t[key])
-    end
-    return acc
+  local t_keys = vim.tbl_keys(t)
+  local acc = t[table.remove(t_keys)]
+  for _, key in ipairs(t_keys) do
+    acc = fn(acc, t[key])
+  end
+  return acc
 end
 
 return M

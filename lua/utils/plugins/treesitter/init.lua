@@ -18,116 +18,113 @@ local M = {}
 
 ---@param opts utils.treesitter.opts
 M.setup = function(opts)
-    opts = opts or {}
+  opts = opts or {}
 
-    local treesitter = require("nvim-treesitter")
-    local utils = require("utils.treesitter")
+  local treesitter = require("nvim-treesitter")
+  local utils = require("utils.treesitter")
 
-    treesitter.setup(opts)
+  treesitter.setup(opts)
 
-    utils.get_installed(nil, { update = true })
+  utils.get_installed(nil, { update = true })
 
-    local install = vim.tbl_filter(function(lang)
-        return not utils.get_installed(lang)
-    end, opts.ensure_installed or {})
+  local install = vim.tbl_filter(function(lang)
+    return not utils.get_installed(lang)
+  end, opts.ensure_installed or {})
 
-    if #install > 0 then
-        treesitter.install(install, { summary = true }):await(function()
-            utils.get_installed(nil, { update = true })
-        end)
-    end
+  if #install > 0 then
+    treesitter.install(install, { summary = true }):await(function()
+      utils.get_installed(nil, { update = true })
+    end)
+  end
 
-    ---@param field string
-    ---@param data utils.treesitter.check_enabled.data
-    ---@return any
-    local check_enabled = function(field, data)
-        local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
-        local exclude = option.exclude or {}
-        return (option.enabled == nil and data.default or option.enabled)
-            and not vim.tbl_contains(exclude, data.lang)
-            and utils.get_query(data.lang, data.query)
-            and (data:callback() or true)
-    end
+  ---@param field string
+  ---@param data utils.treesitter.check_enabled.data
+  ---@return any
+  local check_enabled = function(field, data)
+    local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
+    local exclude = option.exclude or {}
+    return (option.enabled == nil and data.default or option.enabled)
+      and not vim.tbl_contains(exclude, data.lang)
+      and utils.get_query(data.lang, data.query)
+      and (data:callback() or true)
+  end
 
-    vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("TSConfig", { clear = true }),
-        callback = function(args)
-            local lang = vim.treesitter.language.get_lang(args.match) --[[@as string]]
-            local is_installed = utils.get_installed(lang)
-            if not is_installed then
-                return
-            end
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("TSConfig", { clear = true }),
+    callback = function(args)
+      local lang = vim.treesitter.language.get_lang(args.match) --[[@as string]]
+      local is_installed = utils.get_installed(lang)
+      if not is_installed then
+        return
+      end
 
-            check_enabled("highlight", {
-                lang = lang,
-                query = "highlights",
-                buf = args.buf,
-                default = true,
-                callback = function(data)
-                    pcall(vim.treesitter.start, data.buf, data.lang)
-                end,
-            })
-
-            check_enabled("indent", {
-                lang = lang,
-                query = "indents",
-                buf = args.buf,
-                default = true,
-                callback = function(data)
-                    vim.api.nvim_set_option_value(
-                        "indentexpr",
-                        "v:lua.require('nvim-treesitter').indentexpr()",
-                        { buf = data.buf }
-                    )
-                end,
-            })
-
-            check_enabled("fold", {
-                lang = lang,
-                query = "folds",
-                buf = args.buf,
-                default = true,
-                callback = function()
-                    local win = vim.api.nvim_get_current_win()
-                    vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
-                    vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = win })
-                end,
-            })
+      check_enabled("highlight", {
+        lang = lang,
+        query = "highlights",
+        buf = args.buf,
+        default = true,
+        callback = function(data)
+          pcall(vim.treesitter.start, data.buf, data.lang)
         end,
-    })
+      })
 
-    local cmd_args = vim.api.nvim_get_commands({})
+      check_enabled("indent", {
+        lang = lang,
+        query = "indents",
+        buf = args.buf,
+        default = true,
+        callback = function(data)
+          vim.api.nvim_set_option_value(
+            "indentexpr",
+            "v:lua.require('nvim-treesitter').indentexpr()",
+            { buf = data.buf }
+          )
+        end,
+      })
 
-    local tsinstall_args = vim.tbl_get(cmd_args, "TSInstall")
-    vim.api.nvim_del_user_command("TSInstall")
-    vim.api.nvim_create_user_command("TSInstall", function(args)
-        treesitter.install(args.fargs, { force = args.bang, summary = true }):await(function()
-            utils.get_installed(nil, { update = true })
-            vim.api.nvim_exec_autocmds(
-                "FileType",
-                { group = vim.api.nvim_create_augroup("TSConfig", { clear = false }) }
-            )
-        end)
-    end, {
-        nargs = tsinstall_args.nargs,
-        bang = tsinstall_args.bang,
-        bar = tsinstall_args.bar,
-        complete = tsinstall_args.complete,
-        desc = tsinstall_args.definition,
-    })
+      check_enabled("fold", {
+        lang = lang,
+        query = "folds",
+        buf = args.buf,
+        default = true,
+        callback = function()
+          local win = vim.api.nvim_get_current_win()
+          vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
+          vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = win })
+        end,
+      })
+    end,
+  })
 
-    local tsuninstall_args = vim.tbl_get(cmd_args, "TSUninstall")
-    vim.api.nvim_del_user_command("TSUninstall")
-    vim.api.nvim_create_user_command("TSUninstall", function(args)
-        treesitter.uninstall(args.fargs, { summary = true }):await(function()
-            utils.get_installed(nil, { update = true })
-        end)
-    end, {
-        nargs = tsuninstall_args.nargs,
-        bar = tsuninstall_args.bar,
-        complete = tsuninstall_args.complete,
-        desc = tsuninstall_args.definition,
-    })
+  local cmd_args = vim.api.nvim_get_commands({})
+
+  local tsinstall_args = vim.tbl_get(cmd_args, "TSInstall")
+  vim.api.nvim_del_user_command("TSInstall")
+  vim.api.nvim_create_user_command("TSInstall", function(args)
+    treesitter.install(args.fargs, { force = args.bang, summary = true }):await(function()
+      utils.get_installed(nil, { update = true })
+      vim.api.nvim_exec_autocmds("FileType", { group = vim.api.nvim_create_augroup("TSConfig", { clear = false }) })
+    end)
+  end, {
+    nargs = tsinstall_args.nargs,
+    bang = tsinstall_args.bang,
+    bar = tsinstall_args.bar,
+    complete = tsinstall_args.complete,
+    desc = tsinstall_args.definition,
+  })
+
+  local tsuninstall_args = vim.tbl_get(cmd_args, "TSUninstall")
+  vim.api.nvim_del_user_command("TSUninstall")
+  vim.api.nvim_create_user_command("TSUninstall", function(args)
+    treesitter.uninstall(args.fargs, { summary = true }):await(function()
+      utils.get_installed(nil, { update = true })
+    end)
+  end, {
+    nargs = tsuninstall_args.nargs,
+    bar = tsuninstall_args.bar,
+    complete = tsuninstall_args.complete,
+    desc = tsuninstall_args.definition,
+  })
 end
 
 return M
