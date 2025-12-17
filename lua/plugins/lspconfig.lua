@@ -2,7 +2,6 @@ return {
   "neovim/nvim-lspconfig",
   dependencies = "mason-org/mason-lspconfig.nvim",
   event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
-  cmd = { "LspInfo", "LspStart", "LspStop", "LspRestart" },
   main = "utils.plugins.lspconfig",
   ---@module "utils.plugins.lspconfig"
   ---@type utils.lspconfig.opts

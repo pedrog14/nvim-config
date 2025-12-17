@@ -21,14 +21,10 @@ return {
       always_show_bufferline = false,
       diagnostics = "nvim_lsp",
       diagnostics_indicator = function(_, _, errors)
-        local sign_icon = require("utils.icons").diagnostic.signs
+        local signs = require("utils.icons").diagnostic.signs
         local indicator = ""
-        for error_type, number in pairs(errors) do
-          local icon = error_type == "error" and sign_icon[1]
-            or error_type == "warning" and sign_icon[2]
-            or error_type == "info" and sign_icon[3]
-            or error_type == "hint" and sign_icon[4]
-            or "󰟃 "
+        for type, number in pairs(errors) do
+          local icon = signs[type] or "󰟃 "
           indicator = ("%s%s%s "):format(indicator, icon, number)
         end
         return vim.trim(indicator)

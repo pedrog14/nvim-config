@@ -9,7 +9,7 @@
 ---@class utils.lspconfig.check_enabled.callback.data
 ---@field client   vim.lsp.Client
 ---@field method   vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
----@field buf      number?
+---@field bufnr    number?
 ---@field default  boolean?
 
 ---@class utils.lspconfig.check_enabled.data: utils.lspconfig.check_enabled.callback.data
@@ -39,10 +39,10 @@ M.setup = function(opts)
   ---@return any
   local check_enabled = function(field, data)
     local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
-    local exclude, ft = option.exclude or {}, vim.api.nvim_get_option_value("ft", { buf = data.buf })
+    local exclude, ft = option.exclude or {}, vim.api.nvim_get_option_value("ft", { buf = data.bufnr })
     return (option.enabled == nil and data.default or option.enabled)
       and not vim.tbl_contains(exclude, ft)
-      and data.client:supports_method(data.method, data.buf)
+      and data.client:supports_method(data.method, data.bufnr)
       and (data:callback() or true)
   end
 
@@ -57,13 +57,13 @@ M.setup = function(opts)
       check_enabled("codelens", {
         client = client,
         method = "textDocument/codeLens",
-        buf = args.buf,
+        bufnr = args.buf,
         default = false,
         callback = function(data)
           vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
             buffer = args.buf,
             callback = function()
-              vim.lsp.codelens.refresh({ bufnr = data.buf })
+              vim.lsp.codelens.refresh({ bufnr = data.bufnr })
             end,
           })
         end,
@@ -83,20 +83,20 @@ M.setup = function(opts)
       check_enabled("inlay_hint", {
         client = client,
         method = "textDocument/inlayHint",
-        buf = args.buf,
+        bufnr = args.buf,
         default = false,
         callback = function(data)
-          vim.lsp.inlay_hint.enable(true, { bufnr = data.buf })
+          vim.lsp.inlay_hint.enable(true, { bufnr = data.bufnr })
         end,
       })
 
       check_enabled("semantic_tokens", {
         client = client,
         method = "textDocument/semanticTokens",
-        buf = args.buf,
+        bufnr = args.buf,
         default = true,
         callback = function(data)
-          vim.lsp.semantic_tokens.enable(true, { bufnr = data.buf })
+          vim.lsp.semantic_tokens.enable(true, { bufnr = data.bufnr })
         end,
       })
 

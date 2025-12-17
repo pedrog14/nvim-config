@@ -40,7 +40,7 @@ M.setup = function(opts)
     check_enabled("move", {
       lang = lang,
       query = "textobjects",
-      buf = buf,
+      bufnr = buf,
       default = false,
       callback = function(data)
         ---@type table<string, table<string, string>>
@@ -64,7 +64,7 @@ M.setup = function(opts)
               vim.keymap.set({ "n", "x", "o" }, key, function()
                 require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
               end, {
-                buffer = data.buf,
+                buffer = data.bufnr,
                 desc = desc,
                 silent = true,
               })

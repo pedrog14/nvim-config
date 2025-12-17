@@ -81,15 +81,15 @@ M.setup = function(pack_opts)
     ---@type utils.pack.Spec
     -- stylua: ignore
     return {
-        src     = spec.src,
-        name    = spec.name,
-        version = spec.version,
-        data = {
-            lazy   = spec.lazy,
-            module = spec.module,
-            config = spec.config,
-            opts   = spec.opts,
-        },
+      src     = spec.src,
+      name    = spec.name,
+      version = spec.version,
+      data = {
+        lazy   = spec.lazy,
+        module = spec.module,
+        config = spec.config,
+        opts   = spec.opts,
+      },
     }
   end, M.get_spec(path))
 

@@ -139,6 +139,7 @@ return {
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
+      -- scope = { enabled = true },
 
       -- Dashboard
       dashboard = {
@@ -243,13 +244,12 @@ return {
       -- Picker
       picker = {
         icons = {
-                    -- stylua: ignore
-                    diagnostics = {
-                        Error = signs[1],
-                        Warn  = signs[2],
-                        Info  = signs[3],
-                        Hint  = signs[4],
-                    },
+          diagnostics = {
+            Error = signs[1],
+            Warn = signs[2],
+            Info = signs[3],
+            Hint = signs[4],
+          },
         },
         prompt = " ",
       },

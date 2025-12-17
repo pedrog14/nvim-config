@@ -1,19 +1,19 @@
 ---@class utils.snacks.indent: snacks.indent.Config
----@field filter utils.snacks.indent.filter?
+---@field filter (utils.snacks.indent.filter|fun(buf: number?, win: number?): boolean)?
 
 ---@class utils.snacks.indent.filter
----@field exclude string[]
+---@field filetype string[]?
 
 ---@class utils.snacks.opts: snacks.Config
 ---@field indent? utils.snacks.indent
 
 local M = {}
 
----@param exclude string[]
+---@param filetype string[]
 ---@return fun(buf: number): boolean
-local gen_filter = function(exclude)
+local gen_filter = function(filetype)
   return function(bufnr)
-    return not vim.tbl_contains(exclude, vim.api.nvim_get_option_value("filetype", { buf = bufnr }))
+    return not vim.tbl_contains(filetype, vim.api.nvim_get_option_value("filetype", { buf = bufnr }))
       and vim.g.snacks_indent ~= false
       and vim.b[bufnr].snacks_indent ~= false
       and vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == ""
@@ -25,10 +25,10 @@ end
 M.setup = function(opts)
   opts = opts or {}
 
-  ---@type { exclude: string[] }|fun(buf: number, win: number): boolean
+  ---@type { filetype: string[] }|fun(buf: number, win: number): boolean
   local filter = vim.tbl_get(opts, "indent", "filter")
-  filter = type(filter) == "table" and gen_filter(filter.exclude --[[@as string[] ]]) or filter
-  opts.indent = filter and vim.tbl_deep_extend("force", opts.indent, { filter = filter }) or opts.indent
+  filter = type(filter) == "table" and gen_filter(filter.filetype) or filter
+  opts.indent = filter and vim.tbl_deep_extend("force", opts.indent, { filter = filter })
 
   local snacks = require("snacks")
   snacks.setup(opts)
@@ -38,7 +38,7 @@ M.setup = function(opts)
     if vim.tbl_contains(vim.tbl_keys(lazygit), args.args) then
       lazygit[args.args]()
     elseif args.args == "" then
-      lazygit()
+      lazygit --[[@as function]]()
     end
   end, {
     nargs = "*",

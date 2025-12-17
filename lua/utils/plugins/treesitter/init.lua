@@ -8,7 +8,7 @@
 ---@class utils.treesitter.check_enabled.callback.data
 ---@field lang     string
 ---@field query    utils.treesitter.QueryType
----@field buf      number?
+---@field bufnr    number?
 ---@field default  boolean?
 
 ---@class utils.treesitter.check_enabled.data: utils.treesitter.check_enabled.callback.data
@@ -61,23 +61,23 @@ M.setup = function(opts)
       check_enabled("highlight", {
         lang = lang,
         query = "highlights",
-        buf = args.buf,
+        bufnr = args.buf,
         default = true,
         callback = function(data)
-          pcall(vim.treesitter.start, data.buf, data.lang)
+          vim.treesitter.start(data.bufnr, data.lang)
         end,
       })
 
       check_enabled("indent", {
         lang = lang,
         query = "indents",
-        buf = args.buf,
+        bufnr = args.buf,
         default = true,
         callback = function(data)
           vim.api.nvim_set_option_value(
             "indentexpr",
             "v:lua.require('nvim-treesitter').indentexpr()",
-            { buf = data.buf }
+            { buf = data.bufnr }
           )
         end,
       })
@@ -85,7 +85,7 @@ M.setup = function(opts)
       check_enabled("fold", {
         lang = lang,
         query = "folds",
-        buf = args.buf,
+        bufnr = args.buf,
         default = true,
         callback = function()
           local win = vim.api.nvim_get_current_win()
