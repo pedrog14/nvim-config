@@ -42,6 +42,7 @@ return {
             },
           },
         },
+        lualine_c = { "filename", "require('utils.lsp.breadcrumbs').get()" },
         lualine_x = {
           "encoding",
           "fileformat",

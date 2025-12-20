@@ -7,10 +7,10 @@
 ---@field semantic_tokens { enabled: boolean, exclude: string[] }?
 
 ---@class utils.lspconfig.check_enabled.callback.data
----@field client   vim.lsp.Client
----@field method   vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
----@field bufnr    number?
----@field default  boolean?
+---@field client  vim.lsp.Client
+---@field method  vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
+---@field bufnr   number?
+---@field default boolean?
 
 ---@class utils.lspconfig.check_enabled.data: utils.lspconfig.check_enabled.callback.data
 ---@field callback fun(data: utils.lspconfig.check_enabled.callback.data)

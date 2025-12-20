@@ -1,5 +1,6 @@
 ---@class utils.pack.Opts: vim.pack.keyset.add
----@field path (string|string[])? Path of pack specs (`:h vim.pack.Spec`), same notation as lua modules
+---@field load? boolean|fun(plug_data: { spec: utils.pack.SpecResolved, path: string })
+---@field path  (string|string[])? Path of pack specs (`:h vim.pack.Spec`), same notation as lua modules
 
 ---@class utils.pack.Spec: vim.pack.Spec
 ---@field data utils.pack.Data
@@ -93,28 +94,30 @@ M.setup = function(pack_opts)
     }
   end, M.get_spec(path))
 
-  ---@param data { spec: utils.pack.SpecResolved, path: string }
-  local load = function(data)
-    local plug_spec = data.spec
-    local plug_data = plug_spec.data
+  local confirm = pack_opts.confirm or true
 
-    plug_data.module = plug_data.module or plug_spec.name:gsub("%.nvim$", "")
-    plug_data.opts = type(plug_data.opts) == "function" and plug_data.opts() or plug_data.opts
-    plug_data.config = plug_data.config
-      or function(opts) ---@param opts table?
-        require(plug_data.module).setup(opts)
-      end
+  local load = pack_opts.load
+    or function(plug_data) ---@param plug_data { spec: utils.pack.SpecResolved, path: string }
+      local spec = plug_data.spec
+      local data = spec.data
 
-    if plug_data.lazy then
-      for key, value in pairs(plug_data.lazy) do
-        require("utils.pack.lazy." .. key).load(value, plug_spec)
+      data.module = data.module or spec.name:gsub("%.nvim$", "")
+      data.opts = type(data.opts) == "function" and data.opts() or data.opts
+      data.config = data.config
+        or function(opts) ---@param opts table?
+          require(data.module).setup(opts)
+        end
+
+      if data.lazy then
+        for key, value in pairs(data.lazy) do
+          require("utils.pack.lazy." .. key).load(value, spec)
+        end
+      else
+        M.load(spec)
       end
-    else
-      M.load(plug_spec)
     end
-  end
 
-  vim.pack.add(M.spec, { confirm = pack_opts.confirm or true, load = pack_opts.load or load })
+  vim.pack.add(M.spec, { confirm = confirm, load = load })
 end
 
 return M

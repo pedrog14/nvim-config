@@ -63,6 +63,27 @@ return {
       end,
       desc = "Config Files (Snacks.picker)",
     },
+    {
+      "<leader>ss",
+      function()
+        Snacks.picker.lsp_symbols()
+      end,
+      desc = "Symbols (Snacks.picker)",
+    },
+    {
+      "<leader>sd",
+      function()
+        Snacks.picker.diagnostics()
+      end,
+      desc = "Diagnostics (Snacks.picker)",
+    },
+    {
+      "<leader>sD",
+      function()
+        Snacks.picker.diagnostics_buffer()
+      end,
+      desc = "Buffer Diagnostics (Snacks.picker)",
+    },
 
     {
       "gR",

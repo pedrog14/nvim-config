@@ -6,10 +6,10 @@
 ---@field indent    { enabled: boolean, exclude: string[] }?
 
 ---@class utils.treesitter.check_enabled.callback.data
----@field lang     string
----@field query    utils.treesitter.QueryType
----@field bufnr    number?
----@field default  boolean?
+---@field lang    string
+---@field query   utils.treesitter.QueryType
+---@field bufnr   number?
+---@field default boolean?
 
 ---@class utils.treesitter.check_enabled.data: utils.treesitter.check_enabled.callback.data
 ---@field callback fun(data: utils.treesitter.check_enabled.callback.data)

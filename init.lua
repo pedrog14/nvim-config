@@ -243,3 +243,5 @@ require("core.autocmds").set({
     end,
   },
 })
+
+require("utils.lsp.breadcrumbs").setup()
