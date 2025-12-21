@@ -56,7 +56,7 @@ local breadcrumbs_str = function(result, row, col, sep)
   while result_ref do
     local symbol = nil
     for _, s in ipairs(result_ref) do
-      if range_contains_pos(s.range, row, col) then
+      if s.range and range_contains_pos(s.range, row, col) then
         symbol = s
         break
       end
@@ -73,7 +73,7 @@ local breadcrumbs_str = function(result, row, col, sep)
 
   for i = #path - 1, 1, -1 do
     ret = ("%s %s %s"):format(path[i], sep, ret)
-    if i ~= 1 and #ret >= 96 and i ~= 1 then
+    if #ret >= 96 and i ~= 1 then
       ret = ("%s %s %s"):format("…", sep, ret)
       break
     end
@@ -91,23 +91,18 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     return
   end
 
-  local client_id = vim.tbl_get(attach_args, "data", "client_id")
-  if not client_id then
-    breadcrumbs = ""
-    return
-  end
-
-  local client = vim.lsp.get_client_by_id(client_id)
-  if not (client and client:supports_method("textDocument/documentSymbol")) then
-    return
-  end
-
   local winnr = vim.api.nvim_get_current_win()
   if not vim.api.nvim_win_is_valid(winnr) then
     return
   end
 
-  if vim.fn.win_gettype(winnr) ~= "" or vim.api.nvim_get_option_value("ft", { buf = bufnr }) == "help" then
+  local client_id = vim.tbl_get(attach_args, "data", "client_id")
+  if not client_id then
+    return
+  end
+
+  local client = vim.lsp.get_client_by_id(client_id)
+  if not (client and client:supports_method("textDocument/documentSymbol")) then
     return
   end
 
@@ -127,7 +122,7 @@ local on_attach = vim.schedule_wrap(function(attach_args)
 
   local req = nil
 
-  local req_limit = 33
+  local req_limit = 61 -- Max number of recursions; ~2 seconds max time
   local function update_result(limit)
     ---@type lsp.Handler
     local handler = function(err, result)
@@ -160,7 +155,8 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     group = augroup,
     buffer = bufnr,
     callback = function()
-      pcall(client.cancel_request, client, req) -- One buf request per time
+      -- Cancel old request if it takes too long 🎃 and another request needs to be called
+      pcall(client.cancel_request, client, req)
       update_result(req_limit)
     end,
   })
@@ -168,23 +164,23 @@ local on_attach = vim.schedule_wrap(function(attach_args)
   vim.api.nvim_create_autocmd({ "WinResized", "CursorMoved" }, {
     group = augroup,
     buffer = bufnr,
-    callback = vim.schedule_wrap(function()
+    callback = function()
       update_breadcrumbs()
       breadcrumbs = M.data[bufnr].str
-    end),
+    end,
   })
 
   vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
     group = augroup,
     buffer = bufnr,
-    callback = vim.schedule_wrap(function()
+    callback = function()
       local win = vim.api.nvim_get_current_win()
       if vim.api.nvim_win_is_valid(win) then
         winnr = win -- Updating buffer window
       end
       update_breadcrumbs()
       breadcrumbs = M.data[bufnr].str
-    end),
+    end,
   })
 end)
 
@@ -194,9 +190,7 @@ local on_detach = vim.schedule_wrap(function(args)
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
   end
-
   M.data[bufnr] = nil
-
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 
@@ -209,29 +203,22 @@ M.setup = function(opts)
   local setup_augroup = vim.api.nvim_create_augroup("_setupLspBreadcrumbs", { clear = true })
   augroup = vim.api.nvim_create_augroup("LspBreadcrumbs", { clear = true })
 
-  vim.api.nvim_create_autocmd(
-    { "LspAttach", "BufEnter", "BufWinEnter", "BufWritePost" },
-    { group = setup_augroup, callback = on_attach }
-  )
+  vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
 
-  vim.api.nvim_create_autocmd("LspDetach", {
+  vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })
+
+  vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "BufWritePost" }, {
     group = setup_augroup,
-    callback = function(args) ---@param args vim.api.keyset.create_autocmd.callback_args
+    callback = function(args)
+      local bufnr = vim._resolve_bufnr(args.buf)
       if
-        vim.tbl_isempty(vim.lsp.get_clients({
-          bufnr = args.buf,
-          method = "textDocument/documentSymbol",
-        }))
+        not vim.api.nvim_buf_is_valid(bufnr)
+        or vim.tbl_isempty(vim.lsp.get_clients({ method = "textDocument/documentSymbol", bufnr = bufnr }))
       then
-        on_detach(args)
+        breadcrumbs = nil
       end
     end,
   })
-
-  vim.api.nvim_create_autocmd(
-    { "BufDelete", "BufUnload", "BufWipeout" },
-    { group = setup_augroup, callback = on_detach }
-  )
 end
 
 M.get = function()
