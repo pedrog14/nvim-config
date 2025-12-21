@@ -61,7 +61,7 @@ local breadcrumbs_str = function(res, row, col, sep)
   end
 
   local ret = path[#path]
-  local max_size = math.floor(vim.api.nvim_get_option_value("co", {}) / 2)
+  local max_size = math.ceil(vim.api.nvim_get_option_value("co", {}) / 3)
 
   for i = #path - 1, 1, -1 do
     ret = ("%s %s %s"):format(path[i], sep, ret)
@@ -116,6 +116,11 @@ local on_attach = vim.schedule_wrap(function(attach_args)
 
   ---@param req_limit integer Maximum number of recursions; ~30 requests/second
   local function update_result(req_limit)
+    -- Cancel old request if it takes too long 🎃 and another request needs to be called
+    if req then
+      client:cancel_request(req)
+    end
+
     _, req = client:request("textDocument/documentSymbol", params, function(err, res)
       if err or not res then
         if req_limit ~= 0 then
@@ -143,8 +148,6 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     group = augroup,
     buffer = bufnr,
     callback = function()
-      -- Cancel old request if it takes too long 🎃 and another request needs to be called
-      pcall(client.cancel_request, client, req)
       update_result(60)
     end,
   })
@@ -165,7 +168,6 @@ local on_attach = vim.schedule_wrap(function(attach_args)
       if vim.api.nvim_win_is_valid(win) then
         winnr = win -- Updating current buffer window
       end
-      update_str()
     end,
   })
 end)
@@ -192,12 +194,17 @@ M.setup = function(opts)
 
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })
 
-  vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "BufWritePost" }, {
+  vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
     group = setup_augroup,
     callback = function(args)
       local bufnr = vim._resolve_bufnr(args.buf)
+      local winnr = vim.api.nvim_get_current_win()
+
       if
         not vim.api.nvim_buf_is_valid(bufnr)
+        or not vim.api.nvim_win_is_valid(winnr)
+        or vim.api.nvim_get_option_value("ft", { buf = bufnr }) == "help"
+        or vim.fn.win_gettype(winnr) ~= ""
         or vim.tbl_isempty(vim.lsp.get_clients({ method = "textDocument/documentSymbol", bufnr = bufnr }))
       then
         breadcrumbs = nil
