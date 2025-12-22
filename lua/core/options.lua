@@ -1,10 +1,10 @@
----@class core.options
+---@class core.Opts
 ---@field g? table<string, any>
 ---@field o? table<string, any>
 
 local M = {}
 
----@param opts core.options
+---@param opts core.Opts
 M.set = function(opts)
   opts = opts or {}
 

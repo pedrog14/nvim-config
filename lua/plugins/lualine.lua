@@ -5,6 +5,8 @@ return {
     local lualine_require = require("lualine_require")
     lualine_require.require = require
 
+    require("utils.lsp.breadcrumbs").setup()
+
     local snacks_picker = {
       sections = {
         lualine_a = {

@@ -49,8 +49,8 @@ require("core.options").set({
 require("core.lazy").set({
   spec = {
     { import = "plugins" },
-    { import = "plugins.colorschemes" },
     { import = "plugins.blink" },
+    { import = "plugins.colorschemes" },
     { import = "plugins.mini" },
     { import = "plugins.treesitter" },
   },
@@ -243,5 +243,3 @@ require("core.autocmds").set({
     end,
   },
 })
-
-require("utils.lsp.breadcrumbs").setup()

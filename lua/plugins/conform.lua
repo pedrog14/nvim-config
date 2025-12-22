@@ -24,9 +24,9 @@ return {
       bash = { "shfmt" },
       zsh = { "shfmt" },
 
-      haskell = { "fourmolu" },
+      haskell = { "ormolu" },
       lua = { "stylua" },
-      python = { "autopep8" },
+      python = { "yapf" },
       rust = { "rustfmt" },
     },
     default_format_opts = { lsp_format = "fallback" },
