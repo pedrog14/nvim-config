@@ -7,12 +7,9 @@
 ---@field character integer
 
 local M = {}
-
-local breadcrumbs = nil ---@type string?
-
-local result = {} ---@type table[]
-
 local config = require("utils.lsp.breadcrumbs.config")
+local result = {} ---@type table[]
+local breadcrumbs = nil ---@type string?
 
 ---@param range range.Data
 ---@param row   integer
@@ -20,6 +17,7 @@ local config = require("utils.lsp.breadcrumbs.config")
 local range_contains_pos = function(range, row, col)
   local start = range.start
   local stop = range["end"]
+
   return not (
     row < start.line
     or row > stop.line
@@ -32,10 +30,10 @@ end
 ---@param row integer
 ---@param col integer
 ---@param sep string
----@return string?
+---@return string
 local breadcrumbs_str = function(res, row, col, sep)
   if not res then
-    return
+    return ""
   end
 
   ---@type table?
@@ -44,6 +42,7 @@ local breadcrumbs_str = function(res, row, col, sep)
 
   while result_ref do
     local symbol = nil
+
     for _, s in ipairs(result_ref) do
       if s.range and range_contains_pos(s.range, row, col) then
         symbol = s
@@ -53,8 +52,10 @@ local breadcrumbs_str = function(res, row, col, sep)
     if symbol then
       local kind = vim.lsp.protocol.SymbolKind[symbol.kind]
       local icon = config.opts.icons.symbols[kind]
+
       path[#path + 1] = ("%s %s"):format(icon, symbol.name)
     end
+
     result_ref = symbol and symbol.children -- nil if there's no symbol in cursor position
   end
 
@@ -112,10 +113,8 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     return
   end
 
-  local params = { textDocument = { uri = uri } }
-
-  result[bufnr] = {}
   local req = nil
+  local params = { textDocument = { uri = uri } }
 
   ---@param req_limit integer Maximum number of recursions; ~30 requests/second
   local function update_result(req_limit)
@@ -123,7 +122,6 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     if req then
       client:cancel_request(req)
     end
-
     _, req = client:request("textDocument/documentSymbol", params, function(err, res)
       if err or not res then
         if req_limit ~= 0 then
@@ -146,8 +144,7 @@ local on_attach = vim.schedule_wrap(function(attach_args)
 
   update_result(60)
   update_str()
-
-  vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "ModeChanged" }, {
+ vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "ModeChanged" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()
@@ -168,6 +165,7 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     buffer = bufnr,
     callback = function()
       local win = vim.api.nvim_get_current_win()
+
       if vim.api.nvim_win_is_valid(win) then
         winnr = win -- Updating current buffer window
       end
@@ -181,6 +179,7 @@ local on_detach = vim.schedule_wrap(function(args)
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
   end
+
   result[bufnr] = nil
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
@@ -188,18 +187,18 @@ end)
 ---@param opts utils.lsp.breadcrumbs.opts?
 M.setup = function(opts)
   config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
+  augroup = vim.api.nvim_create_augroup("LspBreadcrumbs", { clear = true })
 
   local setup_augroup = vim.api.nvim_create_augroup("_setupLspBreadcrumbs", { clear = true })
-  augroup = vim.api.nvim_create_augroup("LspBreadcrumbs", { clear = true })
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })
-
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
     group = setup_augroup,
     callback = function(args)
       local bufnr = vim._resolve_bufnr(args.buf)
       local winnr = vim.api.nvim_get_current_win()
+
       if
         not (vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_win_is_valid(winnr))
         or vim.api.nvim_get_option_value("ft", { buf = bufnr }) == "help"
