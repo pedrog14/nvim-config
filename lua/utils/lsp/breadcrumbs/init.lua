@@ -41,23 +41,22 @@ local breadcrumbs_str = function(res, row, col, sep)
   local path = {}
 
   while result_ref do
-    local symbol = nil
+    local sym = nil
 
     for _, s in ipairs(result_ref) do
       if s.range and range_contains_pos(s.range, row, col) then
-        symbol = s
+        local kind = vim.lsp.protocol.SymbolKind[s.kind]
+        local icon = config.opts.icons.symbols[kind]
+
+        icon = icon and icon .. " " or ""
+
+        path[#path + 1] = ("%s%s"):format(icon, s.name)
+        sym = s.children
         break
       end
     end
 
-    if symbol then
-      local kind = vim.lsp.protocol.SymbolKind[symbol.kind]
-      local icon = config.opts.icons.symbols[kind]
-
-      path[#path + 1] = ("%s %s"):format(icon, symbol.name)
-    end
-
-    result_ref = symbol and symbol.children -- nil if there's no symbol in cursor position
+    result_ref = sym -- nil if there's no symbol in cursor position
   end
 
   local max_size = vim.api.nvim_get_option_value("co", {}) - 94 -- TODO: Better way to calculate free space in statusline
@@ -80,11 +79,11 @@ local breadcrumbs_str = function(res, row, col, sep)
   return ret
 end
 
-local augroup = nil ---@type number?
+local augroup = nil ---@type integer?
 
----@param attach_args vim.api.keyset.create_autocmd.callback_args
-local on_attach = vim.schedule_wrap(function(attach_args)
-  local bufnr = vim._resolve_bufnr(attach_args.buf)
+---@param args vim.api.keyset.create_autocmd.callback_args
+local on_attach = vim.schedule_wrap(function(args)
+  local bufnr = vim._resolve_bufnr(args.buf)
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
   end
@@ -94,7 +93,7 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     return
   end
 
-  local client_id = vim.tbl_get(attach_args, "data", "client_id")
+  local client_id = vim.tbl_get(args, "data", "client_id")
   if not client_id then
     return
   end
@@ -114,11 +113,14 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     return
   end
 
+  ---@type integer?
   local req = nil
   local params = { textDocument = { uri = uri } }
 
-  ---@param req_limit integer Maximum number of recursions; ~30 requests/second
+  ---@param req_limit integer? Maximum number of recursions; ~30 requests/second; default: 60
   local function update_result(req_limit)
+    req_limit = req_limit or 60
+
     -- Cancel old request if it takes too long 🎃 and another request needs to be called
     if req then
       client:cancel_request(req)
@@ -146,14 +148,14 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     breadcrumbs = breadcrumbs_str(result[bufnr], row, col, config.opts.icons.separator)
   end
 
-  update_result(60)
+  update_result()
   update_str()
 
   vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "ModeChanged" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()
-      update_result(60)
+      update_result()
     end,
   })
 
