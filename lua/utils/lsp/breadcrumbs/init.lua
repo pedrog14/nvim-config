@@ -49,6 +49,7 @@ local breadcrumbs_str = function(res, row, col, sep)
         break
       end
     end
+
     if symbol then
       local kind = vim.lsp.protocol.SymbolKind[symbol.kind]
       local icon = config.opts.icons.symbols[kind]
@@ -122,6 +123,7 @@ local on_attach = vim.schedule_wrap(function(attach_args)
     if req then
       client:cancel_request(req)
     end
+
     _, req = client:request("textDocument/documentSymbol", params, function(err, res)
       if err or not res then
         if req_limit ~= 0 then
@@ -193,6 +195,7 @@ M.setup = function(opts)
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })
+
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
     group = setup_augroup,
     callback = function(args)
