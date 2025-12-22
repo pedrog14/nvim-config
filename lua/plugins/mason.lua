@@ -26,9 +26,9 @@ return {
       },
       ensure_installed = {
         -- Formatters
-        "autopep8",
+        "yapf",
         "clang-format",
-        "fourmolu",
+        "ormolu",
         "prettier",
         "shfmt",
         "stylua",
