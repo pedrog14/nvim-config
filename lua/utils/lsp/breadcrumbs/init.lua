@@ -148,7 +148,8 @@ local on_attach = vim.schedule_wrap(function(attach_args)
 
   update_result(60)
   update_str()
- vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "ModeChanged" }, {
+
+  vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "ModeChanged" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()
