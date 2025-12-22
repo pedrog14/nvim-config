@@ -131,8 +131,10 @@ local on_attach = vim.schedule_wrap(function(attach_args)
             update_result(req_limit - 1)
           end, 33)
         end
+
         return
       end
+
       result[bufnr] = res
     end, bufnr)
   end
