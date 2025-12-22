@@ -20,7 +20,6 @@ local config = require("utils.lsp.breadcrumbs.config")
 local range_contains_pos = function(range, row, col)
   local start = range.start
   local stop = range["end"]
-
   return not (
     row < start.line
     or row > stop.line
@@ -30,19 +29,18 @@ local range_contains_pos = function(range, row, col)
 end
 
 ---@param res table
----@param row    integer
----@param col    integer
----@param sep    string
+---@param row integer
+---@param col integer
+---@param sep string
 ---@return string?
 local breadcrumbs_str = function(res, row, col, sep)
   if not res then
     return
   end
 
-  local path = {}
-
   ---@type table?
   local result_ref = res
+  local path = {}
 
   while result_ref do
     local symbol = nil
@@ -60,13 +58,19 @@ local breadcrumbs_str = function(res, row, col, sep)
     result_ref = symbol and symbol.children -- nil if there's no symbol in cursor position
   end
 
-  local ret = path[#path]
-  local max_size = math.ceil(vim.api.nvim_get_option_value("co", {}) / 3)
+  local max_size = vim.api.nvim_get_option_value("co", {}) - 94 -- TODO: Better way to calculate free space in statusline
+  local ret = ""
 
-  for i = #path - 1, 1, -1 do
-    ret = ("%s %s %s"):format(path[i], sep, ret)
-    if #ret >= max_size and i ~= 1 then
-      ret = ("%s %s %s"):format("…", sep, ret)
+  for i = #path, 1, -1 do
+    local sym = path[i]
+    local temp = i == #path and sym or ("%s %s %s"):format(sym, sep, ret)
+    local size = #temp
+
+    if size < max_size then
+      ret = temp
+    else
+      sym = "…"
+      ret = i == #path and sym or ("%s %s %s"):format(sym, sep, ret)
       break
     end
   end
@@ -111,7 +115,6 @@ local on_attach = vim.schedule_wrap(function(attach_args)
   local params = { textDocument = { uri = uri } }
 
   result[bufnr] = {}
-
   local req = nil
 
   ---@param req_limit integer Maximum number of recursions; ~30 requests/second
@@ -187,11 +190,9 @@ M.setup = function(opts)
   config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
 
   local setup_augroup = vim.api.nvim_create_augroup("_setupLspBreadcrumbs", { clear = true })
-
   augroup = vim.api.nvim_create_augroup("LspBreadcrumbs", { clear = true })
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
-
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })
 
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
@@ -199,13 +200,14 @@ M.setup = function(opts)
     callback = function(args)
       local bufnr = vim._resolve_bufnr(args.buf)
       local winnr = vim.api.nvim_get_current_win()
-
       if
-        not vim.api.nvim_buf_is_valid(bufnr)
-        or not vim.api.nvim_win_is_valid(winnr)
+        not (vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_win_is_valid(winnr))
         or vim.api.nvim_get_option_value("ft", { buf = bufnr }) == "help"
         or vim.fn.win_gettype(winnr) ~= ""
-        or vim.tbl_isempty(vim.lsp.get_clients({ method = "textDocument/documentSymbol", bufnr = bufnr }))
+        or vim.tbl_isempty(vim.lsp.get_clients({
+          bufnr = bufnr,
+          method = "textDocument/documentSymbol",
+        }))
       then
         breadcrumbs = nil
       end
