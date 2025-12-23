@@ -1,13 +1,13 @@
----@class utils.treesitter.textobjects.opts: TSTextObjects.UserConfig
----@field move? utils.treesitter.textobjects.move
+---@class utils.treesitter.textobjects.Opts: TSTextObjects.UserConfig
+---@field move? utils.treesitter.textobjects.Move
 
----@class utils.treesitter.textobjects.move: TSTextObjects.Config.Move
----@field enabled? boolean
----@field keys? table<string, table<string, string>>
+---@class utils.treesitter.textobjects.Move: TSTextObjects.Config.Move
+---@field enabled boolean?
+---@field keys    table<string, table<string, string>>?
 
 local M = {}
 
----@param opts utils.treesitter.textobjects.opts
+---@param opts utils.treesitter.textobjects.Opts
 M.setup = function(opts)
   opts = opts or {}
 
@@ -17,7 +17,7 @@ M.setup = function(opts)
   textobjects.setup(opts)
 
   ---@param field string
-  ---@param data utils.treesitter.check_enabled.data
+  ---@param data utils.treesitter.check_enabled.Data
   ---@return any
   local check_enabled = function(field, data)
     local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }

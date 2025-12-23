@@ -14,7 +14,7 @@ return {
     },
     main = "utils.plugins.mason",
     ---@module "utils.plugins.mason"
-    ---@type utils.mason.opts
+    ---@type utils.mason.Opts
     opts = {
       ui = {
         backdrop = 100,

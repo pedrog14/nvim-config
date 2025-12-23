@@ -4,7 +4,7 @@ return {
   event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
   main = "utils.plugins.lspconfig",
   ---@module "utils.plugins.lspconfig"
-  ---@type utils.lspconfig.opts
+  ---@type utils.lspconfig.Opts
   opts = {
     ensure_installed = {
       "bashls",

@@ -1,22 +1,26 @@
----@class utils.treesitter.opts: TSConfig
+---@class utils.treesitter.EnabledOpts
+---@field enabled boolean?
+---@field exclude string[]?
+
+---@class utils.treesitter.Opts: TSConfig
 ---@field install_dir      string?
 ---@field ensure_installed string[]?
----@field fold      { enabled: boolean, exclude: string[] }?
----@field highlight { enabled: boolean, exclude: string[] }?
----@field indent    { enabled: boolean, exclude: string[] }?
+---@field fold             utils.treesitter.EnabledOpts?
+---@field highlight        utils.treesitter.EnabledOpts?
+---@field indent           utils.treesitter.EnabledOpts?
 
----@class utils.treesitter.check_enabled.callback.data
+---@class utils.treesitter.check_enabled.callback.Data
 ---@field lang    string
 ---@field query   utils.treesitter.QueryType
 ---@field bufnr   number?
 ---@field default boolean?
 
----@class utils.treesitter.check_enabled.data: utils.treesitter.check_enabled.callback.data
----@field callback fun(data: utils.treesitter.check_enabled.callback.data)
+---@class utils.treesitter.check_enabled.Data: utils.treesitter.check_enabled.callback.Data
+---@field callback fun(data: utils.treesitter.check_enabled.callback.Data)
 
 local M = {}
 
----@param opts utils.treesitter.opts
+---@param opts utils.treesitter.Opts
 M.setup = function(opts)
   opts = opts or {}
 
@@ -38,7 +42,7 @@ M.setup = function(opts)
   end
 
   ---@param field string
-  ---@param data utils.treesitter.check_enabled.data
+  ---@param data utils.treesitter.check_enabled.Data
   ---@return any
   local check_enabled = function(field, data)
     local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
@@ -52,7 +56,16 @@ M.setup = function(opts)
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("TSConfig", { clear = true }),
     callback = function(args)
-      local lang = vim.treesitter.language.get_lang(args.match) --[[@as string]]
+      local bufnr = vim._resolve_bufnr(args.buf)
+      if not vim.api.nvim_buf_is_valid(bufnr) then
+        return
+      end
+
+      local lang = vim.treesitter.language.get_lang(args.match)
+      if not lang then
+        return
+      end
+
       local is_installed = utils.get_installed(lang)
       if not is_installed then
         return
@@ -61,7 +74,7 @@ M.setup = function(opts)
       check_enabled("highlight", {
         lang = lang,
         query = "highlights",
-        bufnr = args.buf,
+        bufnr = bufnr,
         default = true,
         callback = function(data)
           vim.treesitter.start(data.bufnr, data.lang)
@@ -71,7 +84,7 @@ M.setup = function(opts)
       check_enabled("indent", {
         lang = lang,
         query = "indents",
-        bufnr = args.buf,
+        bufnr = bufnr,
         default = true,
         callback = function(data)
           vim.api.nvim_set_option_value(
@@ -85,12 +98,16 @@ M.setup = function(opts)
       check_enabled("fold", {
         lang = lang,
         query = "folds",
-        bufnr = args.buf,
+        bufnr = bufnr,
         default = true,
         callback = function()
-          local win = vim.api.nvim_get_current_win()
-          vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
-          vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = win })
+          local winnr = vim.api.nvim_get_current_win()
+          if not vim.api.nvim_win_is_valid(winnr) then
+            return
+          end
+
+          vim.api.nvim_set_option_value("foldmethod", "expr", { win = winnr })
+          vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = winnr })
         end,
       })
     end,

@@ -5,7 +5,7 @@ return {
   cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
   main = "utils.plugins.treesitter",
   ---@module "utils.plugins.treesitter"
-  ---@type utils.treesitter.opts
+  ---@type utils.treesitter.Opts
   opts = {
     ensure_installed = {
       "c",

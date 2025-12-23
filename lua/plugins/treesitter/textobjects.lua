@@ -4,7 +4,7 @@ return {
   event = "VeryLazy",
   main = "utils.plugins.treesitter.textobjects",
   ---@module "utils.plugins.treesitter.textobjects"
-  ---@type utils.treesitter.textobjects.opts
+  ---@type utils.treesitter.textobjects.Opts
   opts = {
     move = {
       enabled = true,

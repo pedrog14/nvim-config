@@ -1,23 +1,27 @@
----@class utils.lspconfig.opts: MasonLspconfigSettings
+---@class utils.lspconfig.EnabledOpts
+---@field enabled boolean?
+---@field exclude string[]?
+
+---@class utils.lspconfig.Opts: MasonLspconfigSettings
 ---@field servers         table<string, vim.lsp.Config>?
 ---@field diagnostic      vim.diagnostic.Opts?
----@field codelens        { enabled: boolean, exclude: string[] }?
----@field fold            { enabled: boolean, exclude: string[] }?
----@field inlay_hint      { enabled: boolean, exclude: string[] }?
----@field semantic_tokens { enabled: boolean, exclude: string[] }?
+---@field codelens        utils.lspconfig.EnabledOpts?
+---@field fold            utils.lspconfig.EnabledOpts?
+---@field inlay_hint      utils.lspconfig.EnabledOpts?
+---@field semantic_tokens utils.lspconfig.EnabledOpts?
 
----@class utils.lspconfig.check_enabled.callback.data
+---@class utils.lspconfig.check_enabled.callback.Data
 ---@field client  vim.lsp.Client
 ---@field method  vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
 ---@field bufnr   number?
 ---@field default boolean?
 
----@class utils.lspconfig.check_enabled.data: utils.lspconfig.check_enabled.callback.data
----@field callback fun(data: utils.lspconfig.check_enabled.callback.data)
+---@class utils.lspconfig.check_enabled.Data: utils.lspconfig.check_enabled.callback.Data
+---@field callback fun(data: utils.lspconfig.check_enabled.callback.Data)
 
 local M = {}
 
----@param opts utils.lspconfig.opts
+---@param opts utils.lspconfig.Opts
 M.setup = function(opts)
   if opts.diagnostic then
     vim.diagnostic.config(opts.diagnostic)
@@ -35,10 +39,10 @@ M.setup = function(opts)
   })
 
   ---@param field string
-  ---@param data utils.lspconfig.check_enabled.data
+  ---@param data utils.lspconfig.check_enabled.Data
   ---@return any
   local check_enabled = function(field, data)
-    local option = opts[field] or {} ---@type { enabled: boolean, exclude: string[] }
+    local option = opts[field] or {} ---@type utils.lspconfig.EnabledOpts
     local exclude, ft = option.exclude or {}, vim.api.nvim_get_option_value("ft", { buf = data.bufnr })
     return (option.enabled == nil and data.default or option.enabled)
       and not vim.tbl_contains(exclude, ft)
@@ -46,10 +50,23 @@ M.setup = function(opts)
       and (data:callback() or true)
   end
 
+  local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
+  local augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
+
   vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("LSPConfig", { clear = true }),
+    group = setup_augroup,
     callback = function(args)
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      local bufnr = vim._resolve_bufnr(args.buf)
+      if not vim.api.nvim_buf_is_valid(bufnr) then
+        return
+      end
+
+      local client_id = vim.tbl_get(args, "data", "client_id")
+      if not client_id then
+        return
+      end
+
+      local client = vim.lsp.get_client_by_id(client_id)
       if not client then
         return
       end
@@ -57,11 +74,12 @@ M.setup = function(opts)
       check_enabled("codelens", {
         client = client,
         method = "textDocument/codeLens",
-        bufnr = args.buf,
+        bufnr = bufnr,
         default = false,
         callback = function(data)
           vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-            buffer = args.buf,
+            group = augroup,
+            buffer = bufnr,
             callback = function()
               vim.lsp.codelens.refresh({ bufnr = data.bufnr })
             end,
@@ -75,6 +93,7 @@ M.setup = function(opts)
         default = false,
         callback = function()
           local win = vim.api.nvim_get_current_win()
+
           vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
           vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.lsp.foldexpr()", { win = win })
         end,
@@ -83,7 +102,7 @@ M.setup = function(opts)
       check_enabled("inlay_hint", {
         client = client,
         method = "textDocument/inlayHint",
-        bufnr = args.buf,
+        bufnr = bufnr,
         default = false,
         callback = function(data)
           vim.lsp.inlay_hint.enable(true, { bufnr = data.bufnr })
@@ -93,7 +112,7 @@ M.setup = function(opts)
       check_enabled("semantic_tokens", {
         client = client,
         method = "textDocument/semanticTokens",
-        bufnr = args.buf,
+        bufnr = bufnr,
         default = true,
         callback = function(data)
           vim.lsp.semantic_tokens.enable(true, { bufnr = data.bufnr })
@@ -103,6 +122,18 @@ M.setup = function(opts)
       vim.keymap.set("n", "K", function()
         vim.lsp.buf.hover()
       end, { desc = "Displays hover information about the symbol under the cursor", buffer = args.buf })
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("LspDetach", {
+    group = setup_augroup,
+    callback = function(args)
+      local bufnr = vim._resolve_bufnr(args.buf)
+      if not vim.api.nvim_buf_is_valid(bufnr) then
+        return
+      end
+
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
     end,
   })
 end

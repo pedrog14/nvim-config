@@ -1,10 +1,8 @@
 ---@class range.Data
----@field start range.pos
----@field end   range.pos
+---@field start range.Position
+---@field end   range.Position
 
----@class range.pos
----@field line      integer
----@field character integer
+---@alias range.Position { line: integer, character: integer }
 
 local M = {}
 local config = require("utils.lsp.breadcrumbs.config")
@@ -70,7 +68,7 @@ local breadcrumbs_str = function(res, row, col, sep)
     if size < max_size then
       ret = temp
     else
-      sym = "…"
+      sym = config.opts.icons.ellipsis
       ret = i == #path and sym or ("%s %s %s"):format(sym, sep, ret)
       break
     end
@@ -191,7 +189,7 @@ local on_detach = vim.schedule_wrap(function(args)
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 
----@param opts utils.lsp.breadcrumbs.opts?
+---@param opts utils.lsp.breadcrumbs.Opts?
 M.setup = function(opts)
   config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
   augroup = vim.api.nvim_create_augroup("LspBreadcrumbs", { clear = true })

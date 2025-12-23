@@ -1,16 +1,16 @@
----@class utils.snacks.indent: snacks.indent.Config
----@field filter (utils.snacks.indent.filter|fun(buf: number?, win: number?): boolean)?
+---@class utils.snacks.Indent: snacks.indent.Config
+---@field filter (utils.snacks.indent.Filter|fun(buf: number?, win: number?): boolean)?
 
----@class utils.snacks.indent.filter
+---@class utils.snacks.indent.Filter
 ---@field filetype string[]?
 
----@class utils.snacks.opts: snacks.Config
----@field indent? utils.snacks.indent
+---@class utils.snacks.Opts: snacks.Config
+---@field indent utils.snacks.Indent?
 
 local M = {}
 
 ---@param filetype string[]
----@return fun(buf: number): boolean
+---@return fun(bufnr: integer): boolean
 local gen_filter = function(filetype)
   return function(bufnr)
     return not vim.tbl_contains(filetype, vim.api.nvim_get_option_value("filetype", { buf = bufnr }))
@@ -21,11 +21,11 @@ local gen_filter = function(filetype)
 end
 
 ---@module "snacks"
----@param opts utils.snacks.opts
+---@param opts utils.snacks.Opts
 M.setup = function(opts)
   opts = opts or {}
 
-  ---@type { filetype: string[] }|fun(buf: number, win: number): boolean
+  ---@type { filetype: string[] }|fun(buf: integer, win: integer?): boolean
   local filter = vim.tbl_get(opts, "indent", "filter")
   filter = type(filter) == "table" and gen_filter(filter.filetype) or filter
   opts.indent = filter and vim.tbl_deep_extend("force", opts.indent, { filter = filter })

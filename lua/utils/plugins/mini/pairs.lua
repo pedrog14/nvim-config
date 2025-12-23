@@ -1,6 +1,5 @@
 local M = {}
 
----@param opts? table
 M.setup = function(opts)
   opts = opts or {}
 

@@ -1,9 +1,9 @@
----@class utils.mason.opts: MasonSettings
----@field ensure_installed? string[]
+---@class utils.mason.Opts: MasonSettings
+---@field ensure_installed string[]?
 
 local M = {}
 
----@param opts utils.mason.opts
+---@param opts utils.mason.Opts
 M.setup = function(opts)
   opts = opts or {}
 

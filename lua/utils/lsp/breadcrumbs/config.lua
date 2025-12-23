@@ -3,7 +3,6 @@ local M = {}
 ---@return string[]
 local get_symbols = function()
   local symbols = {}
-
   local mini_icons_ok, mini_icons = pcall(require, "mini.icons")
 
   if mini_icons_ok then
@@ -16,14 +15,15 @@ local get_symbols = function()
   return symbols
 end
 
----@class utils.lsp.breadcrumbs.opts
+---@class utils.lsp.breadcrumbs.Opts
 M.default = {
   icons = {
     symbols = get_symbols(),
     separator = "",
+    ellipsis = "…",
   },
 }
 
-M.opts = nil ---@type utils.lsp.breadcrumbs.opts?
+M.opts = nil ---@type utils.lsp.breadcrumbs.Opts?
 
 return M

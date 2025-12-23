@@ -154,7 +154,7 @@ return {
     local signs = require("utils.icons").diagnostic.signs
 
     ---@module "utils.plugins.snacks"
-    ---@type utils.snacks.opts
+    ---@type utils.snacks.Opts
     return {
       bigfile = { enabled = true },
       quickfile = { enabled = true },
