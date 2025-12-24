@@ -111,7 +111,7 @@ local on_attach = function(args)
 
   vim.keymap.set("n", "K", function()
     vim.lsp.buf.hover()
-  end, { desc = "Displays hover information about the symbol under the cursor", buffer = args.buf })
+  end, { desc = "Displays hover information about the symbol under the cursor", buffer = bufnr })
 end
 
 local on_detach = function(args)
