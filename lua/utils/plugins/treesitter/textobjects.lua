@@ -1,5 +1,6 @@
 ---@class utils.treesitter.textobjects.Move: TSTextObjects.Config.Move
 ---@field enabled boolean?
+---@field exclude string[]?
 ---@field keys    table<string, table<string, string>>?
 
 local textobjects = require("nvim-treesitter-textobjects")
@@ -7,7 +8,7 @@ local utils = require("utils.treesitter")
 
 local config = {
   ---@class utils.treesitter.textobjects.Opts: TSTextObjects.UserConfig
-  ---@field move? utils.treesitter.textobjects.Move
+  ---@field move utils.treesitter.textobjects.Move?
   default = {
     move = { enabled = true },
   },
@@ -19,7 +20,8 @@ local config = {
 ---@param data  utils.treesitter.check_enabled.Data
 ---@return any
 local check_enabled = function(field, data)
-  local option = vim.tbl_get(config, "opts", field) or {} ---@type { enabled: boolean, exclude: string[] }
+  ---@type { enabled: boolean, exclude: string[] }
+  local option = vim.tbl_get(config, "opts", field) or {}
   local exclude = option.exclude or {}
   return option.enabled
     and not vim.tbl_contains(exclude, data.lang)
@@ -27,7 +29,7 @@ local check_enabled = function(field, data)
     and (data:callback() or true)
 end
 
----@param bufnr number
+---@param bufnr integer
 ---@param ft    string?
 local attach = function(bufnr, ft)
   local lang = vim.treesitter.language.get_lang(ft or vim.api.nvim_get_option_value("ft", { buf = bufnr })) --[[@as string]]

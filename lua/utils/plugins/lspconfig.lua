@@ -1,10 +1,10 @@
 ---@alias utils.lspconfig.EnabledOpts { enabled: boolean, exclude: string[] }
 
----@class (exact) utils.lspconfig.check_enabled.callback.Data
----@field client  vim.lsp.Client
----@field method  vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
----@field ft      string
----@field bufnr   number
+---@class utils.lspconfig.check_enabled.callback.Data
+---@field client vim.lsp.Client
+---@field method vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
+---@field ft     string
+---@field bufnr  integer
 
 ---@class utils.lspconfig.check_enabled.Data: utils.lspconfig.check_enabled.callback.Data
 ---@field callback fun(data: utils.lspconfig.check_enabled.callback.Data)
@@ -33,10 +33,11 @@ local config = {
 ---@param data utils.lspconfig.check_enabled.Data
 ---@return any
 local check_enabled = function(field, data)
-  local option = vim.tbl_get(config, "opts", field) or {} ---@type utils.lspconfig.EnabledOpts
-  local exclude, ft = option.exclude or {}, vim.api.nvim_get_option_value("ft", { buf = data.bufnr })
+  ---@type utils.lspconfig.EnabledOpts
+  local option = vim.tbl_get(config, "opts", field) or {}
+  local exclude = option.exclude or {}
   return option.enabled
-    and not vim.tbl_contains(exclude, ft)
+    and not vim.tbl_contains(exclude, data.ft)
     and data.client:supports_method(data.method, data.bufnr)
     and (data:callback() or true)
 end

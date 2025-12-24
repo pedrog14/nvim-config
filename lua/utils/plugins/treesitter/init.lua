@@ -1,9 +1,9 @@
 ---@alias utils.treesitter.EnabledOpts { enabled: boolean, exclude: string[] }
 
----@class (exact) utils.treesitter.check_enabled.callback.Data
----@field lang    string
----@field query   utils.treesitter.QueryType
----@field bufnr   number
+---@class utils.treesitter.check_enabled.callback.Data
+---@field lang  string
+---@field query utils.treesitter.QueryType
+---@field bufnr integer
 
 ---@class utils.treesitter.check_enabled.Data: utils.treesitter.check_enabled.callback.Data
 ---@field callback fun(data: utils.treesitter.check_enabled.callback.Data)
