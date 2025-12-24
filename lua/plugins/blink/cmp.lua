@@ -34,6 +34,7 @@ return {
       ["<c-n>"] = { "select_next", "show", "fallback_to_mappings" },
     },
     cmdline = {
+      enabled = true,
       keymap = {
         preset = "cmdline",
         ["<c-n>"] = { "select_next", "show", "fallback" },

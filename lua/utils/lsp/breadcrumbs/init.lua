@@ -1,8 +1,8 @@
+---@alias range.Position { line: integer, character: integer }
+
 ---@class range.Data
 ---@field start range.Position
 ---@field end   range.Position
-
----@alias range.Position { line: integer, character: integer }
 
 local M = {}
 local config = require("utils.lsp.breadcrumbs.config")
