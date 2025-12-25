@@ -1,6 +1,6 @@
 local M = {}
 
----@return string[]
+---@return (string?)[]
 local get_symbols = function()
   local symbols = {}
   local mini_icons_ok, mini_icons = pcall(require, "mini.icons")

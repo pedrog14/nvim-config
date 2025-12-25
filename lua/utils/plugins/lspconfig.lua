@@ -9,7 +9,7 @@
 ---@class utils.lspconfig.check_enabled.Data: utils.lspconfig.check_enabled.callback.Data
 ---@field callback fun(data: utils.lspconfig.check_enabled.callback.Data)
 
-local augroup = nil
+local augroup = nil ---@type integer?
 
 local config = {
   ---@class utils.lspconfig.Opts: MasonLspconfigSettings
@@ -42,6 +42,7 @@ local check_enabled = function(field, data)
     and (data:callback() or true)
 end
 
+---@param args vim.api.keyset.create_autocmd.callback_args
 local on_attach = vim.schedule_wrap(function(args)
   local bufnr = vim._resolve_bufnr(args.buf)
   if not vim.api.nvim_buf_is_valid(bufnr) then
@@ -114,6 +115,7 @@ local on_attach = vim.schedule_wrap(function(args)
   end, { desc = "Displays hover information about the symbol under the cursor", buffer = bufnr })
 end)
 
+---@param args vim.api.keyset.create_autocmd.callback_args
 local on_detach = vim.schedule_wrap(function(args)
   local bufnr = vim._resolve_bufnr(args.buf)
   if not vim.api.nvim_buf_is_valid(bufnr) then
@@ -125,7 +127,7 @@ end)
 
 local M = {}
 
----@param opts utils.lspconfig.Opts
+---@param opts utils.lspconfig.Opts?
 M.setup = function(opts)
   config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
   augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })

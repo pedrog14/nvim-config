@@ -12,6 +12,7 @@ local breadcrumbs = nil ---@type string?
 ---@param range range.Data
 ---@param row   integer
 ---@param col   integer
+---@return boolean
 local range_contains_pos = function(range, row, col)
   local start = range.start
   local stop = range["end"]
@@ -39,7 +40,7 @@ local breadcrumbs_str = function(res, row, col, sep)
   local path = {}
 
   while result_ref do
-    local sym = nil
+    local sym = nil ---@type table?
 
     for _, s in ipairs(result_ref) do
       if s.range and range_contains_pos(s.range, row, col) then
@@ -54,7 +55,7 @@ local breadcrumbs_str = function(res, row, col, sep)
       end
     end
 
-    result_ref = sym -- nil if there's no symbol in cursor position
+    result_ref = sym
   end
 
   local max_size = vim.api.nvim_get_option_value("co", {}) - 94 -- TODO: Better way to calculate free space in statusline
