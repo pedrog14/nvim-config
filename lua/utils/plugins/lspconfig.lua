@@ -42,7 +42,7 @@ local check_enabled = function(field, data)
     and (data:callback() or true)
 end
 
-local on_attach = function(args)
+local on_attach = vim.schedule_wrap(function(args)
   local bufnr = vim._resolve_bufnr(args.buf)
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
@@ -112,9 +112,9 @@ local on_attach = function(args)
   vim.keymap.set("n", "K", function()
     vim.lsp.buf.hover()
   end, { desc = "Displays hover information about the symbol under the cursor", buffer = bufnr })
-end
+end)
 
-local on_detach = function(args)
+local on_detach = vim.schedule_wrap(function(args)
   local bufnr = vim._resolve_bufnr(args.buf)
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
@@ -122,7 +122,7 @@ local on_detach = function(args)
 
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
   vim.keymap.del("n", "K", { buffer = bufnr })
-end
+end)
 
 local M = {}
 
