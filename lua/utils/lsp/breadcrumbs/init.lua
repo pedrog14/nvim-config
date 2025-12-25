@@ -7,6 +7,7 @@
 local M = {}
 local config = require("utils.lsp.breadcrumbs.config")
 local result = {} ---@type table[]
+local augroup = nil ---@type integer?
 local breadcrumbs = nil ---@type string?
 
 ---@param range range.Data
@@ -77,8 +78,6 @@ local breadcrumbs_str = function(res, row, col, sep)
 
   return ret
 end
-
-local augroup = nil ---@type integer?
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_attach = vim.schedule_wrap(function(args)
