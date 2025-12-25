@@ -8,6 +8,7 @@
 ---@field indent utils.snacks.Indent?
 
 local M = {}
+local snacks = require("snacks")
 
 ---@param filetype string[]
 ---@return fun(bufnr: integer): boolean
@@ -30,7 +31,6 @@ M.setup = function(opts)
   filter = type(filter) == "table" and gen_filter(filter.filetype) or filter
   opts.indent = filter and vim.tbl_deep_extend("force", opts.indent, { filter = filter })
 
-  local snacks = require("snacks")
   snacks.setup(opts)
 
   local lazygit = snacks.lazygit

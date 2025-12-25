@@ -1,27 +1,20 @@
+---@alias utils.treesitter.textobjects.EnabledOpts { enabled: boolean, exclude: string[] }
+
 ---@class utils.treesitter.textobjects.Move: TSTextObjects.Config.Move
 ---@field enabled boolean?
 ---@field exclude string[]?
 ---@field keys    table<string, table<string, string>>?
 
+local M = {}
 local textobjects = require("nvim-treesitter-textobjects")
 local utils = require("utils.treesitter")
-
-local config = {
-  ---@class utils.treesitter.textobjects.Opts: TSTextObjects.UserConfig
-  ---@field move utils.treesitter.textobjects.Move?
-  default = {
-    move = { enabled = true },
-  },
-
-  opts = nil, ---@type utils.treesitter.textobjects.Opts
-}
 
 ---@param field string
 ---@param data  utils.treesitter.check_enabled.Data
 ---@return any
 local check_enabled = function(field, data)
-  ---@type { enabled: boolean, exclude: string[] }
-  local option = vim.tbl_get(config, "opts", field) or {}
+  ---@type utils.treesitter.textobjects.EnabledOpts
+  local option = vim.tbl_get(M.config, "opts", field) or {}
   local exclude = option.exclude or {}
   return option.enabled
     and not vim.tbl_contains(exclude, data.lang)
@@ -31,8 +24,12 @@ end
 
 ---@param bufnr integer
 ---@param ft    string?
-local attach = function(bufnr, ft)
-  local lang = vim.treesitter.language.get_lang(ft or vim.api.nvim_get_option_value("ft", { buf = bufnr })) --[[@as string]]
+local on_filetype = function(bufnr, ft)
+  local lang = vim.treesitter.language.get_lang(ft or vim.api.nvim_get_option_value("ft", { buf = bufnr }))
+  if not lang then
+    return
+  end
+
   local is_installed = utils.get_installed(lang)
   if not is_installed then
     return
@@ -45,22 +42,30 @@ local attach = function(bufnr, ft)
     default = false,
     callback = function(data)
       ---@type table<string, table<string, string>>
-      local moves = vim.tbl_get(config, "opts", "move", "keys") or {}
+      local moves = vim.tbl_get(M.config, "opts", "move", "keys") or {}
 
       for method, keymaps in pairs(moves) do
         for key, query in pairs(keymaps) do
           local queries = type(query) == "table" and query or { query }
           local parts = {}
+
           for _, q in ipairs(queries) do
             local part = q:gsub("@", ""):gsub("%..*", "")
             part = part:sub(1, 1):upper() .. part:sub(2)
             table.insert(parts, part)
           end
+
           local desc = table.concat(parts, " or ")
+
           desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
           desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
+
           if
-            not (vim.api.nvim_get_option_value("diff", { win = vim.api.nvim_get_current_win() }) and key:find("[cC]"))
+            not (
+              vim.api.nvim_get_option_value("diff", {
+                win = vim.api.nvim_get_current_win(),
+              }) and key:find("[cC]")
+            )
           then
             vim.keymap.set({ "n", "x", "o" }, key, function()
               require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
@@ -76,13 +81,21 @@ local attach = function(bufnr, ft)
   })
 end
 
-local M = {}
+M.config = {
+  ---@class utils.treesitter.textobjects.Opts: TSTextObjects.UserConfig
+  ---@field move utils.treesitter.textobjects.Move?
+  default = {
+    move = { enabled = true },
+  },
+
+  opts = nil, ---@type utils.treesitter.textobjects.Opts
+}
 
 ---@param opts utils.treesitter.textobjects.Opts
 M.setup = function(opts)
-  config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
+  M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts or {})
 
-  textobjects.setup(config.opts)
+  textobjects.setup(M.config.opts)
 
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("TSConfig", { clear = false }),
@@ -92,11 +105,11 @@ M.setup = function(opts)
         return
       end
 
-      attach(bufnr, ft)
+      on_filetype(bufnr, ft)
     end,
   })
 
-  vim.tbl_map(attach, vim.api.nvim_list_bufs())
+  vim.tbl_map(on_filetype, vim.api.nvim_list_bufs())
 end
 
 return M

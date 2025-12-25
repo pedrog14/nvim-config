@@ -1,5 +1,4 @@
 local M = {}
-
 local pack = require("utils.pack")
 
 ---@param event vim.api.keyset.events|vim.api.keyset.events[]

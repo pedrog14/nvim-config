@@ -8,22 +8,7 @@
 ---@class utils.treesitter.check_enabled.Data: utils.treesitter.check_enabled.callback.Data
 ---@field callback fun(data: utils.treesitter.check_enabled.callback.Data)
 
-local config = {
-  ---@class utils.treesitter.Opts: TSConfig
-  ---@field install_dir      string?
-  ---@field ensure_installed string[]?
-  ---@field fold             utils.treesitter.EnabledOpts?
-  ---@field highlight        utils.treesitter.EnabledOpts?
-  ---@field indent           utils.treesitter.EnabledOpts?
-  default = {
-    fold = { enabled = true },
-    highlight = { enabled = true },
-    indent = { enabled = true },
-  },
-
-  opts = nil, ---@type utils.treesitter.Opts?
-}
-
+local M = {}
 local treesitter = require("nvim-treesitter")
 local utils = require("utils.treesitter")
 
@@ -32,7 +17,7 @@ local utils = require("utils.treesitter")
 ---@return any
 local check_enabled = function(field, data)
   ---@type utils.treesitter.EnabledOpts
-  local option = vim.tbl_get(config, "opts", field) or {}
+  local option = vim.tbl_get(M.config, "opts", field) or {}
   local exclude = option.exclude or {}
   return option.enabled
     and not vim.tbl_contains(exclude, data.lang)
@@ -94,16 +79,30 @@ local on_filetype = function(args)
   })
 end
 
-local M = {}
+M.config = {
+  ---@class utils.treesitter.Opts: TSConfig
+  ---@field install_dir      string?
+  ---@field ensure_installed string[]?
+  ---@field fold             utils.treesitter.EnabledOpts?
+  ---@field highlight        utils.treesitter.EnabledOpts?
+  ---@field indent           utils.treesitter.EnabledOpts?
+  default = {
+    fold = { enabled = true },
+    highlight = { enabled = true },
+    indent = { enabled = true },
+  },
+
+  opts = nil, ---@type utils.treesitter.Opts?
+}
 
 ---@param opts utils.treesitter.Opts
 M.setup = function(opts)
-  config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
+  M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts or {})
 
-  treesitter.setup(config.opts)
+  treesitter.setup(M.config.opts)
   utils.get_installed(nil, { update = true })
 
-  local ensure_installed = vim.tbl_get(config, "opts", "ensure_installed")
+  local ensure_installed = vim.tbl_get(M.config, "opts", "ensure_installed")
   if ensure_installed then
     local install = vim.tbl_filter(function(lang)
       return not utils.get_installed(lang)

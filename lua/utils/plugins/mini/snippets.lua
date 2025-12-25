@@ -1,4 +1,5 @@
 local M = {}
+local mini_snippets = require("mini.snippets")
 
 M.setup = function(opts)
   -- Stop all sessions on Normal mode exit
@@ -27,7 +28,7 @@ M.setup = function(opts)
     end,
   })
 
-  require("mini.snippets").setup(opts)
+  mini_snippets.setup(opts)
 end
 
 return M

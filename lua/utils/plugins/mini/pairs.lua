@@ -1,9 +1,10 @@
 local M = {}
+local mini_pairs = require("mini.pairs")
 
 M.setup = function(opts)
   opts = opts or {}
 
-  require("mini.pairs").setup(opts)
+  mini_pairs.setup(opts)
 
   local open = MiniPairs.open
   MiniPairs.open = function(pair, neigh_pattern) --[[@diagnostic disable-line: duplicate-set-field]]

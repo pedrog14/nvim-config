@@ -2,14 +2,14 @@
 ---@field ensure_installed string[]?
 
 local M = {}
+local mason = require("mason")
+local registry = require("mason-registry")
 
 ---@param opts utils.mason.Opts
 M.setup = function(opts)
   opts = opts or {}
 
-  require("mason").setup(opts)
-
-  local registry = require("mason-registry")
+  mason.setup(opts)
 
   registry:on("package:install:success", function()
     vim.defer_fn(function()

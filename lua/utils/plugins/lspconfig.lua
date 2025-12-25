@@ -9,32 +9,16 @@
 ---@class utils.lspconfig.check_enabled.Data: utils.lspconfig.check_enabled.callback.Data
 ---@field callback fun(data: utils.lspconfig.check_enabled.callback.Data)
 
+local M = {}
+local mason_lspconfig = require("mason-lspconfig")
 local augroup = nil ---@type integer?
-
-local config = {
-  ---@class utils.lspconfig.Opts: MasonLspconfigSettings
-  ---@field diagnostic      vim.diagnostic.Opts?
-  ---@field servers         table<string, vim.lsp.Config>?
-  ---@field codelens        utils.lspconfig.EnabledOpts?
-  ---@field fold            utils.lspconfig.EnabledOpts?
-  ---@field inlay_hint      utils.lspconfig.EnabledOpts?
-  ---@field semantic_tokens utils.lspconfig.EnabledOpts?
-  default = {
-    codelens = { enabled = false },
-    fold = { enabled = false },
-    inlay_hint = { enabled = false },
-    semantic_tokens = { enabled = true },
-  },
-
-  opts = nil, ---@type utils.lspconfig.Opts?
-}
 
 ---@param field string
 ---@param data utils.lspconfig.check_enabled.Data
 ---@return any
 local check_enabled = function(field, data)
   ---@type utils.lspconfig.EnabledOpts
-  local option = vim.tbl_get(config, "opts", field) or {}
+  local option = vim.tbl_get(M.config, "opts", field) or {}
   local exclude = option.exclude or {}
   return option.enabled
     and not vim.tbl_contains(exclude, data.ft)
@@ -125,28 +109,44 @@ local on_detach = vim.schedule_wrap(function(args)
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 
-local M = {}
+M.config = {
+  ---@class utils.lspconfig.Opts: MasonLspconfigSettings
+  ---@field diagnostic      vim.diagnostic.Opts?
+  ---@field servers         table<string, vim.lsp.Config>?
+  ---@field codelens        utils.lspconfig.EnabledOpts?
+  ---@field fold            utils.lspconfig.EnabledOpts?
+  ---@field inlay_hint      utils.lspconfig.EnabledOpts?
+  ---@field semantic_tokens utils.lspconfig.EnabledOpts?
+  default = {
+    codelens = { enabled = false },
+    fold = { enabled = false },
+    inlay_hint = { enabled = false },
+    semantic_tokens = { enabled = true },
+  },
+
+  opts = nil, ---@type utils.lspconfig.Opts?
+}
 
 ---@param opts utils.lspconfig.Opts?
 M.setup = function(opts)
-  config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
+  M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts or {})
   augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
 
   local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
 
-  local diagnostic = vim.tbl_get(config, "opts", "diagnostic")
+  local diagnostic = vim.tbl_get(M.config, "opts", "diagnostic")
   if diagnostic then
     vim.diagnostic.config(diagnostic)
   end
 
-  local servers = vim.tbl_get(config, "opts", "servers")
+  local servers = vim.tbl_get(M.config, "opts", "servers")
   if servers then
     for lang, content in pairs(servers) do
       vim.lsp.config(lang, content)
     end
   end
 
-  require("mason-lspconfig").setup(config.opts)
+  mason_lspconfig.setup(M.config.opts)
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })

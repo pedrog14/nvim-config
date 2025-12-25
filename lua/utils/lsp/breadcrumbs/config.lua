@@ -1,14 +1,42 @@
 local M = {}
 
----@return (string?)[]
+---@return string[]
 local get_symbols = function()
-  local symbols = {}
+  -- stylua: ignore
+  local symbols = {
+    File          = "F",
+    Module        = "M",
+    Namespace     = "N",
+    Package       = "P",
+    Class         = "C",
+    Method        = "M",
+    Property      = "P",
+    Field         = "F",
+    Constructor   = "C",
+    Enum          = "E",
+    Interface     = "I",
+    Function      = "F",
+    Variable      = "V",
+    Constant      = "C",
+    String        = "S",
+    Number        = "N",
+    Boolean       = "B",
+    Array         = "A",
+    Object        = "O",
+    Key           = "K",
+    Null          = "N",
+    EnumMember    = "E",
+    Struct        = "S",
+    Event         = "E",
+    Operator      = "O",
+    TypeParameter = "T",
+  }
+
   local mini_icons_ok, mini_icons = pcall(require, "mini.icons")
 
   if mini_icons_ok then
-    local symbol_kind = vim.lsp.protocol.SymbolKind
-    for _, kind in ipairs(symbol_kind) do
-      symbols[kind] = mini_icons.get("lsp", kind --[[@as string]])
+    for kind, _ in pairs(symbols) do
+      symbols[kind] = mini_icons.get("lsp", kind)
     end
   end
 

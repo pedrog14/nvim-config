@@ -37,10 +37,10 @@ return {
           {
             "diagnostics",
             symbols = {
-              error = signs["error"],
-              warn = signs["warn"],
-              info = signs["info"],
-              hint = signs["hint"],
+              error = signs[1],
+              warn = signs[2],
+              info = signs[3],
+              hint = signs[4],
             },
           },
         },
