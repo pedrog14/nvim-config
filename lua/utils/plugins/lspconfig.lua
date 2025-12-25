@@ -128,6 +128,9 @@ local M = {}
 ---@param opts utils.lspconfig.Opts
 M.setup = function(opts)
   config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
+  augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
+
+  local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
 
   local diagnostic = vim.tbl_get(config, "opts", "diagnostic")
   if diagnostic then
@@ -142,10 +145,6 @@ M.setup = function(opts)
   end
 
   require("mason-lspconfig").setup(config.opts)
-
-  local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
-
-  augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })
