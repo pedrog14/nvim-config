@@ -121,7 +121,6 @@ local on_detach = vim.schedule_wrap(function(args)
   end
 
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-  vim.keymap.del("n", "K", { buffer = bufnr })
 end)
 
 local M = {}
