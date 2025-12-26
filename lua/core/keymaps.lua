@@ -1,7 +1,7 @@
 ---@class core.keymap.Set: vim.keymap.set.Opts
 ---@field [1] string
 ---@field [2] string|function
----@field mode? string|string[]
+---@field mode (string|string[])?
 
 local M = {}
 
@@ -13,6 +13,7 @@ M.set = function(keymaps)
     local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as table]])
       or keymap.mode
       or "n"
+
     keymap.mode = nil
 
     local lhs = table.remove(keymap, 1)

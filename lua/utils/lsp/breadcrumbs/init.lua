@@ -5,10 +5,10 @@
 ---@field end   range.Position
 
 local M = {}
-local config = require("utils.lsp.breadcrumbs.config")
 local result = {} ---@type table[]
 local augroup = nil ---@type integer?
 local breadcrumbs = nil ---@type string?
+local config = require("utils.lsp.breadcrumbs.config")
 
 ---@param range range.Data
 ---@param row   integer

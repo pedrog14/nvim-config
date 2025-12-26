@@ -1,6 +1,6 @@
 ---@class utils.pack.Opts: vim.pack.keyset.add
----@field load? boolean|fun(plug_data: { spec: utils.pack.SpecResolved, path: string })
----@field path  (string|string[])? Path of pack specs (`:h vim.pack.Spec`), same notation as lua modules
+---@field load (boolean|fun(plug_data: { spec: utils.pack.SpecResolved, path: string }))?
+---@field path (string|string[])? Path of pack specs (`:h vim.pack.Spec`), same notation as lua modules
 
 ---@class utils.pack.Spec: vim.pack.Spec
 ---@field data utils.pack.Data
@@ -25,29 +25,29 @@
 
 local M = {}
 
+---@param spec_path string
+---@return table
+local require_spec = function(spec_path)
+  local spec = {}
+  local path_str = vim.fn.stdpath("config") .. "/lua/" .. spec_path:gsub("%.", "/")
+  local stream = vim.uv.fs_scandir(path_str)
+
+  while stream ~= nil do
+    local name = vim.uv.fs_scandir_next(stream)
+    if not name then
+      break
+    end
+    spec[#spec + 1] = name:match("%.lua$") and require(spec_path .. "." .. name:match("^(.+)%.lua$"))
+  end
+
+  return spec
+end
+
 M.spec = nil ---@type utils.pack.Spec[]?
 
 ---@param path string|string[]
 ---@return table
 M.get_spec = function(path)
-  ---@param spec_path string
-  ---@return table
-  local require_spec = function(spec_path)
-    local spec = {}
-    local path_str = vim.fn.stdpath("config") .. "/lua/" .. spec_path:gsub("%.", "/")
-    local stream = vim.uv.fs_scandir(path_str)
-
-    while stream ~= nil do
-      local name = vim.uv.fs_scandir_next(stream)
-      if not name then
-        break
-      end
-      spec[#spec + 1] = name:match("%.lua$") and require(spec_path .. "." .. name:match("^(.+)%.lua$"))
-    end
-
-    return spec
-  end
-
   local spec = nil
 
   if type(path) == "table" then

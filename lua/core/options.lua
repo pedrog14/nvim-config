@@ -1,6 +1,6 @@
 ---@class core.Opts
----@field g? table<string, any>
----@field o? table<string, any>
+---@field g table<string, any>?
+---@field o table<string, any>?
 
 local M = {}
 

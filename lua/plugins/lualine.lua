@@ -1,11 +1,20 @@
 return {
   "nvim-lualine/lualine.nvim",
+  dependencies = "nvim-mini/mini.icons",
   event = "VeryLazy",
+  init = function()
+    vim.g.lualine_laststatus = vim.o.laststatus
+    if vim.fn.argc(-1) > 0 then
+      -- set an empty statusline till lualine loads
+      vim.api.nvim_set_option_value("statusline", " ", {})
+    else
+      -- hide the statusline on the starter page
+      vim.api.nvim_set_option_value("laststatus", 0, {})
+    end
+  end,
   opts = function()
     local lualine_require = require("lualine_require")
     lualine_require.require = require
-
-    require("utils.lsp.breadcrumbs").setup()
 
     local snacks_picker = {
       sections = {
@@ -23,6 +32,9 @@ return {
     }
 
     local signs = require("utils.icons").diagnostic.signs
+    local breadcrumbs = require("utils.lsp.breadcrumbs")
+
+    breadcrumbs.setup()
 
     return {
       options = {
@@ -44,7 +56,7 @@ return {
             },
           },
         },
-        lualine_c = { "filename", "require('utils.lsp.breadcrumbs').get()" },
+        lualine_c = { "filename", breadcrumbs.get },
         lualine_x = {
           "encoding",
           "fileformat",
@@ -60,7 +72,6 @@ return {
       extensions = {
         "lazy",
         "mason",
-        "neo-tree",
         "quickfix",
         snacks_picker,
       },
