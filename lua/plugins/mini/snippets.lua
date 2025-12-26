@@ -1,7 +1,7 @@
 return {
   "nvim-mini/mini.snippets",
   dependencies = "rafamadriz/friendly-snippets",
-  event = "InsertEnter",
+  lazy = true,
   main = "utils.plugins.mini.snippets",
   opts = function()
     local mini_snippets = require("mini.snippets")

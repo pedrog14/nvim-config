@@ -19,8 +19,7 @@ local range_contains_pos = function(range, row, col)
   local stop = range["end"]
 
   return not (
-    row < start.line
-    or row > stop.line
+    (row < start.line or row > stop.line)
     or (row == start.line and col < start.character)
     or (row == stop.line and col > stop.character)
   )
@@ -29,9 +28,8 @@ end
 ---@param res table
 ---@param row integer
 ---@param col integer
----@param sep string
 ---@return string
-local breadcrumbs_str = function(res, row, col, sep)
+local breadcrumbs_str = function(res, row, col)
   if not res then
     return ""
   end
@@ -46,11 +44,9 @@ local breadcrumbs_str = function(res, row, col, sep)
     for _, s in ipairs(result_ref) do
       if s.range and range_contains_pos(s.range, row, col) then
         local kind = vim.lsp.protocol.SymbolKind[s.kind]
-        local icon = config.opts.icons.symbols[kind]
+        local icon = vim.tbl_get(config, "opts", "icons", "symbols", kind) ---@type string
 
-        icon = icon and icon .. " " or ""
-
-        path[#path + 1] = ("%s%s"):format(icon, s.name)
+        path[#path + 1] = ("%s %s"):format(icon, s.name)
         sym = s.children
         break
       end
@@ -59,18 +55,18 @@ local breadcrumbs_str = function(res, row, col, sep)
     result_ref = sym
   end
 
-  local max_size = vim.api.nvim_get_option_value("co", {}) - 94 -- TODO: Better way to calculate free space in statusline
+  local sep = vim.tbl_get(config, "opts", "icons", "separator") ---@type string
+  local max_size = vim.api.nvim_get_option_value("co", {}) - 94 ---@type integer TODO: Better way to calculate free space in statusline
   local ret = ""
 
   for i = #path, 1, -1 do
     local sym = path[i]
     local temp = i == #path and sym or ("%s %s %s"):format(sym, sep, ret)
-    local size = #temp
 
-    if size < max_size then
+    if #temp < max_size then
       ret = temp
     else
-      sym = config.opts.icons.ellipsis
+      sym = vim.tbl_get(config, "opts", "icons", "ellipsis") ---@type string
       ret = i == #path and sym or ("%s %s %s"):format(sym, sep, ret)
       break
     end
@@ -143,13 +139,13 @@ local on_attach = vim.schedule_wrap(function(args)
     local cursor = vim.api.nvim_win_get_cursor(winnr)
     local row, col = cursor[1] - 1, cursor[2]
 
-    breadcrumbs = breadcrumbs_str(result[bufnr], row, col, config.opts.icons.separator)
+    breadcrumbs = breadcrumbs_str(result[bufnr], row, col)
   end
 
   update_result()
   update_str()
 
-  vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "ModeChanged" }, {
+  vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "InsertLeave" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()
