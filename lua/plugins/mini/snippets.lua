@@ -14,8 +14,7 @@ return {
         end,
       },
       mappings = {
-        jump_next = "<c-l>",
-        jump_prev = "<c-h>",
+        expand = "",
         stop = "<c-e>",
       },
       snippets = {

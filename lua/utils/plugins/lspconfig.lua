@@ -61,22 +61,6 @@ local on_attach = vim.schedule_wrap(function(args)
     end,
   })
 
-  -- check_enabled("completion", {
-  --   client = client,
-  --   method = "textDocument/completion",
-  --   ft = ft,
-  --   bufnr = bufnr,
-  --   callback = function(data)
-  --     ---@type lsp.Handler
-  --     local handler = data.client[data.method]
-  --     ---@type lsp.Handler
-  --     data.client.handlers[data.method] = function(err, result, context, config)
-  --       vim.print(err, result, context, config)
-  --       handler(err, result, context, config)
-  --     end
-  --   end,
-  -- })
-  --
   check_enabled("fold", {
     client = client,
     method = "textDocument/foldingRange",

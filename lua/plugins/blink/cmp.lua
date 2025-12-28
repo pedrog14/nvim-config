@@ -1,7 +1,7 @@
 return {
   "saghen/blink.cmp",
   dependencies = { "nvim-mini/mini.icons", "nvim-mini/mini.snippets" },
-  version = "*",
+  build = "cargo build --release",
   event = { "InsertEnter", "CmdlineEnter" },
   ---@module "blink.cmp"
   ---@type blink.cmp.Config
@@ -29,7 +29,6 @@ return {
         max_height = vim.api.nvim_get_option_value("pumheight", {}),
       },
     },
-    keymap = { preset = "default" },
     cmdline = {
       enabled = true,
       keymap = {

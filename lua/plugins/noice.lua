@@ -13,6 +13,7 @@ return {
       },
     },
     lsp = {
+      signature = { auto_open = { enabled = false } },
       progress = { enabled = false },
       override = {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
