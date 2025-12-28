@@ -50,6 +50,7 @@ M.default = {
     separator = "",
     ellipsis = "…",
   },
+  max_symbols = 8,
 }
 
 M.opts = nil ---@type utils.lsp.breadcrumbs.Opts?

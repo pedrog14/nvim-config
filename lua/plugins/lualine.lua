@@ -2,16 +2,6 @@ return {
   "nvim-lualine/lualine.nvim",
   dependencies = "nvim-mini/mini.icons",
   event = "VeryLazy",
-  init = function()
-    vim.g.lualine_laststatus = vim.o.laststatus
-    if vim.fn.argc(-1) > 0 then
-      -- set an empty statusline till lualine loads
-      vim.api.nvim_set_option_value("statusline", " ", {})
-    else
-      -- hide the statusline on the starter page
-      vim.api.nvim_set_option_value("laststatus", 0, {})
-    end
-  end,
   opts = function()
     local lualine_require = require("lualine_require")
     lualine_require.require = require

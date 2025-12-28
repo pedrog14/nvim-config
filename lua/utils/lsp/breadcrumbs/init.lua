@@ -56,18 +56,15 @@ local breadcrumbs_str = function(res, row, col)
   end
 
   local sep = vim.tbl_get(config, "opts", "icons", "separator") ---@type string
-  local max_size = vim.api.nvim_get_option_value("co", {}) - 94 ---@type integer TODO: Better way to calculate free space in statusline
+  local max_symbols = #path - vim.tbl_get(config, "opts", "max_symbols")
   local ret = ""
 
   for i = #path, 1, -1 do
-    local sym = path[i]
-    local temp = i == #path and sym or ("%s %s %s"):format(sym, sep, ret)
-
-    if #temp < max_size then
-      ret = temp
+    if i ~= max_symbols then
+      ret = i == #path and path[i] or ("%s %s %s"):format(path[i], sep, ret)
     else
-      sym = vim.tbl_get(config, "opts", "icons", "ellipsis") ---@type string
-      ret = i == #path and sym or ("%s %s %s"):format(sym, sep, ret)
+      local ellipsis = vim.tbl_get(config, "opts", "icons", "ellipsis") ---@type string
+      ret = i == #path and ellipsis or ("%s %s %s"):format(ellipsis, sep, ret)
       break
     end
   end
@@ -122,7 +119,7 @@ local on_attach = vim.schedule_wrap(function(args)
 
     _, req = client:request("textDocument/documentSymbol", params, function(err, res)
       if err or not res then
-        if req_limit ~= 0 then
+        if req_limit > 0 then
           vim.defer_fn(function()
             update_result(req_limit - 1)
           end, 33)
@@ -145,7 +142,7 @@ local on_attach = vim.schedule_wrap(function(args)
   update_result()
   update_str()
 
-  vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged", "FileChangedShellPost", "InsertLeave" }, {
+  vim.api.nvim_create_autocmd({ "BufModifiedSet", "FileChangedShellPost", "TextChanged", "InsertLeave" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()
@@ -153,7 +150,7 @@ local on_attach = vim.schedule_wrap(function(args)
     end,
   })
 
-  vim.api.nvim_create_autocmd({ "WinResized", "CursorMoved" }, {
+  vim.api.nvim_create_autocmd({ "CursorMoved", "WinResized" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()

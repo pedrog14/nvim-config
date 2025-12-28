@@ -29,17 +29,11 @@ return {
         max_height = vim.api.nvim_get_option_value("pumheight", {}),
       },
     },
-    keymap = {
-      preset = "default",
-      ["<c-n>"] = { "select_next", "show", "fallback_to_mappings" },
-    },
+    keymap = { preset = "default" },
     cmdline = {
       enabled = true,
       keymap = {
         preset = "cmdline",
-        ["<c-n>"] = { "select_next", "show", "fallback" },
-        ["<c-p>"] = { "select_prev", "fallback" },
-
         ["<tab>"] = { "select_next", "show" },
         ["<s-tab>"] = { "select_prev", "show" },
       },
