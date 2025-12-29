@@ -28,10 +28,7 @@ end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_attach = vim.schedule_wrap(function(args)
-  local bufnr = vim._resolve_bufnr(args.buf)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
+  local bufnr = args.buf
 
   local client_id = vim.tbl_get(args, "data", "client_id")
   if not client_id then
@@ -43,7 +40,7 @@ local on_attach = vim.schedule_wrap(function(args)
     return
   end
 
-  local ft = vim.api.nvim_get_option_value("ft", { buf = bufnr })
+  local ft = vim.bo[bufnr].ft
 
   check_enabled("codelens", {
     client = client,
@@ -53,7 +50,7 @@ local on_attach = vim.schedule_wrap(function(args)
     callback = function(data)
       vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
         group = augroup,
-        buffer = bufnr,
+        buffer = data.bufnr,
         callback = function()
           vim.lsp.codelens.refresh({ bufnr = data.bufnr })
         end,
@@ -67,10 +64,10 @@ local on_attach = vim.schedule_wrap(function(args)
     ft = ft,
     bufnr = bufnr,
     callback = function()
-      local win = vim.api.nvim_get_current_win()
+      local winnr = vim.api.nvim_get_current_win()
 
-      vim.api.nvim_set_option_value("foldmethod", "expr", { win = win })
-      vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.lsp.foldexpr()", { win = win })
+      vim.wo[winnr].foldmethod = "expr"
+      vim.wo[winnr].foldexpr = "v:lua.vim.lsp.foldexpr()"
     end,
   })
 
@@ -101,12 +98,7 @@ end)
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_detach = vim.schedule_wrap(function(args)
-  local bufnr = vim._resolve_bufnr(args.buf)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
-
-  vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+  vim.api.nvim_clear_autocmds({ group = augroup, buffer = args.buf })
 end)
 
 M.config = {

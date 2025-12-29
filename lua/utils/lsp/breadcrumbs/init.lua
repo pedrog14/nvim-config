@@ -74,15 +74,7 @@ end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_attach = vim.schedule_wrap(function(args)
-  local bufnr = vim._resolve_bufnr(args.buf)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
-
-  local winnr = vim.api.nvim_get_current_win()
-  if not vim.api.nvim_win_is_valid(winnr) then
-    return
-  end
+  local bufnr, winnr = args.buf, vim.api.nvim_get_current_win()
 
   local client_id = vim.tbl_get(args, "data", "client_id")
   if not client_id then
@@ -162,21 +154,14 @@ local on_attach = vim.schedule_wrap(function(args)
     group = augroup,
     buffer = bufnr,
     callback = function()
-      local win = vim.api.nvim_get_current_win()
-
-      if vim.api.nvim_win_is_valid(win) then
-        winnr = win -- Updating current buffer window
-      end
+      winnr = vim.api.nvim_get_current_win() -- Updating current buffer window
     end,
   })
 end)
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_detach = vim.schedule_wrap(function(args)
-  local bufnr = vim._resolve_bufnr(args.buf)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
+  local bufnr = args.buf
 
   result[bufnr] = nil
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
@@ -195,12 +180,10 @@ M.setup = function(opts)
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
     group = setup_augroup,
     callback = function(args)
-      local bufnr = vim._resolve_bufnr(args.buf)
-      local winnr = vim.api.nvim_get_current_win()
+      local bufnr, winnr = args.buf, vim.api.nvim_get_current_win()
 
       if
-        not (vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_win_is_valid(winnr))
-        or vim.api.nvim_get_option_value("ft", { buf = bufnr }) == "help"
+        vim.bo[bufnr].ft == "help"
         or vim.fn.win_gettype(winnr) ~= ""
         or vim.tbl_isempty(vim.lsp.get_clients({
           bufnr = bufnr,

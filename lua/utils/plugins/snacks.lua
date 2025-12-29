@@ -14,10 +14,10 @@ local snacks = require("snacks")
 ---@return fun(bufnr: integer): boolean
 local gen_filter = function(filetype)
   return function(bufnr)
-    return not vim.tbl_contains(filetype, vim.api.nvim_get_option_value("filetype", { buf = bufnr }))
+    return not vim.tbl_contains(filetype, vim.bo[bufnr].filetype)
       and vim.g.snacks_indent ~= false
       and vim.b[bufnr].snacks_indent ~= false
-      and vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == ""
+      and vim.bo[bufnr].buftype == ""
   end
 end
 

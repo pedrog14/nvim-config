@@ -26,7 +26,7 @@ require("core.options").set({
     scrolloff = 4,
     shiftround = true,
     shiftwidth = 2,
-    shortmess = vim.api.nvim_get_option_value("shortmess", {}) .. "cCIW",
+    shortmess = vim.o.shortmess .. "cIW",
     showmode = false,
     sidescrolloff = 8,
     signcolumn = "yes",

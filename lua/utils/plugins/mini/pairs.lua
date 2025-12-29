@@ -1,29 +1,25 @@
 local M = {}
-local mini_pairs = require("mini.pairs")
 
 M.setup = function(opts)
   opts = opts or {}
-  mini_pairs.setup(opts)
+  require("mini.pairs").setup(opts)
 
   local open = MiniPairs.open
 
   MiniPairs.open = function(pair, neigh_pattern) --[[@diagnostic disable-line: duplicate-set-field]]
+    local bufnr, winnr = vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win()
+
     if vim.fn.getcmdline() ~= "" then
       return open(pair, neigh_pattern)
     end
 
     local o, c = pair:sub(1, 1), pair:sub(2, 2)
     local line = vim.api.nvim_get_current_line()
-    local cursor = vim.api.nvim_win_get_cursor(0)
+    local cursor = vim.api.nvim_win_get_cursor(winnr)
     local next = line:sub(cursor[2] + 1, cursor[2] + 1)
     local before = line:sub(1, cursor[2])
 
-    if
-      opts.markdown
-      and o == "`"
-      and vim.api.nvim_get_option_value("ft", { buf = 0 }) == "markdown"
-      and before:match("^%s*``")
-    then
+    if opts.markdown and o == "`" and vim.bo[bufnr].ft == "markdown" and before:match("^%s*``") then
       return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
     end
 

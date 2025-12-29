@@ -25,7 +25,7 @@ end
 ---@param bufnr integer
 ---@param ft    string?
 local on_filetype = function(bufnr, ft)
-  local lang = vim.treesitter.language.get_lang(ft or vim.api.nvim_get_option_value("ft", { buf = bufnr }))
+  local lang = vim.treesitter.language.get_lang(ft or vim.bo[bufnr].ft)
   if not lang then
     return
   end
@@ -60,13 +60,9 @@ local on_filetype = function(bufnr, ft)
           desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
           desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
 
-          if
-            not (
-              vim.api.nvim_get_option_value("diff", {
-                win = vim.api.nvim_get_current_win(),
-              }) and key:find("[cC]")
-            )
-          then
+          local winnr = vim.api.nvim_get_current_win()
+
+          if not (vim.wo[winnr].diff and key:find("[cC]")) then
             vim.keymap.set({ "n", "x", "o" }, key, function()
               require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
             end, {
@@ -100,12 +96,7 @@ M.setup = function(opts)
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("TSConfig", { clear = false }),
     callback = function(args)
-      local bufnr, ft = vim._resolve_bufnr(args.buf), args.match
-      if not vim.api.nvim_buf_is_valid(bufnr) then
-        return
-      end
-
-      on_filetype(bufnr, ft)
+      on_filetype(args.buf, args.match)
     end,
   })
 

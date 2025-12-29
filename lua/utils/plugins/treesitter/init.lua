@@ -27,11 +27,7 @@ end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_filetype = function(args)
-  local bufnr = vim._resolve_bufnr(args.buf)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
-
+  local bufnr = args.buf
   local lang = vim.treesitter.language.get_lang(args.match)
   if not lang then
     return
@@ -58,7 +54,7 @@ local on_filetype = function(args)
     bufnr = bufnr,
     default = true,
     callback = function(data)
-      vim.api.nvim_set_option_value("indentexpr", "v:lua.require('nvim-treesitter').indentexpr()", { buf = data.bufnr })
+      vim.bo[data.bufnr].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
     end,
   })
 
@@ -69,12 +65,9 @@ local on_filetype = function(args)
     default = true,
     callback = function()
       local winnr = vim.api.nvim_get_current_win()
-      if not vim.api.nvim_win_is_valid(winnr) then
-        return
-      end
 
-      vim.api.nvim_set_option_value("foldmethod", "expr", { win = winnr })
-      vim.api.nvim_set_option_value("foldexpr", "v:lua.vim.treesitter.foldexpr()", { win = winnr })
+      vim.wo[winnr].foldmethod = "expr"
+      vim.wo[winnr].foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
   })
 end

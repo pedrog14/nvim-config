@@ -26,7 +26,7 @@ return {
             },
           },
         },
-        max_height = vim.api.nvim_get_option_value("pumheight", {}),
+        max_height = vim.o.pumheight,
       },
     },
     cmdline = {

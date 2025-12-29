@@ -1,6 +1,6 @@
----@class core.Opts
----@field g table<string, any>?
----@field o table<string, any>?
+---@class OptsTable<K>: { [K]: table<string, any> }
+
+---@alias core.Opts OptsTable<"g"|"o">
 
 local M = {}
 
@@ -8,15 +8,9 @@ local M = {}
 M.set = function(opts)
   opts = opts or {}
 
-  if opts.g then
-    for name, value in pairs(opts.g) do
-      vim.api.nvim_set_var(name, value)
-    end
-  end
-
-  if opts.o then
-    for name, value in pairs(opts.o) do
-      vim.api.nvim_set_option_value(name, value, {})
+  for var, dict in pairs(opts) do
+    for name, value in pairs(dict) do
+      vim[var][name] = value
     end
   end
 end
