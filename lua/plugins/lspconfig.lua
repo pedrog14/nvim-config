@@ -15,7 +15,7 @@ return {
       "jdtls",
       "jsonls",
       "lua_ls",
-      "pylsp",
+      "pyright",
       "rust_analyzer",
       "ts_ls",
       "vimls",
