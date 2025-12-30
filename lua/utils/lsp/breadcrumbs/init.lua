@@ -18,11 +18,9 @@ local range_contains_pos = function(range, row, col)
   local start = range.start
   local stop = range["end"]
 
-  return not (
-    (row < start.line or row > stop.line)
-    or (row == start.line and col < start.character)
-    or (row == stop.line and col > stop.character)
-  )
+  return (row >= start.line and row <= stop.line)
+    and (row ~= start.line or col >= start.character)
+    and (row ~= stop.line or col <= stop.character)
 end
 
 ---@param res table
@@ -134,7 +132,7 @@ local on_attach = vim.schedule_wrap(function(args)
   update_result()
   update_str()
 
-  vim.api.nvim_create_autocmd({ "BufModifiedSet", "FileChangedShellPost", "TextChanged", "InsertLeave" }, {
+  vim.api.nvim_create_autocmd({ "BufModifiedSet", "FileChangedShellPost", "TextChanged", "ModeChanged" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()
@@ -154,7 +152,7 @@ local on_attach = vim.schedule_wrap(function(args)
     group = augroup,
     buffer = bufnr,
     callback = function()
-      winnr = vim.api.nvim_get_current_win() -- Updating current buffer window
+      winnr = vim.api.nvim_get_current_win()
     end,
   })
 end)
