@@ -42,7 +42,7 @@ require("core.options").set({
     undofile = true,
     updatetime = 200,
     virtualedit = "block",
-    wildmode = "full,longest:full",
+    wildmode = "full,longest:full,noselect",
     wildoptions = "fuzzy,pum,tagfile",
     wrap = false,
   },
@@ -81,9 +81,7 @@ require("core.lazy").set({
   },
 })
 
-require("core.commands").set({
-  colorscheme = "gruvbox",
-})
+require("core.commands").set({ colorscheme = "gruvbox" })
 
 require("core.keymaps").set({
   -- Better Up/Down (for wrapped text)
@@ -207,6 +205,20 @@ require("core.keymaps").set({
     desc = "Jumps to the definition of the type of the symbol under the cursor (Snacks.picker)",
   },
   {
+    "grd",
+    function()
+      Snacks.picker.lsp_definitions()
+    end,
+    desc = "Lists all the definitions for the symbol under the cursor (Snacks.picker)",
+  },
+  {
+    "grD",
+    function()
+      Snacks.picker.lsp_declarations()
+    end,
+    desc = "Lists all the declarations for the symbol under the cursor (Snacks.picker)",
+  },
+  {
     "gO",
     function()
       Snacks.picker.lsp_symbols()
@@ -221,19 +233,46 @@ require("core.keymaps").set({
     mode = "i",
     desc = "Displays signature information about the symbol under the cursor",
   },
+
+  -- Snippets
   {
-    "grd",
+    "<c-h>",
     function()
-      Snacks.picker.lsp_definitions()
+      if vim.snippet.active({ direction = -1 }) then
+        return "<cmd>lua vim.snippet.jump(-1)<cr>"
+      else
+        return "<c-h>"
+      end
     end,
-    desc = "Lists all the definitions for the symbol under the cursor (Snacks.picker)",
+    mode = { "i", "s" },
+    expr = true,
+    silent = true,
   },
   {
-    "grD",
+    "<c-l>",
     function()
-      Snacks.picker.lsp_declarations()
+      if vim.snippet.active({ direction = 1 }) then
+        return "<cmd>lua vim.snippet.jump(1)<cr>"
+      else
+        return "<c-l>"
+      end
     end,
-    desc = "Lists all the declarations for the symbol under the cursor (Snacks.picker)",
+    mode = { "i", "s" },
+    expr = true,
+    silent = true,
+  },
+  {
+    "<c-e>",
+    function()
+      if vim.snippet.active() then
+        return "<cmd>lua vim.snippet.stop()<cr>"
+      else
+        return "<c-e>"
+      end
+    end,
+    mode = { "i", "s" },
+    expr = true,
+    silent = true,
   },
 })
 

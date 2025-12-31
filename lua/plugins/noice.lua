@@ -20,7 +20,7 @@ return {
         ["vim.lsp.util.stylize_markdown"] = true,
       },
     },
-    popupmenu = { kind_icons = false },
+    popupmenu = { enabled = false, kind_icons = false },
     presets = {
       bottom_search = true,
       command_palette = true,

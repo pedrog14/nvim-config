@@ -162,6 +162,11 @@ local on_detach = vim.schedule_wrap(function(args)
   local bufnr = args.buf
 
   result[bufnr] = nil
+
+  if not vim.api.nvim_buf_is_valid(bufnr) then
+    return
+  end
+
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 

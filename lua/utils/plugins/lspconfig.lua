@@ -3,8 +3,8 @@
 ---@class utils.lspconfig.check_enabled.callback.Data
 ---@field client vim.lsp.Client
 ---@field method vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
----@field ft     string
 ---@field bufnr  integer
+---@field ft     string
 
 ---@class utils.lspconfig.check_enabled.Data: utils.lspconfig.check_enabled.callback.Data
 ---@field callback fun(data: utils.lspconfig.check_enabled.callback.Data)
@@ -45,8 +45,8 @@ local on_attach = vim.schedule_wrap(function(args)
   check_enabled("codelens", {
     client = client,
     method = "textDocument/codeLens",
-    ft = ft,
     bufnr = bufnr,
+    ft = ft,
     callback = function(data)
       vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
         group = augroup,
@@ -61,8 +61,8 @@ local on_attach = vim.schedule_wrap(function(args)
   check_enabled("fold", {
     client = client,
     method = "textDocument/foldingRange",
-    ft = ft,
     bufnr = bufnr,
+    ft = ft,
     callback = function()
       local winnr = vim.api.nvim_get_current_win()
 
@@ -74,8 +74,8 @@ local on_attach = vim.schedule_wrap(function(args)
   check_enabled("inlay_hint", {
     client = client,
     method = "textDocument/inlayHint",
-    ft = ft,
     bufnr = bufnr,
+    ft = ft,
     callback = function(data)
       vim.lsp.inlay_hint.enable(true, { bufnr = data.bufnr })
     end,
@@ -84,8 +84,8 @@ local on_attach = vim.schedule_wrap(function(args)
   check_enabled("semantic_tokens", {
     client = client,
     method = "textDocument/semanticTokens",
-    ft = ft,
     bufnr = bufnr,
+    ft = ft,
     callback = function(data)
       vim.lsp.semantic_tokens.enable(true, { bufnr = data.bufnr })
     end,
@@ -98,6 +98,10 @@ end)
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_detach = vim.schedule_wrap(function(args)
+  if not vim.api.nvim_buf_is_valid(args.buf) then
+    return
+  end
+
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = args.buf })
 end)
 

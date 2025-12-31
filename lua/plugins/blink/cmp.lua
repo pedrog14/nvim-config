@@ -1,12 +1,11 @@
 return {
   "saghen/blink.cmp",
-  dependencies = { "nvim-mini/mini.icons", "nvim-mini/mini.snippets" },
+  dependencies = { "nvim-mini/mini.icons", "rafamadriz/friendly-snippets" },
   build = "cargo build --release",
   event = { "InsertEnter", "CmdlineEnter" },
   ---@module "blink.cmp"
   ---@type blink.cmp.Config
   opts = {
-    snippets = { preset = "mini_snippets" },
     completion = {
       accept = { auto_brackets = { enabled = true } },
       documentation = { auto_show = true, auto_show_delay_ms = 200 },
