@@ -9,10 +9,11 @@
 ---@field data utils.pack.DataResolved
 
 ---@class utils.pack.Data
----@field module string?
----@field opts   (table|fun(): table)?
----@field config fun(opts: table?)?
----@field lazy   utils.pack.Lazy?
+---@field priority integer?
+---@field module   string?
+---@field opts     (table|fun(): table)?
+---@field config   fun(opts: table?)?
+---@field lazy     utils.pack.Lazy?
 
 ---@class utils.pack.DataResolved: utils.pack.Data
 ---@field module string
@@ -22,8 +23,6 @@
 ---@class utils.pack.Lazy
 ---@field cmd   (string|string[])?
 ---@field event (vim.api.keyset.events|vim.api.keyset.events[])?
-
-local M = {}
 
 ---@param spec_path string
 ---@return table
@@ -43,7 +42,9 @@ local require_spec = function(spec_path)
   return spec
 end
 
-M.spec = nil ---@type utils.pack.Spec[]?
+local M = {}
+
+M.packages = nil ---@type table<string, vim.pack.PlugData>
 
 ---@param path string|string[]
 ---@return table
@@ -78,7 +79,7 @@ M.setup = function(pack_opts)
     return
   end
 
-  M.spec = vim.tbl_map(function(spec) ---@param spec vim.pack.Spec|utils.pack.Data
+  local spec = vim.tbl_map(function(spec) ---@param spec vim.pack.Spec|utils.pack.Data
     ---@type utils.pack.Spec
     -- stylua: ignore
     return {
@@ -86,22 +87,32 @@ M.setup = function(pack_opts)
       name    = spec.name,
       version = spec.version,
       data = {
-        lazy   = spec.lazy,
-        module = spec.module,
-        config = spec.config,
-        opts   = spec.opts,
+        priority = spec.priority,
+        module   = spec.module,
+        config   = spec.config,
+        opts     = spec.opts,
+        lazy     = spec.lazy,
       },
     }
   end, M.get_spec(path))
+
+  local default_priority = 100
+
+  table.sort(spec, function(a, b)
+    local priority_a = a.data.priority or default_priority
+    local priority_b = b.data.priority or default_priority
+
+    return priority_a > priority_b
+  end)
 
   local confirm = pack_opts.confirm or true
 
   local load = pack_opts.load
     or function(plug_data) ---@param plug_data { spec: utils.pack.SpecResolved, path: string }
-      local spec = plug_data.spec
-      local data = spec.data
+      local plug_spec = plug_data.spec
+      local data = plug_spec.data
 
-      data.module = data.module or spec.name:gsub("%.nvim$", "")
+      data.module = data.module or plug_spec.name:gsub("%.nvim$", "")
       data.opts = type(data.opts) == "function" and data.opts() or data.opts
       data.config = data.config
         or function(opts) ---@param opts table?
@@ -110,14 +121,52 @@ M.setup = function(pack_opts)
 
       if data.lazy then
         for key, value in pairs(data.lazy) do
-          require("utils.pack.lazy." .. key).load(value, spec)
+          require("utils.pack.lazy." .. key).load(value, plug_spec)
         end
       else
-        M.load(spec)
+        M.load(plug_spec)
       end
     end
 
-  vim.pack.add(M.spec, { confirm = confirm, load = load })
+  vim.pack.add(spec, { confirm = confirm, load = load })
+
+  M.packages = {}
+
+  for _, pack in ipairs(vim.pack.get()) do
+    local name = pack.spec.name
+
+    M.packages[name] = pack
+  end
+
+  vim.api.nvim_create_user_command("Pack", function(cmd_args)
+    local args = cmd_args.fargs
+    local option = table.remove(args, 1)
+
+    local specs = {}
+
+    for name, pack in pairs(M.packages) do
+      specs[#specs + 1] = vim.tbl_contains(args, name) and pack.spec
+    end
+
+    if option == "load" then
+      for _, value in ipairs(specs) do
+        M.load(value)
+      end
+    elseif option == "update" then
+      vim.pack.update(#args > 0 and args or nil)
+    end
+  end, {
+    nargs = "+",
+    complete = function(_, cmdline)
+      local cmd_args = vim.split(cmdline, " ", { trimempty = true })
+
+      if #cmd_args == 1 then
+        return { "load", "update" }
+      elseif #cmd_args == 2 then
+        return vim.tbl_keys(M.packages)
+      end
+    end,
+  })
 end
 
 return M
