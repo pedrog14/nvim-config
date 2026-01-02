@@ -5,7 +5,6 @@ require("core.options").set({
     maplocalleader = "\\",
   },
   o = {
-    clipboard = "unnamedplus",
     completeopt = "fuzzy,menuone,noselect",
     confirm = true,
     cursorline = true,
@@ -151,10 +150,10 @@ require("core.keymaps").set({
   { "<s-l>", "<cmd>bnext<cr>", desc = "Go to Next Buffer" },
 
   -- Better Window control
-  { "<c-h>", "<c-w>h", desc = "Go to Left Window", remap = true },
-  { "<c-j>", "<c-w>j", desc = "Go to Lower Window", remap = true },
-  { "<c-k>", "<c-w>k", desc = "Go to Upper Window", remap = true },
-  { "<c-l>", "<c-w>l", desc = "Go to Right Window", remap = true },
+  { "<c-h>", "<c-w>h", desc = "Go to Left Window" },
+  { "<c-j>", "<c-w>j", desc = "Go to Lower Window" },
+  { "<c-k>", "<c-w>k", desc = "Go to Upper Window" },
+  { "<c-l>", "<c-w>l", desc = "Go to Right Window" },
 
   { "<c-w>X", "<cmd>bdel<cr>", desc = "Delete Buffer + Window" },
 
@@ -274,9 +273,27 @@ require("core.keymaps").set({
     expr = true,
     silent = true,
   },
+  {
+    "<esc>",
+    function()
+      if vim.snippet.active() then
+        vim.snippet.stop()
+      end
+      return "<esc>"
+    end,
+    mode = { "i", "s" },
+    expr = true,
+    silent = true,
+  },
 })
 
 require("core.autocmds").set({
+  {
+    event = "UIEnter",
+    callback = function()
+      vim.o.clipboard = "unnamedplus"
+    end,
+  },
   {
     event = "TextYankPost",
     callback = function()
