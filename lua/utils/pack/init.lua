@@ -84,7 +84,7 @@ M.setup = function(pack_opts)
     -- stylua: ignore
     return {
       src     = spec.src,
-      name    = spec.name,
+      name    = spec.name or spec.src:gsub("%.git$", ""):match("([^/]+)$"),
       version = spec.version,
       data = {
         priority = spec.priority,

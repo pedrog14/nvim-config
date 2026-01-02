@@ -160,7 +160,6 @@ return {
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
-      -- scope = { enabled = true },
 
       -- Dashboard
       dashboard = {
@@ -216,7 +215,7 @@ return {
               end,
             },
             {
-              icon = "󰏓",
+              icon = "󰏖",
               desc = "Mason",
               key = "m",
               action = function()
@@ -224,7 +223,7 @@ return {
               end,
             },
             {
-              icon = "󰈆",
+              icon = "󰿅",
               desc = "Exit Neovim",
               key = "q",
               action = ":quitall",
