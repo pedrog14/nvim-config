@@ -21,8 +21,8 @@ return {
       callback = function(args)
         local bufnr = args.buf
 
-        vim.b[bufnr].miniindentscope_disable = vim.tbl_contains(filter.filetype, vim.bo[bufnr].ft)
-          or vim.tbl_contains(filter.buftype, vim.bo[bufnr].bt)
+        vim.b[bufnr].miniindentscope_disable = vim.tbl_contains(filter.filetype, vim.bo[bufnr].filetype)
+          or vim.tbl_contains(filter.buftype, vim.bo[bufnr].buftype)
       end,
     })
 

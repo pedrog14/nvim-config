@@ -19,6 +19,7 @@ local check_enabled = function(field, data)
   ---@type utils.treesitter.EnabledOpts
   local option = vim.tbl_get(M.config, "opts", field) or {}
   local exclude = option.exclude or {}
+
   return option.enabled
     and not vim.tbl_contains(exclude, data.lang)
     and utils.get_query(data.lang, data.query)
@@ -64,10 +65,10 @@ local on_filetype = function(args)
     bufnr = bufnr,
     default = true,
     callback = function()
-      local winnr = vim.api.nvim_get_current_win()
+      local winid = vim.api.nvim_get_current_win()
 
-      vim.wo[winnr].foldmethod = "expr"
-      vim.wo[winnr].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      vim.wo[winid].foldmethod = "expr"
+      vim.wo[winid].foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
   })
 end
@@ -76,10 +77,13 @@ M.config = {
   ---@class utils.treesitter.Opts: TSConfig
   ---@field install_dir      string?
   ---@field ensure_installed string[]?
-  ---@field fold             utils.treesitter.EnabledOpts?
-  ---@field highlight        utils.treesitter.EnabledOpts?
-  ---@field indent           utils.treesitter.EnabledOpts?
+  ---
+  ---@field fold      utils.treesitter.EnabledOpts?
+  ---@field highlight utils.treesitter.EnabledOpts?
+  ---@field indent    utils.treesitter.EnabledOpts?
   default = {
+    ensure_installed = {},
+
     fold = { enabled = true },
     highlight = { enabled = true },
     indent = { enabled = true },
@@ -95,17 +99,15 @@ M.setup = function(opts)
   treesitter.setup(M.config.opts)
   utils.get_installed(nil, { update = true })
 
-  local ensure_installed = vim.tbl_get(M.config, "opts", "ensure_installed")
-  if ensure_installed then
-    local install = vim.tbl_filter(function(lang)
-      return not utils.get_installed(lang)
-    end, ensure_installed)
+  local ensure_installed = M.config.opts.ensure_installed ---@type string[]
+  local install = vim.tbl_filter(function(lang)
+    return not utils.get_installed(lang)
+  end, ensure_installed)
 
-    if #install > 0 then
-      treesitter.install(install, { summary = true }):await(function()
-        utils.get_installed(nil, { update = true })
-      end)
-    end
+  if #install > 0 then
+    treesitter.install(install, { summary = true }):await(function()
+      utils.get_installed(nil, { update = true })
+    end)
   end
 
   local augroup = vim.api.nvim_create_augroup("_setupTSConfig", { clear = true })

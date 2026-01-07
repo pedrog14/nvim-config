@@ -1,15 +1,13 @@
 local M = {}
 
----@class utils.lsp.breadcrumbs.Opts
+---@class utils.lsp.completion.Opts
 M.default = {
   icons = {
     symbols = require("utils.icons").lsp.symbols,
-    separator = "",
     ellipsis = "…",
   },
-  max_symbols = 6,
 }
 
-M.opts = nil ---@type utils.lsp.breadcrumbs.Opts?
+M.opts = nil ---@type utils.lsp.completion.Opts?
 
 return M

@@ -41,16 +41,13 @@ M.setup = function(opts)
       lazygit --[[@as function]]()
     end
   end, {
-    nargs = "*",
+    nargs = "?",
     desc = "Open LazyGit",
-    complete = function()
-      local completion = {}
-      for key, _ in pairs(lazygit) do
-        if not (key == "health" or key == "meta") then
-          completion[#completion + 1] = key
-        end
-      end
-      return completion
+    complete = function(_, cmdline)
+      return #vim.split(cmdline, " ", { trimempty = true }) == 1
+        and vim.tbl_filter(function(value)
+          return value ~= "health" and value ~= "meta"
+        end, vim.tbl_keys(lazygit))
     end,
   })
 end

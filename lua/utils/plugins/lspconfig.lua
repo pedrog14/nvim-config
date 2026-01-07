@@ -20,6 +20,7 @@ local check_enabled = function(field, data)
   ---@type utils.lspconfig.EnabledOpts
   local option = vim.tbl_get(M.config, "opts", field) or {}
   local exclude = option.exclude or {}
+
   return option.enabled
     and not vim.tbl_contains(exclude, data.ft)
     and data.client:supports_method(data.method, data.bufnr)
@@ -40,7 +41,7 @@ local on_attach = vim.schedule_wrap(function(args)
     return
   end
 
-  local ft = vim.bo[bufnr].ft
+  local ft = vim.bo[bufnr].filetype
 
   check_enabled("codelens", {
     client = client,
@@ -64,10 +65,10 @@ local on_attach = vim.schedule_wrap(function(args)
     bufnr = bufnr,
     ft = ft,
     callback = function()
-      local winnr = vim.api.nvim_get_current_win()
+      local winid = vim.api.nvim_get_current_win()
 
-      vim.wo[winnr].foldmethod = "expr"
-      vim.wo[winnr].foldexpr = "v:lua.vim.lsp.foldexpr()"
+      vim.wo[winid].foldmethod = "expr"
+      vim.wo[winid].foldexpr = "v:lua.vim.lsp.foldexpr()"
     end,
   })
 
@@ -107,13 +108,17 @@ end)
 
 M.config = {
   ---@class utils.lspconfig.Opts: MasonLspconfigSettings
-  ---@field diagnostic      vim.diagnostic.Opts?
-  ---@field servers         table<string, vim.lsp.Config>?
+  ---@field diagnostic vim.diagnostic.Opts?
+  ---@field servers    table<string, vim.lsp.Config>?
+  ---
   ---@field codelens        utils.lspconfig.EnabledOpts?
   ---@field fold            utils.lspconfig.EnabledOpts?
   ---@field inlay_hint      utils.lspconfig.EnabledOpts?
   ---@field semantic_tokens utils.lspconfig.EnabledOpts?
   default = {
+    diagnostic = {},
+    servers = {},
+
     codelens = { enabled = false },
     fold = { enabled = false },
     inlay_hint = { enabled = false },
@@ -130,16 +135,10 @@ M.setup = function(opts)
 
   local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
 
-  local diagnostic = vim.tbl_get(M.config, "opts", "diagnostic")
-  if diagnostic then
-    vim.diagnostic.config(diagnostic)
-  end
+  vim.diagnostic.config(M.config.opts.diagnostic)
 
-  local servers = vim.tbl_get(M.config, "opts", "servers")
-  if servers then
-    for lang, content in pairs(servers) do
-      vim.lsp.config(lang, content)
-    end
+  for lang, content in pairs(M.config.opts.servers) do
+    vim.lsp.config(lang, content)
   end
 
   mason_lspconfig.setup(M.config.opts)

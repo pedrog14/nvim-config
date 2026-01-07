@@ -72,7 +72,7 @@ end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_attach = vim.schedule_wrap(function(args)
-  local bufnr, winnr = args.buf, vim.api.nvim_get_current_win()
+  local bufnr, winid = args.buf, vim.api.nvim_get_current_win()
 
   local client_id = vim.tbl_get(args, "data", "client_id")
   if not client_id then
@@ -123,7 +123,7 @@ local on_attach = vim.schedule_wrap(function(args)
   end
 
   local update_str = function()
-    local cursor = vim.api.nvim_win_get_cursor(winnr)
+    local cursor = vim.api.nvim_win_get_cursor(winid)
     local row, col = cursor[1] - 1, cursor[2]
 
     breadcrumbs = breadcrumbs_str(result[bufnr], row, col)
@@ -132,7 +132,7 @@ local on_attach = vim.schedule_wrap(function(args)
   update_result()
   update_str()
 
-  vim.api.nvim_create_autocmd({ "BufModifiedSet", "FileChangedShellPost", "TextChanged", "ModeChanged" }, {
+  vim.api.nvim_create_autocmd({ "BufModifiedSet", "FileChangedShellPost", "InsertChange", "TextChanged" }, {
     group = augroup,
     buffer = bufnr,
     callback = function()
@@ -152,7 +152,7 @@ local on_attach = vim.schedule_wrap(function(args)
     group = augroup,
     buffer = bufnr,
     callback = function()
-      winnr = vim.api.nvim_get_current_win()
+      winid = vim.api.nvim_get_current_win()
     end,
   })
 end)

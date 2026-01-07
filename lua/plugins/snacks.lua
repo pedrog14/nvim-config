@@ -263,6 +263,15 @@ return {
 
       -- Picker
       picker = {
+        sources = {
+          explorer = {
+            win = {
+              input = { wo = { winblend = 0 } },
+              list = { wo = { winblend = 0 } },
+              preview = { wo = { winblend = 0 } },
+            },
+          },
+        },
         icons = {
           diagnostics = {
             Error = signs[1],
@@ -276,7 +285,7 @@ return {
 
       -- Styles
       styles = {
-        notification = { wo = { wrap = true, winblend = 0 } },
+        notification = { wo = { wrap = true, winblend = vim.o.winblend } },
         lazygit = { border = "rounded" },
         input = {
           keys = {

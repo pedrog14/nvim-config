@@ -5,7 +5,7 @@ require("core.options").set({
     maplocalleader = "\\",
   },
   o = {
-    completeopt = "fuzzy,menuone,noselect",
+    completeopt = "fuzzy,menuone,noselect,popup",
     confirm = true,
     cursorline = true,
     expandtab = true,
@@ -273,6 +273,7 @@ require("core.keymaps").set({
     expr = true,
     silent = true,
   },
+  -- Stop active snippet before exiting Insert mode
   {
     "<esc>",
     function()
