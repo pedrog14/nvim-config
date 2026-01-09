@@ -48,6 +48,5 @@ return {
     codelens = { enabled = true },
     inlay_hint = { enabled = true },
     fold = { enabled = true },
-    document_highlight = { enabled = true },
   },
 }

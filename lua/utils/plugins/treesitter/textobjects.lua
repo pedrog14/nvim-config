@@ -40,10 +40,12 @@ local on_filetype = function(bufnr, ft)
     lang = lang,
     query = "textobjects",
     bufnr = bufnr,
-    default = false,
     callback = function(data)
       ---@type table<string, table<string, string>>
-      local moves = vim.tbl_get(M.config, "opts", "move", "keys") or {}
+      local moves = vim.tbl_get(M.config, "opts", "move", "keys")
+      if not moves then
+        return
+      end
 
       for method, keymaps in pairs(moves) do
         for key, query in pairs(keymaps) do
@@ -61,11 +63,11 @@ local on_filetype = function(bufnr, ft)
           desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
           desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
 
-          local winnr = vim.api.nvim_get_current_win()
+          local winid = vim.api.nvim_get_current_win()
 
-          if not (vim.wo[winnr].diff and key:find("[cC]")) then
+          if not (vim.wo[winid].diff and key:find("[cC]")) then
             vim.keymap.set({ "n", "x", "o" }, key, function()
-              require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
+              require("nvim-treesitter-textobjects.move")[method](query, data.query)
             end, {
               buffer = data.bufnr,
               desc = desc,

@@ -99,11 +99,12 @@ end)
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_detach = vim.schedule_wrap(function(args)
-  if not vim.api.nvim_buf_is_valid(args.buf) then
+  local bufnr = args.buf
+  if not vim.api.nvim_buf_is_valid(bufnr) then
     return
   end
 
-  vim.api.nvim_clear_autocmds({ group = augroup, buffer = args.buf })
+  vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 
 M.config = {
@@ -116,9 +117,6 @@ M.config = {
   ---@field inlay_hint      utils.lspconfig.EnabledOpts?
   ---@field semantic_tokens utils.lspconfig.EnabledOpts?
   default = {
-    diagnostic = {},
-    servers = {},
-
     codelens = { enabled = false },
     fold = { enabled = false },
     inlay_hint = { enabled = false },
@@ -131,17 +129,23 @@ M.config = {
 ---@param opts utils.lspconfig.Opts?
 M.setup = function(opts)
   M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts or {})
-  augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
 
-  local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
+  local diagnostic = vim.tbl_get(M.config, "opts", "diagnostic")
+  if diagnostic then
+    vim.diagnostic.config(diagnostic)
+  end
 
-  vim.diagnostic.config(M.config.opts.diagnostic)
-
-  for lang, content in pairs(M.config.opts.servers) do
-    vim.lsp.config(lang, content)
+  local servers = vim.tbl_get(M.config, "opts", "servers")
+  if servers then
+    for lang, content in pairs(servers) do
+      vim.lsp.config(lang, content)
+    end
   end
 
   mason_lspconfig.setup(M.config.opts)
+  augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
+
+  local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })

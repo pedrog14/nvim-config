@@ -28,8 +28,7 @@ end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_filetype = function(args)
-  local bufnr = args.buf
-  local lang = vim.treesitter.language.get_lang(args.match)
+  local bufnr, lang = args.buf, vim.treesitter.language.get_lang(args.match)
   if not lang then
     return
   end
@@ -43,7 +42,6 @@ local on_filetype = function(args)
     lang = lang,
     query = "highlights",
     bufnr = bufnr,
-    default = true,
     callback = function(data)
       vim.treesitter.start(data.bufnr, data.lang)
     end,
@@ -53,7 +51,6 @@ local on_filetype = function(args)
     lang = lang,
     query = "indents",
     bufnr = bufnr,
-    default = true,
     callback = function(data)
       vim.bo[data.bufnr].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
     end,
@@ -63,7 +60,6 @@ local on_filetype = function(args)
     lang = lang,
     query = "folds",
     bufnr = bufnr,
-    default = true,
     callback = function()
       local winid = vim.api.nvim_get_current_win()
 
@@ -82,8 +78,6 @@ M.config = {
   ---@field highlight utils.treesitter.EnabledOpts?
   ---@field indent    utils.treesitter.EnabledOpts?
   default = {
-    ensure_installed = {},
-
     fold = { enabled = true },
     highlight = { enabled = true },
     indent = { enabled = true },
@@ -99,20 +93,23 @@ M.setup = function(opts)
   treesitter.setup(M.config.opts)
   utils.get_installed(nil, { update = true })
 
-  local ensure_installed = M.config.opts.ensure_installed ---@type string[]
-  local install = vim.tbl_filter(function(lang)
-    return not utils.get_installed(lang)
-  end, ensure_installed)
+  ---@type string[]?
+  local ensure_installed = vim.tbl_get(M.config, "opts", "ensure_installed")
+  if ensure_installed then
+    local install = vim.tbl_filter(function(lang)
+      return not utils.get_installed(lang)
+    end, ensure_installed)
 
-  if #install > 0 then
-    treesitter.install(install, { summary = true }):await(function()
-      utils.get_installed(nil, { update = true })
-    end)
+    if #install > 0 then
+      treesitter.install(install, { summary = true }):await(function()
+        utils.get_installed(nil, { update = true })
+      end)
+    end
   end
 
-  local augroup = vim.api.nvim_create_augroup("_setupTSConfig", { clear = true })
+  local setup_augroup = vim.api.nvim_create_augroup("_setupTSConfig", { clear = true })
 
-  vim.api.nvim_create_autocmd("FileType", { group = augroup, callback = on_filetype })
+  vim.api.nvim_create_autocmd("FileType", { group = setup_augroup, callback = on_filetype })
 
   local cmd_args = vim.api.nvim_get_commands({})
   local tsinstall_args = vim.tbl_get(cmd_args, "TSInstall")
@@ -124,14 +121,14 @@ M.setup = function(opts)
   vim.api.nvim_create_user_command("TSInstall", function(args)
     treesitter.install(args.fargs, { force = args.bang, summary = true }):await(function()
       utils.get_installed(nil, { update = true })
-      vim.api.nvim_exec_autocmds("FileType", { group = augroup, pattern = args.fargs })
+      vim.api.nvim_exec_autocmds("FileType", { group = setup_augroup, pattern = args.fargs })
     end)
   end, {
-    nargs = tsinstall_args.nargs,
     bang = tsinstall_args.bang,
     bar = tsinstall_args.bar,
     complete = tsinstall_args.complete,
     desc = tsinstall_args.definition,
+    nargs = tsinstall_args.nargs,
   })
 
   vim.api.nvim_create_user_command("TSUninstall", function(args)
@@ -139,10 +136,10 @@ M.setup = function(opts)
       utils.get_installed(nil, { update = true })
     end)
   end, {
-    nargs = tsuninstall_args.nargs,
     bar = tsuninstall_args.bar,
     complete = tsuninstall_args.complete,
     desc = tsuninstall_args.definition,
+    nargs = tsuninstall_args.nargs,
   })
 end
 
