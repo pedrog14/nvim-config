@@ -23,6 +23,7 @@ return {
       diagnostics_indicator = function(_, _, errors)
         local indicator = ""
         local signs = require("utils.icons").diagnostic.signs
+
         local icons = {
           error = signs[1],
           warning = signs[2],
@@ -31,7 +32,7 @@ return {
         }
 
         for type, number in pairs(errors) do
-          local icon = icons[type] or "󰟃 "
+          local icon = icons[type]
 
           indicator = ("%s%s%s "):format(indicator, icon, number)
         end

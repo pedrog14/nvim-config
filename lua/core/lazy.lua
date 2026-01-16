@@ -3,6 +3,10 @@ local M = {}
 ---@module "lazy"
 ---@param opts LazyConfig
 M.set = function(opts)
+  vim.diagnostic.config({
+    virtual_text = require("utils.icons").diagnostic.virtual_text,
+  })
+
   -- Bootstrap lazy.nvim
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.uv.fs_stat(lazypath) then
@@ -23,10 +27,6 @@ M.set = function(opts)
 
   vim.opt.rtp:prepend(lazypath)
   require("lazy").setup(opts)
-
-  vim.diagnostic.config({
-    virtual_text = require("utils.icons").diagnostic.virtual_text,
-  })
 end
 
 return M

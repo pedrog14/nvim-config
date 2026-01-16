@@ -107,8 +107,12 @@ local on_detach = vim.schedule_wrap(function(args)
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 
+-- stylua: ignore
 M.config = {
-  ---@class utils.lspconfig.Opts: MasonLspconfigSettings
+  ---@class utils.lspconfig.Opts
+  ---@field ensure_installed string[]?
+  ---@field automatic_enable (boolean|string[]|{ exclude: string[] })?
+  ---
   ---@field diagnostic vim.diagnostic.Opts?
   ---@field servers    table<string, vim.lsp.Config>?
   ---
@@ -117,9 +121,9 @@ M.config = {
   ---@field inlay_hint      utils.lspconfig.EnabledOpts?
   ---@field semantic_tokens utils.lspconfig.EnabledOpts?
   default = {
-    codelens = { enabled = false },
-    fold = { enabled = false },
-    inlay_hint = { enabled = false },
+    codelens        = { enabled = false },
+    fold            = { enabled = false },
+    inlay_hint      = { enabled = false },
     semantic_tokens = { enabled = true },
   },
 

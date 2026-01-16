@@ -25,8 +25,7 @@ return {
             components = {
               kind_icon = {
                 text = function(ctx)
-                  local kind_icon = symbols[ctx.kind]
-                  return kind_icon
+                  return symbols[ctx.kind]
                 end,
               },
             },

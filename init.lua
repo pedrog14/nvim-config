@@ -1,4 +1,6 @@
 -- [[ Neovim Settings ]] --
+local icons = require("utils.icons")
+
 require("core.options").set({
   g = {
     mapleader = " ",
@@ -9,7 +11,7 @@ require("core.options").set({
     confirm = true,
     cursorline = true,
     expandtab = true,
-    fillchars = "foldopen:󰅀,foldclose:󰅂",
+    fillchars = ("foldopen:%s,foldclose:%s"):format(icons.fold.open, icons.fold.close),
     foldlevel = 99,
     foldmethod = "indent",
     foldtext = "",
@@ -55,13 +57,12 @@ require("core.lazy").set({
     { import = "plugins.mini" },
     { import = "plugins.treesitter" },
   },
-  install = { colorscheme = { "gruvbox" } },
   checker = { enabled = true },
   ui = {
     backdrop = 100,
     icons = {
-      loaded = "󰱒",
-      not_loaded = "󰄱",
+      loaded = "●",
+      not_loaded = "○",
     },
   },
   performance = {

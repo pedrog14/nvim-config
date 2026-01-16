@@ -5,9 +5,7 @@ M.default = {
   icons = {
     symbols = require("utils.icons").lsp.symbols,
     separator = "",
-    ellipsis = "…",
   },
-  max_symbols = 6,
 }
 
 M.opts = nil ---@type utils.lsp.breadcrumbs.Opts?

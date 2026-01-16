@@ -1,5 +1,4 @@
 local M = {}
-local mini_icons_ok, mini_icons = pcall(require, "mini.icons")
 
 M.diagnostic = {
   signs = { "󰅙 ", "󰀨 ", "󰋼 ", "󰋗 " },
@@ -8,14 +7,27 @@ M.diagnostic = {
   },
 }
 
+M.fold = {
+  close = "",
+  open = "",
+}
+
 M.lsp = {
   ---@type string[]
   symbols = setmetatable({}, {
     __index = function(t, k)
-      if not rawget(t, k) and mini_icons_ok then
-        t[k] = mini_icons.get("lsp", k)
+      local v = rawget(t, k)
+
+      if not v then
+        local mini_icons_ok, mini_icons = pcall(require, "mini.icons")
+
+        if mini_icons_ok then
+          v = mini_icons.get("lsp", k)
+          rawset(t, k, v)
+        end
       end
-      return t[k]
+
+      return v
     end,
   }),
 }

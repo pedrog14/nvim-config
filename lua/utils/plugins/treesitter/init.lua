@@ -69,18 +69,20 @@ local on_filetype = function(args)
   })
 end
 
+-- stylua: ignore
 M.config = {
-  ---@class utils.treesitter.Opts: TSConfig
-  ---@field install_dir      string?
+  ---@class utils.treesitter.Opts
+  ---@field install_dir string?
+  ---
   ---@field ensure_installed string[]?
   ---
   ---@field fold      utils.treesitter.EnabledOpts?
   ---@field highlight utils.treesitter.EnabledOpts?
   ---@field indent    utils.treesitter.EnabledOpts?
   default = {
-    fold = { enabled = true },
+    fold      = { enabled = true },
     highlight = { enabled = true },
-    indent = { enabled = true },
+    indent    = { enabled = true },
   },
 
   opts = nil, ---@type utils.treesitter.Opts?
@@ -121,7 +123,16 @@ M.setup = function(opts)
   vim.api.nvim_create_user_command("TSInstall", function(args)
     treesitter.install(args.fargs, { force = args.bang, summary = true }):await(function()
       utils.get_installed(nil, { update = true })
-      vim.api.nvim_exec_autocmds("FileType", { group = setup_augroup, pattern = args.fargs })
+
+      local pattern = {}
+      for _, lang in ipairs(args.fargs) do
+        for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+          pattern[ft] = true
+        end
+      end
+      pattern = vim.tbl_keys(pattern)
+
+      vim.api.nvim_exec_autocmds("FileType", { group = setup_augroup, pattern = pattern })
     end)
   end, {
     bang = tsinstall_args.bang,

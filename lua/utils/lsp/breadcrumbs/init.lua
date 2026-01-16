@@ -54,20 +54,10 @@ local breadcrumbs_str = function(res, row, col)
   end
 
   local sep = vim.tbl_get(config, "opts", "icons", "separator") ---@type string
-  local max_symbols = #path - vim.tbl_get(config, "opts", "max_symbols")
-  local ret = ""
 
-  for i = #path, 1, -1 do
-    if i ~= max_symbols then
-      ret = i == #path and path[i] or ("%s %s %s"):format(path[i], sep, ret)
-    else
-      local ellipsis = vim.tbl_get(config, "opts", "icons", "ellipsis") ---@type string
-      ret = i == #path and ellipsis or ("%s %s %s"):format(ellipsis, sep, ret)
-      break
-    end
-  end
+  sep = sep ~= "" and (" %s "):format(sep) or sep
 
-  return ret
+  return table.concat(path, sep)
 end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
@@ -183,11 +173,11 @@ M.setup = function(opts)
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
     group = setup_augroup,
     callback = function(args)
-      local bufnr, winnr = args.buf, vim.api.nvim_get_current_win()
+      local bufnr, winid = args.buf, vim.api.nvim_get_current_win()
 
       if
         vim.bo[bufnr].ft == "help"
-        or vim.fn.win_gettype(winnr) ~= ""
+        or vim.fn.win_gettype(winid) ~= ""
         or vim.tbl_isempty(vim.lsp.get_clients({
           bufnr = bufnr,
           method = "textDocument/documentSymbol",

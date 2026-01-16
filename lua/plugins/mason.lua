@@ -19,9 +19,9 @@ return {
       ui = {
         backdrop = 100,
         icons = {
-          package_installed = "󰱒",
-          package_pending = "󰄱",
-          package_uninstalled = "󱋭",
+          package_installed = "●",
+          package_pending = "◌",
+          package_uninstalled = "○",
         },
       },
       ensure_installed = {

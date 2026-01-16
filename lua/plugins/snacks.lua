@@ -158,8 +158,12 @@ return {
     return {
       bigfile = { enabled = true },
       quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
       words = { enabled = true },
+
+      -- Statuscolumn
+      statuscolumn = {
+        folds = { open = true, git_hl = true },
+      },
 
       -- Dashboard
       dashboard = {
