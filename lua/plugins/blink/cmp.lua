@@ -3,12 +3,13 @@ return {
   dependencies = { "nvim-mini/mini.icons", "rafamadriz/friendly-snippets" },
   build = "cargo build --release",
   event = { "InsertEnter", "CmdlineEnter" },
-  opts = function()
+  ---@module "blink.cmp"
+  ---@param _opts blink.cmp.Config
+  opts = function(_, _opts)
     local symbols = require("utils.icons").lsp.symbols
 
-    ---@module "blink.cmp"
     ---@type blink.cmp.Config
-    return {
+    local opts = {
       completion = {
         accept = { auto_brackets = { enabled = true } },
         documentation = {
@@ -44,5 +45,7 @@ return {
         completion = { list = { selection = { preselect = false } } },
       },
     }
+
+    return vim.tbl_deep_extend("force", _opts, opts)
   end,
 }
