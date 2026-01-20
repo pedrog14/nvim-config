@@ -1,6 +1,6 @@
 ---@class utils.pack.Opts: vim.pack.keyset.add
 ---@field load (boolean|fun(plug_data: { spec: utils.pack.SpecResolved, path: string }))?
----@field path (string|string[])? Path of pack specs (`:h vim.pack.Spec`), same notation as lua modules
+---@field path (string|string[])? Path of pack specs (`|vim.pack.Spec|`), same notation as lua modules
 
 ---@class utils.pack.Spec: vim.pack.Spec
 ---@field data utils.pack.Data

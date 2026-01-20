@@ -3,6 +3,7 @@
 
 ---@class utils.snacks.indent.Filter
 ---@field filetype string[]?
+---@field buftype  string[]?
 
 ---@class utils.snacks.Opts: snacks.Config
 ---@field indent utils.snacks.Indent?
@@ -10,14 +11,44 @@
 local M = {}
 local snacks = require("snacks")
 
----@param filetype string[]
+---@param filter { filetype: string[], buftype: string[] }
 ---@return fun(bufnr: integer): boolean
-local gen_filter = function(filetype)
+local gen_filter = function(filter)
+  local filetype = {
+    lspinfo = true,
+    packer = true,
+    checkhealth = true,
+    help = true,
+    man = true,
+    gitcommit = true,
+    dashboard = true,
+    text = true,
+  }
+
+  local buftype = {
+    terminal = true,
+    quickfix = true,
+    nofile = true,
+    prompt = true,
+  }
+
+  for _, value in ipairs(filter.filetype) do
+    filetype[value] = true
+  end
+
+  for _, value in ipairs(filter.buftype) do
+    buftype[value] = true
+  end
+
   return function(bufnr)
-    return not vim.tbl_contains(filetype, vim.bo[bufnr].filetype)
-      and vim.g.snacks_indent ~= false
+    local ft = vim.bo[bufnr].filetype
+    local bt = vim.bo[bufnr].buftype
+
+    return vim.g.snacks_indent ~= false
       and vim.b[bufnr].snacks_indent ~= false
-      and vim.bo[bufnr].buftype == ""
+      and ft ~= ""
+      and not filetype[ft]
+      and not buftype[bt]
   end
 end
 
@@ -26,10 +57,18 @@ end
 M.setup = function(opts)
   opts = opts or {}
 
-  ---@type { filetype: string[] }|fun(buf: integer, win: integer?): boolean
-  local filter = vim.tbl_get(opts, "indent", "filter")
-  filter = type(filter) == "table" and gen_filter(filter.filetype) or filter
-  opts.indent = filter and vim.tbl_deep_extend("force", opts.indent, { filter = filter })
+  ---@type utils.snacks.indent.Filter|fun(buf: integer): boolean
+  local filter = opts.indent and (vim.tbl_get(opts, "indent", "filter") or {})
+  filter = type(filter) == "table"
+      and gen_filter({
+        filetype = filter.filetype or {},
+        buftype = filter.buftype or {},
+      })
+    or filter
+
+  if filter then
+    opts.indent.filter = filter
+  end
 
   snacks.setup(opts)
 
