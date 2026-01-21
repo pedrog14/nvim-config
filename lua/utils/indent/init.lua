@@ -63,8 +63,12 @@ local on_win = function(_, winid, bufnr, top, bottom)
     return
   end
 
+  top = top + 1
+  bottom = bottom + 1
+
   ---@type indent.data?, integer
   local previous, changedtick = M.data[winid], vim.b[bufnr].changedtick
+
   if not (previous and previous.bufnr == bufnr and previous.changedtick == changedtick) then
     previous = nil
   end
@@ -83,10 +87,9 @@ local on_win = function(_, winid, bufnr, top, bottom)
     breakindent = vim.wo[winid].breakindent and vim.wo[winid].wrap,
   }
 
+  local current = data.indent
   data.shiftwidth = data.shiftwidth == 0 and vim.bo[bufnr].tabstop or data.shiftwidth
   M.data[winid] = data
-
-  local current = data.indent
 
   vim.api.nvim_buf_call(bufnr, function()
     for line = top, bottom do
