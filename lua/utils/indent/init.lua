@@ -15,7 +15,6 @@ local get_extmarks = function(indent, data)
   cache_extmarks[key] = {}
 
   local shiftwidth = data.shiftwidth
-
   indent = math.floor(indent / shiftwidth)
 
   for i = 1, indent do
@@ -109,9 +108,9 @@ local on_win = function(_, winid, bufnr, top, bottom)
         current[line] = indent
       end
 
-      local extmarks = indent > 0 and get_extmarks(indent, data)
+      local extmarks = indent > 0 and get_extmarks(indent, data) or {}
 
-      for _, opts in ipairs(extmarks or {}) do
+      for _, opts in ipairs(extmarks) do
         vim.api.nvim_buf_set_extmark(bufnr, ns, line - 1, 0, opts)
       end
     end
