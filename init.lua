@@ -302,11 +302,4 @@ require("core.autocmds").set({
       vim.hl.on_yank()
     end,
   },
-  {
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    once = true,
-    callback = function()
-      require("utils.indent").setup()
-    end,
-  },
 })
