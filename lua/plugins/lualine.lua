@@ -53,7 +53,7 @@ return {
           "filetype",
           {
             "lsp_status",
-            icon = "",
+            icon = "",
             symbols = { done = "" },
             ignore_lsp = { "stylua" },
           },
