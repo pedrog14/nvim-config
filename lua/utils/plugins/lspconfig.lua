@@ -1,13 +1,13 @@
 ---@alias utils.lspconfig.EnabledOpts { enabled: boolean, exclude: string[] }
 
----@class utils.lspconfig.check_enabled.callback.Data
+---@class utils.lspconfig.check_enabled_callback.Data
 ---@field client vim.lsp.Client
 ---@field method vim.lsp.protocol.Method.ClientToServer|vim.lsp.protocol.Method.Registration
 ---@field bufnr  integer
 ---@field ft     string
 
----@class utils.lspconfig.check_enabled.Data: utils.lspconfig.check_enabled.callback.Data
----@field callback fun(data: utils.lspconfig.check_enabled.callback.Data)
+---@class utils.lspconfig.check_enabled.Data: utils.lspconfig.check_enabled_callback.Data
+---@field callback fun(data: utils.lspconfig.check_enabled_callback.Data): any
 
 local M = {}
 local mason_lspconfig = require("mason-lspconfig")
@@ -20,11 +20,10 @@ local check_enabled = function(field, data)
   ---@type utils.lspconfig.EnabledOpts
   local option = vim.tbl_get(M.config, "opts", field) or {}
   local exclude = option.exclude or {}
-
   return option.enabled
     and not vim.tbl_contains(exclude, data.ft)
     and data.client:supports_method(data.method, data.bufnr)
-    and (data:callback() or true)
+    and data:callback()
 end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
@@ -66,7 +65,6 @@ local on_attach = vim.schedule_wrap(function(args)
     ft = ft,
     callback = function()
       local winid = vim.api.nvim_get_current_win()
-
       vim.wo[winid].foldmethod = "expr"
       vim.wo[winid].foldexpr = "v:lua.vim.lsp.foldexpr()"
     end,
@@ -103,7 +101,6 @@ local on_detach = vim.schedule_wrap(function(args)
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
   end
-
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 
@@ -146,10 +143,10 @@ M.setup = function(opts)
     end
   end
 
-  mason_lspconfig.setup(M.config.opts)
-  augroup = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
+  mason_lspconfig.setup(M.config.opts --[[@as MasonLspconfigSettings]])
+  augroup = vim.api.nvim_create_augroup("LspConfig", { clear = true })
 
-  local setup_augroup = vim.api.nvim_create_augroup("_setupLSPConfig", { clear = true })
+  local setup_augroup = vim.api.nvim_create_augroup("_setupLspConfig", { clear = true })
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })

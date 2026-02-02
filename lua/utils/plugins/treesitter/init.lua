@@ -6,7 +6,7 @@
 ---@field bufnr integer
 
 ---@class utils.treesitter.check_enabled.Data: utils.treesitter.check_enabled.callback.Data
----@field callback fun(data: utils.treesitter.check_enabled.callback.Data)
+---@field callback fun(data: utils.treesitter.check_enabled.callback.Data): any
 
 local M = {}
 local treesitter = require("nvim-treesitter")
@@ -19,11 +19,10 @@ local check_enabled = function(field, data)
   ---@type utils.treesitter.EnabledOpts
   local option = vim.tbl_get(M.config, "opts", field) or {}
   local exclude = option.exclude or {}
-
   return option.enabled
     and not vim.tbl_contains(exclude, data.lang)
     and utils.get_query(data.lang, data.query)
-    and (data:callback() or true)
+    and data:callback()
 end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
@@ -62,7 +61,6 @@ local on_filetype = function(args)
     bufnr = bufnr,
     callback = function()
       local winid = vim.api.nvim_get_current_win()
-
       vim.wo[winid].foldmethod = "expr"
       vim.wo[winid].foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
@@ -126,7 +124,8 @@ M.setup = function(opts)
 
       local pattern = {}
       for _, lang in ipairs(args.fargs) do
-        for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+        local filetypes = vim.treesitter.language.get_filetypes(lang)
+        for _, ft in ipairs(filetypes) do
           pattern[ft] = true
         end
       end
