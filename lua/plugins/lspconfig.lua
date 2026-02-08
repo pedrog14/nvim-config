@@ -35,7 +35,10 @@ return {
       lua_ls = {
         settings = {
           Lua = {
-            workspace = { checkThirdParty = false },
+            workspace = {
+              library = { vim.env.VIMRUNTIME },
+              checkThirdParty = false,
+            },
             hint = {
               paramName = "Disable",
               arrayIndex = "Disable",
@@ -44,7 +47,7 @@ return {
         },
       },
     },
-    codelens = { enabled = true },
+    codelens = { enabled = false },
     inlay_hint = { enabled = true },
     fold = { enabled = true },
   },

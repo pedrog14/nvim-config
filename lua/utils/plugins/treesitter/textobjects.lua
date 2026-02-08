@@ -14,19 +14,18 @@ local utils = require("utils.treesitter")
 ---@return any
 local check_enabled = function(field, data)
   ---@type utils.treesitter.textobjects.EnabledOpts
-  local option = vim.tbl_get(M.config, "opts", field) or {}
+  local option = M.config.opts[field] or {}
   local exclude = option.exclude or {}
-
   return option.enabled
     and not vim.tbl_contains(exclude, data.lang)
     and utils.get_query(data.lang, data.query)
-    and (data:callback() or true)
+    and data:callback()
 end
 
 ---@param bufnr integer
 ---@param ft    string?
 local on_filetype = function(bufnr, ft)
-  local lang = vim.treesitter.language.get_lang(ft or vim.bo[bufnr].ft)
+  local lang = vim.treesitter.language.get_lang(ft or vim.bo[bufnr].filetype)
   if not lang then
     return
   end

@@ -18,7 +18,7 @@ local augroup = nil ---@type integer?
 ---@return any
 local check_enabled = function(field, data)
   ---@type utils.lspconfig.EnabledOpts
-  local option = vim.tbl_get(M.config, "opts", field) or {}
+  local option = M.config.opts[field] or {}
   local exclude = option.exclude or {}
   return option.enabled
     and not vim.tbl_contains(exclude, data.ft)
@@ -28,8 +28,6 @@ end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_attach = vim.schedule_wrap(function(args)
-  local bufnr = args.buf
-
   local client_id = vim.tbl_get(args, "data", "client_id")
   if not client_id then
     return
@@ -40,6 +38,7 @@ local on_attach = vim.schedule_wrap(function(args)
     return
   end
 
+  local bufnr = args.buf
   local ft = vim.bo[bufnr].filetype
 
   check_enabled("codelens", {
@@ -48,13 +47,7 @@ local on_attach = vim.schedule_wrap(function(args)
     bufnr = bufnr,
     ft = ft,
     callback = function(data)
-      vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-        group = augroup,
-        buffer = data.bufnr,
-        callback = function()
-          vim.lsp.codelens.refresh({ bufnr = data.bufnr })
-        end,
-      })
+      vim.lsp.codelens.enable(true, { bufnr = data.bufnr })
     end,
   })
 
@@ -131,12 +124,12 @@ M.config = {
 M.setup = function(opts)
   M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts or {})
 
-  local diagnostic = vim.tbl_get(M.config, "opts", "diagnostic")
+  local diagnostic = M.config.opts.diagnostic
   if diagnostic then
     vim.diagnostic.config(diagnostic)
   end
 
-  local servers = vim.tbl_get(M.config, "opts", "servers")
+  local servers = M.config.opts.servers
   if servers then
     for lang, content in pairs(servers) do
       vim.lsp.config(lang, content)
@@ -144,9 +137,9 @@ M.setup = function(opts)
   end
 
   mason_lspconfig.setup(M.config.opts --[[@as MasonLspconfigSettings]])
-  augroup = vim.api.nvim_create_augroup("LspConfig", { clear = true })
 
   local setup_augroup = vim.api.nvim_create_augroup("_setupLspConfig", { clear = true })
+  augroup = vim.api.nvim_create_augroup("LspConfig", { clear = true })
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })

@@ -17,7 +17,7 @@ local utils = require("utils.treesitter")
 ---@return any
 local check_enabled = function(field, data)
   ---@type utils.treesitter.EnabledOpts
-  local option = vim.tbl_get(M.config, "opts", field) or {}
+  local option = M.config.opts[field] or {}
   local exclude = option.exclude or {}
   return option.enabled
     and not vim.tbl_contains(exclude, data.lang)
