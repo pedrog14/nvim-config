@@ -4,12 +4,12 @@ return {
   build = "cargo build --release",
   event = { "InsertEnter", "CmdlineEnter" },
   ---@module "blink.cmp"
-  ---@param _opts blink.cmp.Config
-  opts = function(_, _opts)
+  ---@param opts blink.cmp.Config
+  opts = function(_, opts)
     local symbols = require("utils.icons").lsp.symbols
 
     ---@type blink.cmp.Config
-    local opts = {
+    return vim.tbl_deep_extend("force", opts, {
       completion = {
         accept = { auto_brackets = { enabled = true } },
         documentation = {
@@ -44,8 +44,6 @@ return {
         },
         completion = { list = { selection = { preselect = false } } },
       },
-    }
-
-    return vim.tbl_deep_extend("force", _opts, opts)
+    })
   end,
 }

@@ -29,4 +29,24 @@ return {
       },
     },
   },
+  -- Workaround for lua_ls 3.17+ (remove after lazydev fix)
+  {
+    "neovim/nvim-lspconfig",
+    optional = true,
+    ---@module "utils.plugins.lspconfig"
+    ---@type utils.lspconfig.Opts
+    opts = {
+      servers = {
+        lua_ls = {
+          settings = {
+            Lua = {
+              workspace = {
+                library = { vim.env.VIMRUNTIME },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 }
