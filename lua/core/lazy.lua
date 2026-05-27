@@ -7,7 +7,7 @@ M.set = function(opts)
     virtual_text = require("utils.icons").diagnostic.virtual_text,
   })
 
-  -- Bootstrap lazy.nvim
+  -- Bootstrapping lazy.nvim
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.uv.fs_stat(lazypath) then
     local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -24,8 +24,8 @@ M.set = function(opts)
       os.exit(1)
     end
   end
-
   vim.opt.rtp:prepend(lazypath)
+
   require("lazy").setup(opts)
 end
 

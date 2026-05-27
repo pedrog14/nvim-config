@@ -5,7 +5,6 @@
 ---@field end   range.Position
 
 local M = {}
-local result = {} ---@type table[]
 local augroup = nil ---@type integer?
 local breadcrumbs = nil ---@type string?
 local config = require("utils.lsp.breadcrumbs.config")
@@ -17,47 +16,42 @@ local config = require("utils.lsp.breadcrumbs.config")
 local range_contains_pos = function(range, row, col)
   local start = range.start
   local stop = range["end"]
-
   return (row >= start.line and row <= stop.line)
     and (row ~= start.line or col >= start.character)
     and (row ~= stop.line or col <= stop.character)
 end
 
----@param res table
----@param row integer
----@param col integer
+---@param bufnr integer
+---@param row   integer
+---@param col   integer
 ---@return string
-local breadcrumbs_str = function(res, row, col)
-  if not res then
+local breadcrumbs_str = function(bufnr, row, col)
+  local result = M.cache[bufnr]
+
+  if not result then
     return ""
   end
 
-  ---@type table?
-  local result_ref = res
-  local path = {}
+  local path = {} ---@type table
+  local ref = result ---@type table?
+  local symbols = config.opts.icons.symbols
 
-  while result_ref do
-    local sym = nil ---@type table?
-
-    for _, s in ipairs(result_ref) do
-      if s.range and range_contains_pos(s.range, row, col) then
-        local kind = vim.lsp.protocol.SymbolKind[s.kind]
-        local icon = vim.tbl_get(config, "opts", "icons", "symbols", kind) ---@type string
-
-        path[#path + 1] = ("%s %s"):format(icon, s.name)
-        sym = s.children
+  while ref do
+    local symbol = nil ---@type table?
+    for _, sym in ipairs(ref) do
+      if sym.range and range_contains_pos(sym.range, row, col) then
+        local kind = vim.lsp.protocol.SymbolKind[sym.kind]
+        path[#path + 1] = ("%s %s"):format(symbols[kind], sym.name)
+        symbol = sym.children
         break
       end
     end
-
-    result_ref = sym
+    ref = symbol
   end
 
-  local sep = vim.tbl_get(config, "opts", "icons", "separator") ---@type string
+  local separator = config.opts.icons.separator
 
-  sep = sep ~= "" and (" %s "):format(sep) or sep
-
-  return table.concat(path, sep)
+  return table.concat(path, (" %s "):format(separator))
 end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
@@ -104,27 +98,32 @@ local on_attach = vim.schedule_wrap(function(args)
             update_result(req_limit - 1)
           end, 33)
         end
-
         return
       end
-
-      result[bufnr] = res
+      M.cache[bufnr] = res
     end, bufnr)
   end
 
   local update_str = function()
     local cursor = vim.api.nvim_win_get_cursor(winid)
     local row, col = cursor[1] - 1, cursor[2]
-
-    breadcrumbs = breadcrumbs_str(result[bufnr], row, col)
+    breadcrumbs = breadcrumbs_str(bufnr, row, col)
   end
 
   update_result()
   update_str()
 
-  vim.api.nvim_create_autocmd({ "BufModifiedSet", "FileChangedShellPost", "InsertChange", "TextChanged" }, {
+  vim.api.nvim_create_autocmd({ "FileChangedShellPost", "ModeChanged", "TextChanged" }, {
     group = augroup,
     buffer = bufnr,
+    callback = function()
+      update_result()
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("OptionSet", {
+    group = augroup,
+    pattern = "modified",
     callback = function()
       update_result()
     end,
@@ -150,8 +149,7 @@ end)
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local on_detach = vim.schedule_wrap(function(args)
   local bufnr = args.buf
-
-  result[bufnr] = nil
+  M.cache[bufnr] = nil
 
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
@@ -160,12 +158,14 @@ local on_detach = vim.schedule_wrap(function(args)
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 end)
 
+M.cache = {} ---@type table[]
+
 ---@param opts utils.lsp.breadcrumbs.Opts?
 M.setup = function(opts)
   config.opts = vim.tbl_deep_extend("force", config.default, opts or {})
   augroup = vim.api.nvim_create_augroup("LspBreadcrumbs", { clear = true })
 
-  local setup_augroup = vim.api.nvim_create_augroup("_setupLspBreadcrumbs", { clear = true })
+  local setup_augroup = vim.api.nvim_create_augroup("setupLspBreadcrumbs", { clear = true })
 
   vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
   vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })

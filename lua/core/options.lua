@@ -1,5 +1,4 @@
 ---@class OptsTable<K>: { [K]: table<string, any> }
-
 ---@alias core.Opts OptsTable<"g"|"o">
 
 local M = {}

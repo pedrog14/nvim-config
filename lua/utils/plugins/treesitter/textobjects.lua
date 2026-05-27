@@ -41,7 +41,7 @@ local on_filetype = function(bufnr, ft)
     bufnr = bufnr,
     callback = function(data)
       ---@type table<string, table<string, string>>
-      local moves = vim.tbl_get(M.config, "opts", "move", "keys")
+      local moves = M.config.opts.move.keys
       if not moves then
         return
       end
@@ -57,14 +57,13 @@ local on_filetype = function(bufnr, ft)
             table.insert(parts, part)
           end
 
-          local desc = table.concat(parts, " or ")
-
-          desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
-          desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
-
           local winid = vim.api.nvim_get_current_win()
 
           if not (vim.wo[winid].diff and key:find("[cC]")) then
+            local desc = table.concat(parts, " or ")
+            desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
+            desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
+
             vim.keymap.set({ "n", "x", "o" }, key, function()
               require("nvim-treesitter-textobjects.move")[method](query, data.query)
             end, {

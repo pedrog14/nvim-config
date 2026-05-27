@@ -1,7 +1,9 @@
 return {
   "saghen/blink.cmp",
-  dependencies = { "nvim-mini/mini.icons", "rafamadriz/friendly-snippets" },
-  build = "cargo build --release",
+  dependencies = { "saghen/blink.lib", "rafamadriz/friendly-snippets", "nvim-mini/mini.icons" },
+  build = function()
+    require("blink.cmp").build():wait(60000)
+  end,
   event = { "InsertEnter", "CmdlineEnter" },
   ---@module "blink.cmp"
   ---@param opts blink.cmp.Config

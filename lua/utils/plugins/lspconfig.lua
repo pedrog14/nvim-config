@@ -138,11 +138,18 @@ M.setup = function(opts)
 
   mason_lspconfig.setup(M.config.opts --[[@as MasonLspconfigSettings]])
 
-  local setup_augroup = vim.api.nvim_create_augroup("_setupLspConfig", { clear = true })
+  local setup_augroup = vim.api.nvim_create_augroup("setupLspConfig", { clear = true })
   augroup = vim.api.nvim_create_augroup("LspConfig", { clear = true })
 
-  vim.api.nvim_create_autocmd("LspAttach", { group = setup_augroup, callback = on_attach })
-  vim.api.nvim_create_autocmd("LspDetach", { group = setup_augroup, callback = on_detach })
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = setup_augroup,
+    callback = on_attach,
+  })
+
+  vim.api.nvim_create_autocmd("LspDetach", {
+    group = setup_augroup,
+    callback = on_detach,
+  })
 end
 
 return M

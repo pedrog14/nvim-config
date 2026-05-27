@@ -1,4 +1,3 @@
--- [[ Neovim Settings ]] --
 local icons = require("utils.icons")
 
 require("core.options").set({
@@ -299,7 +298,7 @@ require("core.autocmds").set({
   {
     event = "TextYankPost",
     callback = function()
-      vim.hl.on_yank()
+      vim.hl.hl_op()
     end,
   },
 })
