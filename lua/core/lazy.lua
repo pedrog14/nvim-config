@@ -2,10 +2,12 @@ local M = {}
 
 ---@module "lazy"
 ---@param opts LazyConfig
-M.set = function(opts)
+M.setup = function(opts)
   vim.diagnostic.config({
-    virtual_text = require("utils.icons").diagnostic.virtual_text,
+    virtual_text = vim.tbl_get(opts, "ui", "icons", "virtual_text"),
   })
+
+  opts.ui.icons.virtual_text = nil
 
   -- Bootstrapping lazy.nvim
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

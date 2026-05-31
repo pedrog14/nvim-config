@@ -1,11 +1,12 @@
 local icons = require("utils.icons")
 
-require("core.options").set({
+require("core.options").setup({
   g = {
     mapleader = " ",
     maplocalleader = "\\",
   },
   o = {
+    clipboard = "unnamedplus",
     completeopt = "fuzzy,menuone,noselect,popup",
     confirm = true,
     cursorline = true,
@@ -48,7 +49,7 @@ require("core.options").set({
   },
 })
 
-require("core.lazy").set({
+require("core.lazy").setup({
   spec = {
     { import = "plugins" },
     { import = "plugins.blink" },
@@ -62,27 +63,14 @@ require("core.lazy").set({
     icons = {
       loaded = "●",
       not_loaded = "○",
-    },
-  },
-  performance = {
-    rtp = {
-      disabled_plugins = {
-        "gzip",
-        -- "matchit",
-        -- "matchparen",
-        "netrwPlugin",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
-      },
+      virtual_text = icons.diagnostic.virtual_text,
     },
   },
 })
 
-require("core.commands").set({ colorscheme = "gruvbox" })
+require("core.commands").setup({ colorscheme = "gruvbox" })
 
-require("core.keymaps").set({
+require("core.keymaps").setup({
   -- Better Up/Down (for wrapped text)
   {
     "j",
@@ -288,13 +276,7 @@ require("core.keymaps").set({
   },
 })
 
-require("core.autocmds").set({
-  {
-    event = "UIEnter",
-    callback = function()
-      vim.o.clipboard = "unnamedplus"
-    end,
-  },
+require("core.autocmds").setup({
   {
     event = "TextYankPost",
     callback = function()

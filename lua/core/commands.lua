@@ -1,7 +1,7 @@
 local M = {}
 
 ---@param cmds table<string, string>
-M.set = function(cmds)
+M.setup = function(cmds)
   cmds = cmds or {}
 
   for name, value in pairs(cmds) do

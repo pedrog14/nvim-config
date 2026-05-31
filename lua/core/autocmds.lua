@@ -4,7 +4,7 @@
 local M = {}
 
 ---@param autocmds core.Autocmd[]
-M.set = function(autocmds)
+M.setup = function(autocmds)
   autocmds = autocmds or {}
 
   for _, opts in ipairs(autocmds) do

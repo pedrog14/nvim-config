@@ -1,7 +1,6 @@
 return {
   -- "folke/snacks.nvim",
   "pedrog14/snacks.nvim",
-  dependencies = "nvim-mini/mini.icons",
   lazy = false,
   priority = 1000,
   keys = {

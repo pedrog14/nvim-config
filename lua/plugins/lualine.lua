@@ -1,6 +1,5 @@
 return {
   "nvim-lualine/lualine.nvim",
-  dependencies = "nvim-mini/mini.icons",
   event = "VeryLazy",
   opts = function()
     local lualine_require = require("lualine_require")

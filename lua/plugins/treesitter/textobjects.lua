@@ -1,6 +1,5 @@
 return {
   "nvim-treesitter/nvim-treesitter-textobjects",
-  branch = "main",
   event = "VeryLazy",
   main = "utils.plugins.treesitter.textobjects",
   ---@module "utils.plugins.treesitter.textobjects"

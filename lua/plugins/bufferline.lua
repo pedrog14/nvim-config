@@ -1,6 +1,5 @@
 return {
   "akinsho/bufferline.nvim",
-  dependencies = "nvim-mini/mini.icons",
   event = "VeryLazy",
   ---@module "bufferline"
   ---@type bufferline.UserConfig

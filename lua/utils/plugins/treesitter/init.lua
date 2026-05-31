@@ -13,7 +13,7 @@ local treesitter = require("nvim-treesitter")
 local utils = require("utils.treesitter")
 
 ---@param field string
----@param data utils.treesitter.check_enabled.Data
+---@param data  utils.treesitter.check_enabled.Data
 ---@return any
 local check_enabled = function(field, data)
   ---@type utils.treesitter.EnabledOpts

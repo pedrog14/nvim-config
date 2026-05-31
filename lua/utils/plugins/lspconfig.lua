@@ -122,7 +122,8 @@ M.config = {
 
 ---@param opts utils.lspconfig.Opts?
 M.setup = function(opts)
-  M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts or {})
+  opts = opts or {}
+  M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts)
 
   local diagnostic = M.config.opts.diagnostic
   if diagnostic then
@@ -136,7 +137,10 @@ M.setup = function(opts)
     end
   end
 
-  mason_lspconfig.setup(M.config.opts --[[@as MasonLspconfigSettings]])
+  opts.diagnostic = nil
+  opts.servers = nil
+
+  mason_lspconfig.setup(opts --[[@as MasonLspconfigSettings]])
 
   local setup_augroup = vim.api.nvim_create_augroup("setupLspConfig", { clear = true })
   augroup = vim.api.nvim_create_augroup("LspConfig", { clear = true })

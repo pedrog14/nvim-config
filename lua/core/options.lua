@@ -4,7 +4,7 @@
 local M = {}
 
 ---@param opts core.Opts
-M.set = function(opts)
+M.setup = function(opts)
   opts = opts or {}
 
   for var, dict in pairs(opts) do

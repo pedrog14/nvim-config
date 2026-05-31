@@ -6,13 +6,11 @@
 local M = {}
 
 ---@param keymaps core.keymap.Set[]
-M.set = function(keymaps)
+M.setup = function(keymaps)
   keymaps = keymaps or {}
 
   for _, keymap in ipairs(keymaps) do
-    local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as table]])
-      or keymap.mode
-      or "n"
+    local mode = type(keymap.mode) == "table" and vim.deepcopy(keymap.mode --[[@as table]]) or keymap.mode or "n"
 
     keymap.mode = nil
 
