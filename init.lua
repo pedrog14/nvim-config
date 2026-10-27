@@ -11,7 +11,8 @@ require("core.options").setup({
     confirm = true,
     cursorline = true,
     expandtab = true,
-    fillchars = ("foldopen:%s,foldclose:%s"):format(icons.fold.open, icons.fold.close),
+    fillchars = ("foldopen:%s,foldclose:%s,foldsep: ,foldinner: "):format(icons.fold.open, icons.fold.close),
+    foldcolumn = "auto",
     foldlevel = 99,
     foldmethod = "indent",
     foldtext = "",
@@ -164,13 +165,6 @@ require("core.keymaps").setup({
     desc = "Selects a code action available at the cursor position",
   },
   {
-    "gri",
-    function()
-      Snacks.picker.lsp_implementations()
-    end,
-    desc = "Lists all the implementations for the symbol under the cursor (Snacks.picker)",
-  },
-  {
     "grn",
     function()
       vim.lsp.buf.rename()
@@ -178,39 +172,11 @@ require("core.keymaps").setup({
     desc = "Renames all references to the symbol under the cursor",
   },
   {
-    "grr",
+    "grx",
     function()
-      Snacks.picker.lsp_references()
+      vim.lsp.codelens.run()
     end,
-    desc = "Lists all the references to the symbol under the cursor (Snacks.picker)",
-  },
-  {
-    "grt",
-    function()
-      Snacks.picker.lsp_type_definitions()
-    end,
-    desc = "Jumps to the definition of the type of the symbol under the cursor (Snacks.picker)",
-  },
-  {
-    "grd",
-    function()
-      Snacks.picker.lsp_definitions()
-    end,
-    desc = "Lists all the definitions for the symbol under the cursor (Snacks.picker)",
-  },
-  {
-    "grD",
-    function()
-      Snacks.picker.lsp_declarations()
-    end,
-    desc = "Lists all the declarations for the symbol under the cursor (Snacks.picker)",
-  },
-  {
-    "gO",
-    function()
-      Snacks.picker.lsp_symbols()
-    end,
-    desc = "List all symbols in the current buffer (Snacks.picker)",
+    desc = "Run code lens at the current cursor position",
   },
   {
     "<c-s>",
@@ -278,9 +244,9 @@ require("core.keymaps").setup({
 
 require("core.autocmds").setup({
   {
-    event = "TextYankPost",
+    event = { "TextYankPost", "TextPutPost" },
     callback = function()
-      vim.hl.hl_op()
+      vim.hl.hl_op({ higroup = "Visual", timeout = 300 })
     end,
   },
 })

@@ -11,19 +11,11 @@ M.setup = function(opts)
 
   mason.setup(opts)
 
-  registry:on("package:install:success", function()
-    vim.defer_fn(function()
-      vim.api.nvim_exec_autocmds("FileType", {
-        buffer = vim.api.nvim_get_current_buf(),
-      })
-    end, 100)
-  end)
-
   if not opts.ensure_installed then
     return
   end
 
-  registry.refresh(vim.schedule_wrap(function()
+  registry.refresh(function()
     local Package = require("mason-core.package")
 
     for _, pkg_identifier in ipairs(opts.ensure_installed) do
@@ -31,7 +23,7 @@ M.setup = function(opts)
       local pkg_ok, pkg = pcall(registry.get_package, pkg_name)
 
       if pkg_ok then
-        if not pkg:is_installed() then
+        if not pkg:is_installed() and not pkg:is_installing() then
           pkg:install({ version = version })
         end
       else
@@ -43,7 +35,7 @@ M.setup = function(opts)
         )
       end
     end
-  end))
+  end)
 end
 
 return M

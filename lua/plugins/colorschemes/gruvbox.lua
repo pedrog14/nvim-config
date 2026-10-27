@@ -7,7 +7,8 @@ return {
   opts = {
     group_override = function(hl, colors)
       hl.CursorLineNr = { fg = colors.yellow, bg = colors.none, bold = true }
-      hl.SignColumn = { fg = colors.bg4, bg = colors.bg0 }
+      hl.SignColumn = { fg = colors.bg4, bg = colors.none }
+      hl.FoldColumn = { fg = colors.bg4, bg = colors.none }
     end,
   },
 }

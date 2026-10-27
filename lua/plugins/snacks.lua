@@ -1,5 +1,4 @@
 return {
-  -- "folke/snacks.nvim",
   "pedrog14/snacks.nvim",
   lazy = false,
   priority = 1000,
@@ -9,7 +8,17 @@ return {
       function()
         Snacks.explorer()
       end,
-      desc = "Toggle Explorer (Snacks.picker)",
+      desc = "Explorer (Snacks.picker)",
+    },
+    {
+      "<leader>c",
+      function()
+        Snacks.picker.explorer({
+          cwd = vim.fn.stdpath("config"),
+          title = "Config Files",
+        })
+      end,
+      desc = "Config Files (Snacks.picker)",
     },
     {
       "<leader>sf",
@@ -52,16 +61,6 @@ return {
         Snacks.picker.explorer()
       end,
       desc = "Explorer (Snacks.picker)",
-    },
-    {
-      "<leader>sc",
-      function()
-        Snacks.picker.explorer({
-          cwd = vim.fn.stdpath("config"),
-          title = "Config Files",
-        })
-      end,
-      desc = "Config Files (Snacks.picker)",
     },
     {
       "<leader>ss",
@@ -125,6 +124,49 @@ return {
       end,
       desc = "Toggle Terminal",
     },
+
+    {
+      "gri",
+      function()
+        Snacks.picker.lsp_implementations()
+      end,
+      desc = "Lists all the implementations for the symbol under the cursor (Snacks.picker)",
+    },
+    {
+      "grr",
+      function()
+        Snacks.picker.lsp_references()
+      end,
+      desc = "Lists all the references to the symbol under the cursor (Snacks.picker)",
+    },
+    {
+      "grt",
+      function()
+        Snacks.picker.lsp_type_definitions()
+      end,
+      desc = "Jumps to the definition of the type of the symbol under the cursor (Snacks.picker)",
+    },
+    {
+      "grd",
+      function()
+        Snacks.picker.lsp_definitions()
+      end,
+      desc = "Lists all the definitions for the symbol under the cursor (Snacks.picker)",
+    },
+    {
+      "grD",
+      function()
+        Snacks.picker.lsp_declarations()
+      end,
+      desc = "Lists all the declarations for the symbol under the cursor (Snacks.picker)",
+    },
+    {
+      "gO",
+      function()
+        Snacks.picker.lsp_symbols()
+      end,
+      desc = "List all symbols in the current buffer (Snacks.picker)",
+    },
   },
   init = function()
     vim.api.nvim_create_autocmd("User", {
@@ -149,24 +191,20 @@ return {
       end,
     })
   end,
-  main = "utils.plugins.snacks",
   opts = function()
     local signs = require("utils.icons").diagnostic.signs
 
-    ---@module "utils.plugins.snacks"
-    ---@type utils.snacks.Opts
+    ---@module "snacks"
+    ---@type snacks.Config
     return {
       bigfile = { enabled = true },
       quickfile = { enabled = true },
-      words = { enabled = true },
-
-      -- Statuscolumn
-      statuscolumn = {
-        folds = { open = true, git_hl = true },
-      },
+      statuscolumn = { enabled = false },
+      words = { enabled = false },
 
       -- Dashboard
       dashboard = {
+        width = 40,
         preset = {
           keys = {
             {
@@ -176,22 +214,11 @@ return {
               action = ":ene | startinsert",
             },
             {
-              icon = "󱧶",
-              desc = "Explorer",
-              key = "e",
+              icon = "󱋡",
+              desc = "Recent Files",
+              key = "r",
               action = function()
-                Snacks.explorer()
-              end,
-            },
-            {
-              icon = "󱁿",
-              desc = "Config Explorer",
-              key = "c",
-              action = function()
-                Snacks.explorer({
-                  cwd = vim.fn.stdpath("config"),
-                  title = "Config Explorer",
-                })
+                Snacks.picker.recent()
               end,
             },
             {
@@ -203,11 +230,22 @@ return {
               end,
             },
             {
-              icon = "󱋡",
-              desc = "Recent Files",
-              key = "r",
+              icon = "󱧶",
+              desc = "Explorer",
+              key = "e",
               action = function()
-                Snacks.picker.recent()
+                Snacks.explorer()
+              end,
+            },
+            {
+              icon = "󱁿",
+              desc = "Config Files",
+              key = "c",
+              action = function()
+                Snacks.explorer({
+                  cwd = vim.fn.stdpath("config"),
+                  title = "Config Files",
+                })
               end,
             },
             {
@@ -238,18 +276,14 @@ return {
         sections = {
           {
             header = table.concat({
-              "████████████████████████████████████████████████████",
-              "█████ ██████████████████████████████████████████",
-              "████   ███  ████████████ █████ █ ██ ████",
-              "███     █     █      ██ ███      ███",
-              "██  █       ██ ██               ██",
-              "██  ███   █   ██ ██ █      █  █  ██",
-              "███████ ██    █    ███ █ █  ███████ ██",
-              "████████████████████████████████████████████████████",
+              "┌──┐      ┐  ┌      ",
+              "│┌┐│┌─┐┌─┐│  │┌┐┌┐┌┐",
+              "│││││└┘│ │└┐┌┘│││└┘│",
+              "└┘└┘└─┘└─┘ └┘ └┘└  ┘",
             }, "\n"),
-            padding = 2,
+            padding = 1,
           },
-          { section = "keys", gap = 1, padding = 2 },
+          { section = "keys", gap = 1, padding = 1 },
           { section = "startup" },
         },
       },
@@ -258,7 +292,7 @@ return {
       explorer = { replace_netrw = true },
 
       -- Input
-      input = { icon = "" },
+      input = { icon = "" },
 
       -- Notifier
       notifier = {
@@ -284,7 +318,7 @@ return {
             Hint = signs[4],
           },
         },
-        prompt = " ",
+        prompt = " ",
       },
 
       -- Styles

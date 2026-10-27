@@ -1,7 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  lazy = false,
   build = ":TSUpdate",
-  event = "VeryLazy",
   main = "utils.plugins.treesitter",
   ---@module "utils.plugins.treesitter"
   ---@type utils.treesitter.Opts
@@ -25,6 +25,9 @@ return {
       "tsx",
       "typst",
       "vue",
+
+      "toml",
+      "json",
     },
   },
 }

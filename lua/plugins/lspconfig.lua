@@ -1,57 +1,55 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    event = "VeryLazy",
+    lazy = false,
     main = "utils.plugins.lspconfig",
-    opts = function(_, opts)
-      ---@module "utils.plugins.lspconfig"
-      ---@type utils.lspconfig.Opts
-      return vim.tbl_deep_extend("force", opts, {
-        ensure_installed = {
-          "bashls",
-          "cssls",
-          "clangd",
-          "hls",
-          "html",
-          "jdtls",
-          "jsonls",
-          "lua_ls",
-          "pyright",
-          "rust_analyzer",
-          "ts_ls",
-          "vimls",
+    ---@module "utils.plugins.lspconfig"
+    ---@type utils.lspconfig.Opts
+    opts = {
+      ensure_installed = {
+        "bashls",
+        "cssls",
+        "clangd",
+        "hls",
+        "html",
+        "jdtls",
+        "jsonls",
+        "lua_ls",
+        "pyright",
+        "rust_analyzer",
+        "ts_ls",
+        "vimls",
+      },
+      diagnostic = {
+        severity_sort = true,
+        signs = { text = require("utils.icons").diagnostic.signs },
+      },
+      servers = {
+        ["*"] = {
+          capabilities = {
+            workspace = {
+              fileOperations = { didRename = true, willRename = true },
+            },
+          },
         },
-        diagnostic = {
-          severity_sort = true,
-          signs = { text = require("utils.icons").diagnostic.signs },
-        },
-        servers = {
-          ["*"] = {
-            capabilities = {
+        lua_ls = {
+          settings = {
+            Lua = {
               workspace = {
-                fileOperations = { didRename = true, willRename = true },
+                checkThirdParty = false,
               },
-            },
-          },
-          lua_ls = {
-            settings = {
-              Lua = {
-                workspace = {
-                  checkThirdParty = false,
-                },
-                hint = {
-                  paramName = "Disable",
-                  arrayIndex = "Disable",
-                },
+              hint = {
+                paramName = "Disable",
+                arrayIndex = "Disable",
               },
             },
           },
         },
-        codelens = { enabled = true },
-        inlay_hint = { enabled = true },
-        fold = { enabled = true },
-      })
-    end,
+      },
+      codelens = { enabled = true },
+      inlay_hint = { enabled = true },
+      fold = { enabled = true },
+    },
   },
   {
     "mason-org/mason-lspconfig.nvim",

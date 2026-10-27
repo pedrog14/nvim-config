@@ -1,6 +1,6 @@
 return {
   "nvim-mini/mini.icons",
-  lazy = true,
+  lazy = false,
   init = function()
     package.preload["nvim-web-devicons"] = function()
       require("mini.icons").mock_nvim_web_devicons()

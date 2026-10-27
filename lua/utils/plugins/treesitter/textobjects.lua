@@ -100,8 +100,6 @@ M.setup = function(opts)
       on_filetype(args.buf, args.match)
     end,
   })
-
-  vim.tbl_map(on_filetype, vim.api.nvim_list_bufs())
 end
 
 return M

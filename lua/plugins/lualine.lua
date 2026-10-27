@@ -29,7 +29,7 @@ return {
       options = {
         theme = "auto",
         globalstatus = true,
-        disabled_filetypes = { statusline = { "snacks_dashboard" } },
+        disabled_filetypes = { statusline = { "snacks_dashboard", "dashboard" } },
       },
       sections = {
         lualine_b = {

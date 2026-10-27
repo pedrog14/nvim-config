@@ -8,8 +8,8 @@ M.diagnostic = {
 }
 
 M.fold = {
-  close = "",
-  open = "",
+  close = "",
+  open = "",
 }
 
 M.lsp = {

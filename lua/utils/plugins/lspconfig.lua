@@ -51,15 +51,41 @@ local on_attach = vim.schedule_wrap(function(args)
     end,
   })
 
+  check_enabled("document_highlight", {
+    client = client,
+    method = "textDocument/documentHighlight",
+    bufnr = bufnr,
+    ft = ft,
+    callback = function(data)
+      vim.api.nvim_create_autocmd("CursorHold", {
+        group = augroup,
+        buf = data.bufnr,
+        callback = function()
+          vim.lsp.buf.document_highlight()
+        end,
+      })
+      vim.api.nvim_create_autocmd("CursorMoved", {
+        group = augroup,
+        buf = data.bufnr,
+        callback = function()
+          vim.lsp.buf.clear_references()
+        end,
+      })
+    end,
+  })
+
   check_enabled("fold", {
     client = client,
     method = "textDocument/foldingRange",
     bufnr = bufnr,
     ft = ft,
-    callback = function()
-      local winid = vim.api.nvim_get_current_win()
-      vim.wo[winid].foldmethod = "expr"
-      vim.wo[winid].foldexpr = "v:lua.vim.lsp.foldexpr()"
+    callback = function(data)
+      for _, winid in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_get_buf(winid) == data.bufnr then
+          vim.wo[winid].foldmethod = "expr"
+          vim.wo[winid].foldexpr = "v:lua.vim.lsp.foldexpr()"
+        end
+      end
     end,
   })
 
@@ -106,15 +132,17 @@ M.config = {
   ---@field diagnostic vim.diagnostic.Opts?
   ---@field servers    table<string, vim.lsp.Config>?
   ---
-  ---@field codelens        utils.lspconfig.EnabledOpts?
-  ---@field fold            utils.lspconfig.EnabledOpts?
-  ---@field inlay_hint      utils.lspconfig.EnabledOpts?
-  ---@field semantic_tokens utils.lspconfig.EnabledOpts?
+  ---@field codelens           utils.lspconfig.EnabledOpts?
+  ---@field document_highlight utils.lspconfig.EnabledOpts?
+  ---@field fold               utils.lspconfig.EnabledOpts?
+  ---@field inlay_hint         utils.lspconfig.EnabledOpts?
+  ---@field semantic_tokens    utils.lspconfig.EnabledOpts?
   default = {
-    codelens        = { enabled = false },
-    fold            = { enabled = false },
-    inlay_hint      = { enabled = false },
-    semantic_tokens = { enabled = true },
+    codelens           = { enabled = false },
+    document_highlight = { enabled = true },
+    fold               = { enabled = false },
+    inlay_hint         = { enabled = false },
+    semantic_tokens    = { enabled = true },
   },
 
   opts = nil, ---@type utils.lspconfig.Opts?

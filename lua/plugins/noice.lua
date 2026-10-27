@@ -6,10 +6,10 @@ return {
   opts = {
     cmdline = {
       format = {
-        cmdline = { icon = "" },
-        search_up = { icon = " " },
-        search_down = { icon = " " },
-        input = { icon = "" },
+        cmdline = { icon = "" },
+        input = { icon = "" },
+        search_up = { icon = " " },
+        search_down = { icon = " " },
       },
     },
     lsp = {

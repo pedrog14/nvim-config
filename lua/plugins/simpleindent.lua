@@ -1,6 +1,6 @@
 return {
   "pedrog14/simpleindent.nvim",
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  event = "VeryLazy",
   ---@module "simpleindent"
   ---@type simpleindent.opts
   opts = {},

@@ -39,8 +39,8 @@ local on_filetype = function(args)
 
   check_enabled("highlight", {
     lang = lang,
-    query = "highlights",
     bufnr = bufnr,
+    query = "highlights",
     callback = function(data)
       vim.treesitter.start(data.bufnr, data.lang)
     end,
@@ -48,8 +48,8 @@ local on_filetype = function(args)
 
   check_enabled("indent", {
     lang = lang,
-    query = "indents",
     bufnr = bufnr,
+    query = "indents",
     callback = function(data)
       vim.bo[data.bufnr].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
     end,
@@ -57,12 +57,15 @@ local on_filetype = function(args)
 
   check_enabled("fold", {
     lang = lang,
-    query = "folds",
     bufnr = bufnr,
-    callback = function()
-      local winid = vim.api.nvim_get_current_win()
-      vim.wo[winid].foldmethod = "expr"
-      vim.wo[winid].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    query = "folds",
+    callback = function(data)
+      for _, winid in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_get_buf(winid) == data.bufnr then
+          vim.wo[winid].foldmethod = "expr"
+          vim.wo[winid].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        end
+      end
     end,
   })
 end
@@ -88,15 +91,16 @@ M.config = {
 
 ---@param opts utils.treesitter.Opts
 M.setup = function(opts)
-  M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts or {})
+  opts = opts or {}
+  M.config.opts = vim.tbl_deep_extend("force", M.config.default, opts)
 
   treesitter.setup(M.config.opts)
   utils.get_installed(nil, { update = true })
 
   ---@type string[]?
-  local ensure_installed = vim.tbl_get(M.config, "opts", "ensure_installed")
+  local ensure_installed = M.config.opts.ensure_installed
   if ensure_installed then
-    local install = vim.tbl_filter(function(lang)
+    local install = vim.tbl_filter(function(lang) ---@param lang string
       return not utils.get_installed(lang)
     end, ensure_installed)
 
@@ -107,7 +111,7 @@ M.setup = function(opts)
     end
   end
 
-  local setup_augroup = vim.api.nvim_create_augroup("_setupTSConfig", { clear = true })
+  local setup_augroup = vim.api.nvim_create_augroup("setupTSConfig", { clear = true })
 
   vim.api.nvim_create_autocmd("FileType", { group = setup_augroup, callback = on_filetype })
 
@@ -122,16 +126,18 @@ M.setup = function(opts)
     treesitter.install(args.fargs, { force = args.bang, summary = true }):await(function()
       utils.get_installed(nil, { update = true })
 
-      local pattern = {}
+      local bufs = vim.api.nvim_list_bufs()
+
       for _, lang in ipairs(args.fargs) do
         local filetypes = vim.treesitter.language.get_filetypes(lang)
         for _, ft in ipairs(filetypes) do
-          pattern[ft] = true
+          for _, bufnr in ipairs(bufs) do
+            if vim.bo[bufnr].ft == ft then
+              vim.api.nvim_exec_autocmds("FileType", { group = setup_augroup, buf = bufnr })
+            end
+          end
         end
       end
-      pattern = vim.tbl_keys(pattern)
-
-      vim.api.nvim_exec_autocmds("FileType", { group = setup_augroup, pattern = pattern })
     end)
   end, {
     bang = tsinstall_args.bang,

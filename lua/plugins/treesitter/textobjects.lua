@@ -1,6 +1,9 @@
 return {
   "nvim-treesitter/nvim-treesitter-textobjects",
-  event = "VeryLazy",
+  lazy = false,
+  init = function()
+    vim.g.no_plugin_maps = true
+  end,
   main = "utils.plugins.treesitter.textobjects",
   ---@module "utils.plugins.treesitter.textobjects"
   ---@type utils.treesitter.textobjects.Opts
@@ -14,7 +17,11 @@ return {
           ["]c"] = "@class.outer",
           ["]a"] = "@parameter.inner",
         },
-        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+        goto_next_end = {
+          ["]F"] = "@function.outer",
+          ["]C"] = "@class.outer",
+          ["]A"] = "@parameter.inner",
+        },
         goto_previous_start = {
           ["[f"] = "@function.outer",
           ["[c"] = "@class.outer",
